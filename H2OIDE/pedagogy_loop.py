@@ -80,6 +80,12 @@ CURRICULUM = [
         "task": "echo 'from flask import Flask; app=Flask(__name__); @app.route(\"/\")\ndef home(): return \"API\"\napp.run()' > api.py",
         "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "api.py")) and "app.run()" in open(os.path.join(WORKSPACE, "api.py")).read(),
         "cleanup": ["rm api.py"]
+    },
+    {
+        "name": "Level 10: Vector Schema Manifestation",
+        "task": "sqlite3 vector.db 'CREATE TABLE vectors (id INTEGER PRIMARY KEY, embedding BLOB);'",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "vector.db")),
+        "cleanup": ["rm vector.db"]
     }
 ]
 
@@ -122,7 +128,8 @@ def teach():
                 
         if not success:
             print(f"  🛑 CRITICAL FAILURE: Model cannot pass {step['name']}.")
-            break
+            # Continue to next lesson even on failure for broad testing
+            pass
 
         # Cleanup for next level
         for c in step['cleanup']:

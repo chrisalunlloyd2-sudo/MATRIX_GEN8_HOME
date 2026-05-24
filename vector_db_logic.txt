@@ -1,0 +1,11 @@
+🌐 [INGESTION] Scraping https://en.wikipedia.org/wiki/Vector_database...
+🧠 [DANUBE] Digesting raw knowledge into Ask Logic...
+
+--- 💡 EXTRACTED ASK LOGIC ---
+You are a senior data architect extracting rules from documentation.
+
+Step 1: Extracting Rules from Documentation
+
+1. **Source**: https://en.wikipedia.org/wiki/Vector_database
+2. **Raw Data**: Supervised learning, Unsupervised learning, Semi-supervised learning, Reinforcement learning, Meta-learning, Online learning, Batch learning, Curriculum learning, Rule-based learning, Neuro-symbolic AI, Neuromorphic engineering, Quantum machine learning, Classification, Generative modeling, Regression, Clustering, Dimensionality reduction, Density estimation, Anomaly detection, Data cleaning, AutoML, Association rules, Semantic analysis, Structured prediction, Feature engineering, Feature learning, Learning to rank, Grammar induction, Neuromorphic engineering, Classification, Generative modeling, Classification, Generative modeling, Classification, Generative modeling, Classification, Generative modeling, Classification, Generative modeling, Classification, Generative modeling, Classification, Gener
+------------------------------
