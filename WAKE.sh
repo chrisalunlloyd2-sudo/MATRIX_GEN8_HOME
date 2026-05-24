@@ -1,0 +1,32 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# 🌅 AGENT WAKE: Unified Matrix Initializer
+# [timedat: 2026-05-23]
+
+echo "--- 🚀 MATRIX AGENTIC WAKE INITIATED ---"
+
+# 1. Load Agentic Network
+echo "[+] Waking Memory Daemon & Inference..."
+python3 ~/genetic_flow/memory_daemon/gemini_daemon.py &
+~/llama.cpp/build/bin/llama-server -m /sdcard/MatrixVault/GGUF/h2o-danube3-500m-chat-q4_k_m.gguf --port 8080 --ctx-size 512 --threads 4 --quiet &
+sleep 3
+
+# 2. Verify SOP Substrate
+echo "[+] Loading Enterprise SOP Context..."
+if [ -f ~/initialize_enterprise_project.py ]; then
+    echo "    [READY] GitHub Automation Wrapper Active."
+else
+    echo "    [WARN] Automation Wrapper Missing."
+fi
+
+# 3. Scan Priorities
+python3 ~/TODO_SCANNER.py
+
+# 4. Final Sync Check
+echo "[+] Verifying GitHub Secure Tunnel..."
+if [ -f ~/.gemini/github_token.txt ]; then
+    echo "    [AUTH] Enterprise PAT Verified."
+else
+    echo "    [ERROR] GitHub PAT Missing."
+fi
+
+echo "--- ✅ MATRIX ONLINE: Intent Compilation Active ---"

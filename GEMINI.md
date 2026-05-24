@@ -30,8 +30,8 @@ To prevent battery swelling and CPU frequency pinning during agentic loops:
 
 ## 🛡️ ENTERPRISE PROJECT SOP (v1.0)
 [MANDATE: ABSOLUTE PRECEDENCE]
-Every project manifestation MUST begin with the `ENTERPRISE_INIT.p` protocol:
+The "GitHub Automation Wrapper" (`initialize_enterprise_project.py`) is a core system component and MUST be loaded into context upon every session initialization.
 1. **Agentic Sync:** Load Memory Daemon, Inference Engine, and GitHub OAuth (~/.gemini/oauth_creds.json).
-2. **GH Manifestation:** Auto-create repo and sync via `initialize_enterprise_project.py`.
+2. **GH Manifestation:** Auto-create repo and sync via `initialize_enterprise_project.py` (alias: `gh-sync`).
 3. **High-Fidelity Docs:** Maintain `README.md` (with ASCII Tree & Performatives), `Blueprint.md`, `CHANGELOG.md`, and `PROJECT_LOG.md`.
 4. **Step-by-Step Backup:** Perform force-sync to GitHub on every logical milestone to prevent state loss.

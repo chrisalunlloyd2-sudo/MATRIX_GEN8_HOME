@@ -14,10 +14,6 @@
 - `init_foundation()`: Bootstraps the memory storage with optimal SQLite PRAGMAs.
 
 ## 🚀 NEXT STEPS (HEADLESS & ASYNC)
-- [x] **Phase 5.1:** Integrate STT (Speech-to-Text) module (Whisper.cpp) for audio input.
-- [x] **Phase 5.2:** Bind TTS (Text-to-Speech) engine (e.g., eSpeak-ng) to LLM response streams.
-- [x] **Phase 5.3:** Implement `asyncio` chunked streaming for real-time auditory output.
-- [x] **Phase 5.4:** Bind global volume-key hooks to trigger the RAG-LLM-TTS feedback loop.
 
 ---
 *Status: PHASE 5 COMPLETE | Logged: 2026-05-20*

@@ -3,9 +3,6 @@
 This document outlines the step-by-step action plan to evolve the remaining subsystems of Matrix IDE to Generation 8 standards. The goal is to maximize throughput (via SQLite WAL/BLOB and Rust `std::simd`), minimize latency (via `asyncio` and `llama.cpp` bindings), and enhance the CLI experience to match `gemini-cli`.
 
 ## 📍 CURRENT STATUS: GEN 8 PARTIALLY MANIFESTED
-- [x] **Database Proxy (`init_memory_db.py`, `bayesian_persist.py`):** Upgraded to Gen 8. Uses SQLite WAL + binary `struct` BLOBs instead of Postgres/JSON.
-- [x] **Inference IO (`rag_pipeline.py`, `audio_loop.py`):** Upgraded to Gen 8. Optimized context injection, chunk yielding reduced to 10ms/word.
-- [x] **Hardware Triggers (`key_hook.rs`):** Intercepts global volume keys to trigger the Gen 8 RAG-LLM-TTS loop.
 
 ## 🚀 PHASE 3: THE CLI EXPERIENCE (UI & TUI EVOLUTION)
 ### Goal: Replace rigid GUI/Curses logic with a fast, `gemini-cli`-like interactive terminal experience.
