@@ -90,9 +90,14 @@ def initialize():
     # 4. Sync State
     subprocess.run(["git", "add", "."], check=False)
     subprocess.run(["git", "commit", "-m", "Enterprise: Automated Project Sync"], check=False)
-    subprocess.run(["git", "push", "-u", "origin", "main", "--force"], check=False)
-
-    print("--- ✅ PROJECT SYNCED TO GITHUB ---")
+    
+    print("--- 📡 Checking Network Connectivity ---")
+    try:
+        requests.get("https://github.com", timeout=3)
+        subprocess.run(["git", "push", "-u", "origin", "main", "--force"], check=False)
+        print("--- ✅ PROJECT SYNCED TO GITHUB ---")
+    except requests.exceptions.RequestException:
+        print("--- ✈️ OFFLINE MODE: Local Commit Preserved. Push Skipped. ---")
 
 if __name__ == "__main__":
     initialize()

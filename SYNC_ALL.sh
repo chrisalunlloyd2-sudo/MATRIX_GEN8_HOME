@@ -4,7 +4,8 @@
 
 echo "--- 🔄 INITIATING SUPERSCRUB GLOBAL SYNC ---"
 
-# 1. State Harvesting
+# 1. State Harvesting & Integrity
+python3 ~/VIPER_SCRIPT_LIBRARY/scripts/SHA256_INTEGRITY.py
 python3 ~/PEDAGOGY_HARVESTER.py
 python3 ~/TODO_SCANNER.py
 
@@ -14,7 +15,12 @@ python3 ~/VIPER_SCRIPT_LIBRARY/scripts/scrub_and_sync.py
 cd ~/VIPER_SCRIPT_LIBRARY
 git add .
 git commit -m "Enterprise: High-Fidelity Private Sync [Superscrubbed]"
-git push origin main
+if ping -q -c 1 -W 1 github.com >/dev/null 2>&1; then
+    git push origin main
+    echo "    [+] Online: Pushed to GitHub."
+else
+    echo "    [!] Offline: Local commit saved to VIPER_SCRIPT_LIBRARY. Push skipped."
+fi
 
 # 3. Public Substrate Sync (Core IDE Only)
 echo "[+] Syncing Public Substrate (H2O_MATRIX)..."
