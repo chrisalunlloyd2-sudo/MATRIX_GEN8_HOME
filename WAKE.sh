@@ -7,7 +7,7 @@ echo "--- 🚀 MATRIX AGENTIC WAKE INITIATED ---"
 # 1. Load Agentic Network
 echo "[+] Waking Memory Daemon & Inference..."
 python3 ~/genetic_flow/memory_daemon/gemini_daemon.py &
-~/llama.cpp/build/bin/llama-server -m /sdcard/MatrixVault/GGUF/h2o-danube3-500m-chat-q4_k_m.gguf --port 8080 --ctx-size 512 --threads 4 --quiet &
+~/llama.cpp/build/bin/llama-server -m /sdcard/MatrixVault/GGUF/h2o-danube3-500m-chat-q4_k_m.gguf --port 8080 --ctx-size 512 --threads 4 > /dev/null 2>&1 &
 sleep 3
 
 # 2. Verify SOP Substrate

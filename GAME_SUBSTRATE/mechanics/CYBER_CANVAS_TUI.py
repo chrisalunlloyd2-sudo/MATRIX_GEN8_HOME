@@ -7,43 +7,42 @@ import random
 # High-velocity fluid ASCII rendering substrate.
 
 LOGO = r"""
-  ___ ___ ___   __  __   _ _____ ___ _____  __
- | _ \__ \_  ) |  \/  | /_\_   _| _ \_ _\ \/ /
- |   / __ \/ /  | |\/| |/ _ \ | | |   /| | >  < 
- |_|_\___/___|  |_|  |_/_/ \_\|_| |_|_\___/_/\_\
-      [ HYPERAUTOMATED GAME SUBSTRATE ]
+  __  __   _ _____ ___ _____  __
+ |  \/  | /_\_   _| _ \_ _\ \/ /
+ | |\/| |/ _ \ | | |   /| | >  < 
+ |_|  |_/_/ \_\|_| |_|_\___/_/\_\
+      [ FLUID GAME SUBSTRATE ]
 """
 
 class CyberCanvas:
     def __init__(self):
         self.width, self.height = shutil.get_terminal_size((80, 24))
         self.state = {"x": self.width // 2, "y": self.height // 2}
-        self.velocity = {"dx": 1, "dy": 0.5}
-
-    def clear(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        self.velocity = {"dx": 1.2, "dy": 0.6}
+        self.trail = []
 
     def render_frame(self, frame_num):
         self.clear()
         print(LOGO)
-        print(f"--- FRAME: {frame_num} | STATUS: AGENTIC_FLUID ---")
-        
-        # High-Entropy Physics (Deterministic Drift)
-        self.state["x"] += self.velocity["dx"]
-        self.state["y"] += self.velocity["dy"]
 
-        # Boundary Collision
-        if self.state["x"] <= 0 or self.state["x"] >= self.width - 2: self.velocity["dx"] *= -1
-        if self.state["y"] <= 0 or self.state["y"] >= self.height - 10: self.velocity["dy"] *= -1
+        # Fluid Dynamics (Trail)
+        self.trail.append((int(self.state["x"]), int(self.state["y"])))
+        if len(self.trail) > 5: self.trail.pop(0)
 
-        # Draw the Substrate
-        for y in range(self.height - 10):
+        # Draw
+        for y in range(self.height - 12):
             line = ""
             for x in range(self.width):
-                if int(y) == int(self.state["y"]) and int(x) == int(self.state["x"]):
-                    line += "⚛" # The Sprite Agent
-                elif random.random() > 0.99:
-                    line += "." # Background noise
+                if (x, y) == (int(self.state["x"]), int(self.state["y"])):
+                    line += "⚛"
+                elif (x, y) in self.trail:
+                    line += "◦"
+                elif random.random() > 0.995:
+                    line += random.choice(["+", "·", "*"])
+                else:
+                    line += " "
+            print(line)
+
                 else:
                     line += " "
             print(line)
