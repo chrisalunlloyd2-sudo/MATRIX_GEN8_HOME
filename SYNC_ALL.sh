@@ -1,23 +1,25 @@
 #!/data/data/com.termux/files/usr/bin/bash
-# 🌌 ENTERPRISE GLOBAL SYNC (eg-sync)
-# [timedat: 2026-05-23]
+# 🌌 ENTERPRISE GLOBAL SYNC (eg-sync v2.0)
+# [MANDATE: PERFECT SEGMENTATION]
 
-echo "--- 🔄 INITIATING GLOBAL ENTERPRISE SYNC ---"
+echo "--- 🔄 INITIATING SUPERSCRUB GLOBAL SYNC ---"
 
-# 1. Internal State Harvesting
+# 1. State Harvesting
 python3 ~/PEDAGOGY_HARVESTER.py
 python3 ~/TODO_SCANNER.py
 
-# 2. Public Substrate Sync (H2O_MATRIX)
-echo "[+] Syncing Public Substrate (H2O_MATRIX)..."
-python3 ~/initialize_enterprise_project.py
-
-# 3. Private Logic Sync (VIPER_SCRIPT_LIBRARY)
-echo "[+] Syncing Private Logic (VIPER_SCRIPT_LIBRARY)..."
+# 2. Private Logic Manifestation (All Logic + MDs + Pedagogy)
+echo "[+] Manifesting Private Script Library (VIPER_SCRIPT_LIBRARY)..."
 python3 ~/VIPER_SCRIPT_LIBRARY/scripts/scrub_and_sync.py
 cd ~/VIPER_SCRIPT_LIBRARY
 git add .
-git commit -m "Enterprise: Scheduled Global Sync"
+git commit -m "Enterprise: High-Fidelity Private Sync [Superscrubbed]"
 git push origin main
 
-echo "--- ✅ GLOBAL SYNC COMPLETE ---"
+# 3. Public Substrate Sync (Core IDE Only)
+echo "[+] Syncing Public Substrate (H2O_MATRIX)..."
+cd ~/
+# Filter: Only sync core components to Public, avoiding personal notes
+python3 ~/initialize_enterprise_project.py
+
+echo "--- ✅ PERFECT SEGMENTATION SYNC COMPLETE ---"
