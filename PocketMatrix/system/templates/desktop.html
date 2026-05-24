@@ -4,23 +4,25 @@
     <title>PocketMatrix CE</title>
     <style>
         body { background: #008080; font-family: 'Tahoma', sans-serif; overflow: hidden; margin: 0; }
-        #taskbar { position: absolute; bottom: 0; width: 100%; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; }
+        #taskbar { position: absolute; bottom: 0; width: 100%; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; z-index: 2000; }
         #start-btn { height: 22px; width: 60px; background: #c0c0c0; border: 2px outset #fff; font-weight: bold; margin-left: 2px; cursor: pointer; }
-        .window { position: absolute; background: #c0c0c0; border: 2px outset #fff; padding: 2px; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+        .window { position: absolute; background: #c0c0c0; border: 2px outset #fff; padding: 2px; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); display: none;}
         .window-header { background: #000080; color: #fff; padding: 2px 5px; font-weight: bold; display: flex; justify-content: space-between; cursor: move; }
         .window-header span.close-btn { cursor: pointer; background: #c0c0c0; color: #000; border: 1px outset #fff; padding: 0 2px; font-size: 10px; }
         .window-content { background: #fff; border: 2px inset #fff; overflow-y: auto; font-size: 12px; }
         
-        #pocket-cmd { top: 20px; left: 20px; width: 320px; z-index: 10; }
-        #pocket-mail { top: 60px; left: 360px; width: 300px; height: 250px; z-index: 11; }
-        #pocket-docs { top: 100px; left: 60px; width: 400px; height: 300px; z-index: 12; }
-        #pocket-excel { top: 150px; left: 100px; width: 600px; height: 400px; display: none; z-index: 15; }
-        #pocket-net { top: 200px; left: 200px; width: 350px; height: 250px; display: none; z-index: 16; }
+        #pocket-cmd { top: 20px; left: 20px; width: 350px; }
+        #pocket-mail { top: 60px; left: 380px; width: 320px; height: 300px; }
+        #pocket-docs { top: 100px; left: 60px; width: 450px; height: 350px; }
+        #pocket-excel { top: 150px; left: 100px; width: 600px; height: 400px; }
+        #pocket-net { top: 200px; left: 200px; width: 350px; height: 250px; }
+        #pocket-todo { top: 40px; left: 300px; width: 300px; height: 350px; }
+        #pocket-notes { top: 80px; left: 150px; width: 400px; height: 300px; }
         
         /* Start Menu Styles */
         #start-menu { 
             position: absolute; bottom: 30px; left: 0; width: 180px; background: #c0c0c0; border: 2px outset #fff; 
-            display: none; z-index: 1000; box-shadow: 2px -2px 5px rgba(0,0,0,0.5);
+            display: none; z-index: 2000; box-shadow: 2px -2px 5px rgba(0,0,0,0.5);
         }
         .start-item { 
             padding: 5px 10px; display: flex; align-items: center; cursor: pointer; font-size: 11px;
@@ -28,6 +30,12 @@
         }
         .start-item:hover { background: #000080; color: #fff; }
         .start-icon { width: 16px; height: 16px; margin-right: 10px; background: #999; }
+        
+        /* Desktop Icons */
+        #desktop-icons { padding: 10px; display: flex; flex-direction: column; gap: 15px; }
+        .d-icon { width: 60px; text-align: center; cursor: pointer; color: white; font-size: 11px; }
+        .d-icon-img { width: 32px; height: 32px; margin: 0 auto 5px auto; border: 2px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.3); border-radius: 4px; }
+        .d-icon-img.h2o { background: #00f; border-color: #0ff; }
         
         .icon { display: inline-block; width: 70px; text-align: center; margin: 10px; cursor: pointer; vertical-align: top; }
         .icon-img { width: 32px; height: 32px; margin: 0 auto 5px auto; background-size: cover; }
@@ -40,36 +48,63 @@
         table.excel95 th { background: #c0c0c0; border: 1px outset #fff; padding: 2px 5px; font-weight: normal; text-align: center; }
         table.excel95 td { border: 1px solid #ccc; padding: 2px 5px; white-space: nowrap; }
         .excel-toolbar { background: #c0c0c0; padding: 5px; border-bottom: 2px inset #fff; display: flex; gap: 10px; align-items: center; }
-        select, button { font-family: 'Tahoma', sans-serif; font-size: 11px; }
+        select, button, input, textarea { font-family: 'Tahoma', sans-serif; font-size: 11px; }
     </style>
 </head>
 <body>
+    <!-- Desktop Icons -->
+    <div id="desktop-icons">
+        <div class="d-icon" onclick="openWindow('pocket-cmd')">
+            <div class="d-icon-img h2o"></div>
+            <span>H2O Matrix<br>(Danube Chat)</span>
+        </div>
+        <div class="d-icon" onclick="openWindow('pocket-docs')">
+            <div class="d-icon-img" style="background:#e8d06a;"></div>
+            <span>My Documents</span>
+        </div>
+        <div class="d-icon" onclick="openWindow('pocket-todo')">
+            <div class="d-icon-img" style="background:#fff; border-color:#999;"></div>
+            <span>ToDo Sync</span>
+        </div>
+    </div>
+
     <div id="desktop">
+        <!-- Danube Chat / CMD -->
         <div class="window" id="pocket-cmd">
-            <div class="window-header"><span>Pocket CMD</span><span class="close-btn" onclick="document.getElementById('pocket-cmd').style.display='none'">X</span></div>
-            <div class="window-content" style="height: 200px; display: flex; flex-direction: column;">
-                <div id="cmd-out" style="flex-grow: 1; background: #000; color: #0f0; font-family: monospace; padding: 2px; overflow-y: auto;">
-                    H2O Matrix [Version 8.0]<br>>
+            <div class="window-header"><span>Danube Omni-Chat / CMD</span><span class="close-btn" onclick="document.getElementById('pocket-cmd').style.display='none'">X</span></div>
+            <div class="window-content" style="height: 250px; display: flex; flex-direction: column;">
+                <div id="cmd-out" style="flex-grow: 1; background: #000; color: #0f0; font-family: monospace; padding: 5px; overflow-y: auto;">
+                    H2O Matrix [Global Control]<br>Type a command or say "remind me to..." or "note: ..."<br>>
                 </div>
-                <input type="text" id="cmd-in" style="width: 100%; border: none; border-top: 1px solid #333; background: #000; color: #0f0; outline: none; padding: 2px; box-sizing: border-box; font-family: monospace;">
+                <input type="text" id="cmd-in" placeholder="Enter intent or command..." style="width: 100%; border: none; border-top: 1px solid #333; background: #000; color: #0f0; outline: none; padding: 5px; box-sizing: border-box; font-family: monospace;">
             </div>
         </div>
 
+        <!-- Pocket Mail -->
         <div class="window" id="pocket-mail">
-            <div class="window-header"><span>Pocket Mail (KQML)</span><span class="close-btn" onclick="document.getElementById('pocket-mail').style.display='none'">X</span></div>
-            <div class="window-content" id="mail-list" style="height: calc(100% - 20px);"></div>
+            <div class="window-header"><span>Pocket Mail (Gmail Sync)</span><span class="close-btn" onclick="document.getElementById('pocket-mail').style.display='none'">X</span></div>
+            <div class="excel-toolbar">
+                <button onclick="document.getElementById('mail-compose').style.display='block'">Compose</button>
+            </div>
+            <div class="window-content" id="mail-list" style="height: calc(100% - 50px);"></div>
+            <div id="mail-compose" style="display:none; position:absolute; top:20px; left:10px; right:10px; bottom:10px; background:#c0c0c0; border:2px outset #fff; padding:5px; z-index:20;">
+                To: <input type="text" id="mail-to" style="width:100%; margin-bottom:5px;"><br>
+                Sub: <input type="text" id="mail-sub" style="width:100%; margin-bottom:5px;"><br>
+                <textarea id="mail-body" style="width:100%; height:150px; margin-bottom:5px;"></textarea><br>
+                <button onclick="sendMail()">Send</button> <button onclick="document.getElementById('mail-compose').style.display='none'">Cancel</button>
+            </div>
         </div>
 
+        <!-- My Documents -->
         <div class="window" id="pocket-docs">
-            <div class="window-header"><span id="docs-title">My Documents</span><span class="close-btn" onclick="document.getElementById('pocket-docs').style.display='none'">X</span></div>
+            <div class="window-header"><span id="docs-title">My Documents (Hypersync)</span><span class="close-btn" onclick="document.getElementById('pocket-docs').style.display='none'">X</span></div>
             <div class="excel-toolbar" id="docs-toolbar" style="display: none;">
-                <button onclick="loadRootDocs()">⬅ Up</button>
+                <button onclick="loadRootDocs()">⬅ Global View</button>
             </div>
-            <div class="window-content" id="doc-list" style="height: calc(100% - 20px); padding: 10px; box-sizing: border-box;">
-                <!-- Projects will be loaded here -->
-            </div>
+            <div class="window-content" id="doc-list" style="height: calc(100% - 20px); padding: 10px; box-sizing: border-box;"></div>
         </div>
 
+        <!-- Excel 95 -->
         <div class="window" id="pocket-excel">
             <div class="window-header"><span id="excel-title">Excel 95 - Database Viewer</span><span class="close-btn" onclick="document.getElementById('pocket-excel').style.display='none'">X</span></div>
             <div class="excel-toolbar">
@@ -85,33 +120,59 @@
             </div>
         </div>
 
+        <!-- Network Devices -->
         <div class="window" id="pocket-net">
             <div class="window-header"><span>Network Devices</span><span class="close-btn" onclick="document.getElementById('pocket-net').style.display='none'">X</span></div>
-            <div class="window-content" id="device-list" style="padding: 10px;">
-                <!-- Devices will be loaded here -->
+            <div class="window-content" id="device-list" style="padding: 10px; height: calc(100% - 20px);"></div>
+        </div>
+
+        <!-- ToDo / Reminders -->
+        <div class="window" id="pocket-todo">
+            <div class="window-header"><span>Pocket ToDo (Cross-Device Sync)</span><span class="close-btn" onclick="document.getElementById('pocket-todo').style.display='none'">X</span></div>
+            <div class="excel-toolbar">
+                <input type="text" id="new-todo" placeholder="New reminder..." style="flex-grow:1;">
+                <button onclick="addTodo()">Add</button>
+            </div>
+            <div class="window-content" id="todo-list" style="height: calc(100% - 50px); padding: 5px; box-sizing: border-box;"></div>
+        </div>
+
+        <!-- Notes CE -->
+        <div class="window" id="pocket-notes">
+            <div class="window-header"><span>Notes CE (VIPER Link)</span><span class="close-btn" onclick="document.getElementById('pocket-notes').style.display='none'">X</span></div>
+            <div style="display:flex; height: calc(100% - 20px);">
+                <div id="notes-list" style="width: 30%; border-right: 2px inset #fff; background: #fff; overflow-y: auto;"></div>
+                <div style="width: 70%; padding: 2px;">
+                    <input type="text" id="note-title" placeholder="Filename..." style="width:100%; border:1px solid #ccc; margin-bottom:2px;">
+                    <textarea id="note-body" style="width:100%; height:calc(100% - 30px); border:1px inset #fff; resize:none;"></textarea>
+                    <button onclick="saveNote()" style="width:100%;">Save to VIPER</button>
+                </div>
             </div>
         </div>
+
     </div>
 
+    <!-- Taskbar -->
     <div id="taskbar">
         <button id="start-btn" onclick="toggleStartMenu()">Start</button>
-        <div style="margin-left: 10px; font-size: 11px; padding: 2px 5px; border: 1px inset #fff;">My Documents</div>
+        <div style="margin-left: 10px; font-size: 11px; padding: 2px 5px; border: 1px inset #fff; color: #000;">Global Matrix Orchestrator</div>
     </div>
 
+    <!-- Start Menu -->
     <div id="start-menu">
-        <div class="start-item" onclick="openWindow('pocket-cmd')"><div class="start-icon"></div>Pocket CMD</div>
+        <div class="start-item" onclick="openWindow('pocket-cmd')"><div class="start-icon"></div>Danube Chat</div>
         <div class="start-item" onclick="openWindow('pocket-mail')"><div class="start-icon"></div>Pocket Mail</div>
         <div class="start-item" onclick="openWindow('pocket-docs')"><div class="start-icon"></div>My Documents</div>
+        <div class="start-item" onclick="openWindow('pocket-todo')"><div class="start-icon"></div>Pocket ToDo</div>
+        <div class="start-item" onclick="openWindow('pocket-notes')"><div class="start-icon"></div>Notes CE</div>
         <div class="start-item" onclick="openWindow('pocket-net')"><div class="start-icon"></div>Network Devices</div>
         <div style="height: 20px; background: #808080; color: #fff; font-size: 9px; padding: 2px 10px; font-weight: bold;">PROJECTS</div>
-        <div class="start-item" onclick="alert('Switching to Singularity...')">Singularity</div>
-        <div class="start-item" onclick="alert('Switching to H2O Matrix...')">H2O Matrix</div>
+        <div class="start-item" onclick="alert('Hypersyncing to Desktop 95 Environment...')">Sync to Desktop</div>
         <div style="height: 1px; background: #fff; margin: 2px 0;"></div>
         <div class="start-item" onclick="location.reload()">Shut Down...</div>
     </div>
 
     <script>
-        // --- Start Menu ---
+        // --- Core Window Logic ---
         function toggleStartMenu() {
             const menu = document.getElementById('start-menu');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
@@ -120,12 +181,18 @@
         function openWindow(id) {
             document.getElementById(id).style.display = 'block';
             document.getElementById('start-menu').style.display = 'none';
-            // Bring to front
             document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
             document.getElementById(id).style.zIndex = 100;
+            
+            // Refresh content based on window
+            if(id === 'pocket-todo') loadTodos();
+            if(id === 'pocket-notes') loadNotes();
+            if(id === 'pocket-mail') loadMail();
+            if(id === 'pocket-docs') loadRootDocs();
+            if(id === 'pocket-net') loadDevices();
         }
 
-        // --- CMD Logic ---
+        // --- Danube Omni-Chat Logic ---
         const cmdIn = document.getElementById('cmd-in');
         const cmdOut = document.getElementById('cmd-out');
 
@@ -133,72 +200,157 @@
             if (e.key === 'Enter') {
                 const val = cmdIn.value;
                 cmdOut.innerHTML += val + "<br>";
-                fetch('/api/cmd', {
+                fetch('/api/chat', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({command: val})
+                    body: JSON.stringify({message: val})
                 }).then(r => r.json()).then(data => {
                     cmdOut.innerHTML += data.output.replace(/\n/g, '<br>') + "<br>> ";
                     cmdOut.scrollTop = cmdOut.scrollHeight;
+                    // Background refresh if it was a specific intent
+                    if(val.toLowerCase().startsWith('remind')) loadTodos();
+                    if(val.toLowerCase().startsWith('note:')) loadNotes();
                 });
                 cmdIn.value = '';
             }
         });
 
-        // --- Mail Logic ---
-        fetch('/api/mail').then(r => r.json()).then(data => {
-            const list = document.getElementById('mail-list');
-            data.forEach(m => {
-                list.innerHTML += `<div style="border-bottom: 1px solid #ccc; padding: 5px;">
-                    <b>FROM:</b> MatrixEngine<br>
-                    <b>SUBJECT:</b> Success: ${m[1]}<br>
-                    <small>${m[3]}</small>
-                </div>`;
+        // --- ToDo Logic ---
+        function loadTodos() {
+            fetch('/api/todo').then(r => r.json()).then(data => {
+                const list = document.getElementById('todo-list');
+                list.innerHTML = '';
+                data.forEach(t => {
+                    const checked = t.status === 'done' ? 'checked' : '';
+                    const style = t.status === 'done' ? 'text-decoration: line-through; color: #888;' : '';
+                    list.innerHTML += `
+                        <div style="border-bottom: 1px solid #eee; padding: 4px; display: flex; align-items: center;">
+                            <input type="checkbox" ${checked} onchange="updateTodoStatus(${t.id}, this.checked ? 'done' : 'pending')">
+                            <span style="margin-left: 5px; flex-grow: 1; ${style}">${t.task}</span>
+                            <span style="font-size: 9px; color: #888;">[${t.delivery}]</span>
+                        </div>
+                    `;
+                });
             });
-        });
+        }
+        function addTodo() {
+            const val = document.getElementById('new-todo').value;
+            if(!val) return;
+            fetch('/api/todo', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({task: val})
+            }).then(() => { document.getElementById('new-todo').value = ''; loadTodos(); });
+        }
+        function updateTodoStatus(id, status) {
+            fetch('/api/todo', {
+                method: 'PUT', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: id, status: status})
+            }).then(() => loadTodos());
+        }
 
-        // --- Explorer Logic ---
+        // --- Notes CE Logic ---
+        function loadNotes() {
+            fetch('/api/notes').then(r => r.json()).then(data => {
+                const list = document.getElementById('notes-list');
+                list.innerHTML = '';
+                data.forEach(n => {
+                    list.innerHTML += `
+                        <div style="padding: 5px; border-bottom: 1px solid #ccc; cursor: pointer;" 
+                             onclick="viewNote('${n.name}', \`${n.content.replace(/`/g, '\\`')}\`)">
+                            📄 ${n.name}
+                        </div>
+                    `;
+                });
+            });
+        }
+        function viewNote(name, content) {
+            document.getElementById('note-title').value = name;
+            document.getElementById('note-body').value = content;
+        }
+        function saveNote() {
+            const name = document.getElementById('note-title').value;
+            const content = document.getElementById('note-body').value;
+            fetch('/api/notes', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: name, content: content})
+            }).then(() => { alert('Saved to VIPER'); loadNotes(); });
+        }
+
+        // --- Mail Logic ---
+        function loadMail() {
+            fetch('/api/mail').then(r => r.json()).then(data => {
+                const list = document.getElementById('mail-list');
+                list.innerHTML = '';
+                data.forEach(m => {
+                    list.innerHTML += `<div style="border-bottom: 1px solid #ccc; padding: 5px;">
+                        <b>FROM:</b> ${m.from}<br>
+                        <b>SUBJECT:</b> ${m.subject}<br>
+                        <small>${m.body}</small>
+                    </div>`;
+                });
+            });
+        }
+        function sendMail() {
+            fetch('/api/mail/send', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    to: document.getElementById('mail-to').value,
+                    subject: document.getElementById('mail-sub').value,
+                    body: document.getElementById('mail-body').value
+                })
+            }).then(r => r.json()).then(d => {
+                alert(d.message);
+                document.getElementById('mail-compose').style.display='none';
+            });
+        }
+
+        // --- Explorer Logic (Hypersync) ---
         const docList = document.getElementById('doc-list');
         const docsTitle = document.getElementById('docs-title');
         const docsToolbar = document.getElementById('docs-toolbar');
         let currentDbPath = "";
 
         function loadRootDocs() {
-            docsTitle.innerText = "My Documents";
+            docsTitle.innerText = "Global Explorer";
             docsToolbar.style.display = "none";
             docList.style.height = "calc(100% - 20px)";
-            
-            fetch('/api/documents/root').then(r => r.json()).then(data => {
+            docList.innerHTML = `
+                <div class="icon" onclick="loadProjects()"><div class="icon-img icon-folder"></div><span>All Projects</span></div>
+                <div class="icon" onclick="loadDatabases()"><div class="icon-img icon-db"></div><span>All Databases</span></div>
+                <div class="icon" onclick="alert('Network Syncing...')"><div class="icon-img icon-folder" style="background:#88cc88;"></div><span>Network Sync</span></div>
+            `;
+        }
+
+        function loadProjects() {
+            docsTitle.innerText = "All Projects";
+            docsToolbar.style.display = "flex";
+            docList.style.height = "calc(100% - 45px)";
+            fetch('/api/projects').then(r => r.json()).then(data => {
                 docList.innerHTML = '';
                 data.forEach(d => {
                     docList.innerHTML += `
-                    <div class="icon" onclick="openFolder('${d.id}', '${d.name}')">
+                    <div class="icon" onclick="alert('Entering Project: ${d.name}')">
                         <div class="icon-img icon-folder"></div>
-                        <span style="font-size: 10px;">${d.name}</span>
+                        <span style="font-size: 10px; word-wrap: break-word;">${d.name}</span>
                     </div>`;
                 });
             });
         }
 
-        function openFolder(id, name) {
-            docsTitle.innerText = name;
+        function loadDatabases() {
+            docsTitle.innerText = "Global Databases";
             docsToolbar.style.display = "flex";
             docList.style.height = "calc(100% - 45px)";
-            
-            if (id === 'global_db') {
-                fetch('/api/databases').then(r => r.json()).then(data => {
-                    docList.innerHTML = '';
-                    data.forEach(db => {
-                        docList.innerHTML += `
-                        <div class="icon" onclick="openDatabase('${db.path}', '${db.name}')" title="${db.path}">
-                            <div class="icon-img icon-db"></div>
-                            <span style="font-size: 10px; word-wrap: break-word;">${db.name}</span>
-                        </div>`;
-                    });
+            fetch('/api/databases').then(r => r.json()).then(data => {
+                docList.innerHTML = '';
+                data.forEach(db => {
+                    docList.innerHTML += `
+                    <div class="icon" onclick="openDatabase('${db.path}', '${db.name}')" title="${db.path}">
+                        <div class="icon-img icon-db"></div>
+                        <span style="font-size: 10px; word-wrap: break-word;">${db.name}</span>
+                    </div>`;
                 });
-            } else {
-                docList.innerHTML = '<div style="color: #666; font-style: italic;">Folder is empty or linking pending.</div>';
-            }
+            });
         }
 
         // --- Excel 95 Database Viewer Logic ---
@@ -206,11 +358,8 @@
             currentDbPath = path;
             document.getElementById('pocket-excel').style.display = 'block';
             document.getElementById('excel-title').innerText = `Excel 95 - [${name}]`;
-            
-            // Bring to front
+            document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
             document.getElementById('pocket-excel').style.zIndex = 100;
-            document.getElementById('pocket-docs').style.zIndex = 10;
-            
             loadTableData(null);
         }
 
@@ -219,7 +368,6 @@
             if (tableName) {
                 payload.table = tableName;
             } else {
-                // If triggered by select dropdown change
                 const sel = document.getElementById('excel-table-select');
                 if (sel.value) payload.table = sel.value;
             }
@@ -229,12 +377,8 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             }).then(r => r.json()).then(data => {
-                if (data.error) {
-                    alert("Error: " + data.error);
-                    return;
-                }
+                if (data.error) { alert("Error: " + data.error); return; }
 
-                // Populate Select
                 const sel = document.getElementById('excel-table-select');
                 if (!tableName && (!sel.options.length || sel.options[0].value !== data.tables[0])) {
                     sel.innerHTML = '';
@@ -246,17 +390,14 @@
                     });
                 }
 
-                // Populate Headers
                 const headers = document.getElementById('excel-headers');
-                headers.innerHTML = '<th></th>'; // Row number column
+                headers.innerHTML = '<th></th>';
                 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 data.columns.forEach((col, idx) => {
-                    // Excel style headers (A, B, C...)
                     const l = idx < 26 ? letters[idx] : letters[Math.floor(idx/26)-1] + letters[idx%26];
                     headers.innerHTML += `<th>${l}<br><small style="font-size:8px;">${col}</small></th>`;
                 });
 
-                // Populate Body
                 const tbody = document.getElementById('excel-body');
                 tbody.innerHTML = '';
                 data.rows.forEach((row) => {
@@ -278,22 +419,19 @@
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    db_path: currentDbPath,
-                    table: document.getElementById('excel-table-select').value,
-                    rowid: rowid,
-                    column: colName,
-                    value: newVal
+                    db_path: currentDbPath, table: document.getElementById('excel-table-select').value,
+                    rowid: rowid, column: colName, value: newVal
                 })
             }).then(r => r.json()).then(data => {
                 if (data.error) alert("Save Failed: " + data.error);
-                else console.log("Cell updated.");
             });
         }
 
-        // Load Devices
+        // --- Devices Logic ---
         function loadDevices() {
             fetch('/api/devices').then(r => r.json()).then(data => {
                 const list = document.getElementById('device-list');
+                if(!list) return;
                 list.innerHTML = '';
                 data.forEach(dev => {
                     list.innerHTML += `<div style="border-bottom: 1px solid #ccc; padding: 5px; display: flex; justify-content: space-between; align-items: center;">
@@ -307,10 +445,6 @@
             });
         }
 
-        // Init
-        loadRootDocs();
-        loadDevices();
-        
         // Simple window dragging
         let draggedWin = null, offsetX = 0, offsetY = 0;
         document.querySelectorAll('.window-header').forEach(header => {
@@ -319,7 +453,6 @@
                 draggedWin = header.parentElement;
                 offsetX = e.clientX - draggedWin.offsetLeft;
                 offsetY = e.clientY - draggedWin.offsetTop;
-                // Bring to front
                 document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
                 draggedWin.style.zIndex = 100;
             });
@@ -331,6 +464,9 @@
             }
         });
         document.addEventListener('mouseup', () => draggedWin = null);
+        
+        // Initializer
+        openWindow('pocket-cmd'); // Start with Danube Chat
     </script>
 </body>
 </html>
