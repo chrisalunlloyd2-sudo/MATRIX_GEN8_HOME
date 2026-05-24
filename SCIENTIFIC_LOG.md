@@ -2,242 +2,242 @@
 ### Generation 1 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: SUCCESS (Score: 0.24999857229064656)
+- **Result**: SUCCESS (Score: 0.[ID_REDACTED])
 
 ### Generation 2 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.1604877267988423)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 3 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.19999994583429373)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 4 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17809364468642389)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 5 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.19999994583429373)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 6 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.20312727758489832)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 7 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.11817552170405739)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 8 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.22805125232137924)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 9 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.22804973871763906)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 10 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: SUCCESS (Score: 0.31705734301932037)
+- **Result**: SUCCESS (Score: 0.[ID_REDACTED])
 
 ### Generation 11 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.2130839945277002)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 12 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.31705734301932037)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 13 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.22805125232137924)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 14 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.31705734301932037)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 15 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17809456778747712)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 16 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.16048847640963618)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 17 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.14773251907745874)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 18 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.134030431797135)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 19 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.18570047210792917)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 20 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.1605132174949039)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 21 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.21308267308262227)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 22 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.12382390208006497)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 23 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.1511715338083978)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 24 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.18843078124412335)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 25 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: SUCCESS (Score: 0.3249924180318403)
+- **Result**: SUCCESS (Score: 0.[ID_REDACTED])
 
 ### Generation 26 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.31705734301932037)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 27 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.15852848014747173)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 28 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17809364468642389)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 29 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17809456778747712)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 30 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17806226494331356)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 31 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.1969663211940299)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 32 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.31705734301932037)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 33 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.19120532658934566)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 34 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.3095981273429678)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 35 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17809364468642389)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 36 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.31705734301932037)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 37 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.2889346022295668)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 38 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17806226494331356)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 39 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.15114892362176974)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 40 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.1780631877190975)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 41 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.13541011009284057)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 42 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.22804973871763906)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 43 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.1604877267988423)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 44 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.1884297478845493)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 45 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.22416506512147338)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 46 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.17568507553502313)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 47 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: FAILURE (Score: 0.2653205546153166)
+- **Result**: FAILURE (Score: 0.[ID_REDACTED])
 
 ### Generation 1 (Step 9 Equivalent)
 - **Observation**: Latency=0.00ms, Entropy=2.3219
 - **Hypothesis**: Mutation with directive 'Minimize global scope lookups; cache variables locally.' improves fitness.
-- **Result**: SUCCESS (Score: 0.1604877267988423)
+- **Result**: SUCCESS (Score: 0.[ID_REDACTED])
 
 ## Step 9: Execute first local neural-symbolic mutation pass.
 - **Observation**: System is ready to execute Step 9.

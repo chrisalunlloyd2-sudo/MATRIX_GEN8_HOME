@@ -5,6 +5,7 @@ import re
 import sys
 from rich.console import Console
 from rich.panel import Panel
+from scrub_engine import scrub_content
 
 console = Console()
 
@@ -253,6 +254,10 @@ class ScientificOrchestrator:
                 experiment = f"echo 'Manifesting Step {step_num}: {step_desc}'"
 
             stdout, stderr = self.run_with_limits(experiment)
+            
+            # Sanitization Step
+            stdout = scrub_content(stdout)
+            stderr = scrub_content(stderr)
             
             if stderr and "Error" in stderr:
                 result = f"FAILURE: {stderr.strip()}"

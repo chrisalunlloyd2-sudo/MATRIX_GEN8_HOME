@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PocketMatrix CE</title>
+    <style>
+        body { background: #008080; font-family: 'Tahoma', sans-serif; overflow: hidden; margin: 0; }
+        #taskbar { position: absolute; bottom: 0; width: 100%; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; }
+        #start-btn { height: 22px; width: 60px; background: #c0c0c0; border: 2px outset #fff; font-weight: bold; margin-left: 2px; cursor: pointer; }
+        .window { position: absolute; background: #c0c0c0; border: 2px outset #fff; padding: 2px; }
+        .window-header { background: #000080; color: #fff; padding: 2px 5px; font-weight: bold; display: flex; justify-content: space-between; }
+        .window-content { background: #fff; border: 2px inset #fff; height: 200px; width: 300px; overflow-y: auto; font-size: 12px; }
+        #pocket-cmd { top: 50px; left: 50px; }
+        #pocket-mail { top: 100px; left: 400px; }
+    </style>
+</head>
+<body>
+    <div id="desktop">
+        <div class="window" id="pocket-cmd">
+            <div class="window-header"><span>Pocket CMD</span><span>[X]</span></div>
+            <div class="window-content" id="cmd-out" style="background: #000; color: #0f0; font-family: monospace;">
+                H2O Matrix [Version 8.0]<br>>
+            </div>
+            <input type="text" id="cmd-in" style="width: 100%; border: none; background: #000; color: #0f0; outline: none;">
+        </div>
+
+        <div class="window" id="pocket-mail">
+            <div class="window-header"><span>Pocket Mail (KQML)</span><span>[X]</span></div>
+            <div class="window-content" id="mail-list"></div>
+        </div>
+    </div>
+
+    <div id="taskbar">
+        <button id="start-btn">Start</button>
+    </div>
+
+    <script>
+        const cmdIn = document.getElementById('cmd-in');
+        const cmdOut = document.getElementById('cmd-out');
+
+        cmdIn.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const val = cmdIn.value;
+                cmdOut.innerHTML += val + "<br>";
+                fetch('/api/cmd', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command: val})
+                }).then(r => r.json()).then(data => {
+                    cmdOut.innerHTML += data.output + "<br>> ";
+                    cmdOut.scrollTop = cmdOut.scrollHeight;
+                });
+                cmdIn.value = '';
+            }
+        });
+
+        // Load Mail
+        fetch('/api/mail').then(r => r.json()).then(data => {
+            const list = document.getElementById('mail-list');
+            data.forEach(m => {
+                list.innerHTML += `<div style="border-bottom: 1px solid #ccc; padding: 5px;">
+                    <b>FROM:</b> MatrixEngine<br>
+                    <b>SUBJECT:</b> Success: ${m[1]}<br>
+                    <small>${m[3]}</small>
+                </div>`;
+            });
+        });
+    </script>
+</body>
+</html>
