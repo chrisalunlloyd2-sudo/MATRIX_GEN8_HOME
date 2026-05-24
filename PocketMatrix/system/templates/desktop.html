@@ -11,6 +11,7 @@
         .window-content { background: #fff; border: 2px inset #fff; height: 200px; width: 300px; overflow-y: auto; font-size: 12px; }
         #pocket-cmd { top: 50px; left: 50px; }
         #pocket-mail { top: 100px; left: 400px; }
+        #pocket-docs { top: 150px; left: 150px; }
     </style>
 </head>
 <body>
@@ -26,6 +27,13 @@
         <div class="window" id="pocket-mail">
             <div class="window-header"><span>Pocket Mail (KQML)</span><span>[X]</span></div>
             <div class="window-content" id="mail-list"></div>
+        </div>
+
+        <div class="window" id="pocket-docs">
+            <div class="window-header"><span>My Documents</span><span>[X]</span></div>
+            <div class="window-content" id="doc-list" style="padding: 10px;">
+                <!-- Projects will be loaded here -->
+            </div>
         </div>
     </div>
 
@@ -61,6 +69,17 @@
                     <b>FROM:</b> MatrixEngine<br>
                     <b>SUBJECT:</b> Success: ${m[1]}<br>
                     <small>${m[3]}</small>
+                </div>`;
+            });
+        });
+
+        // Load Documents
+        fetch('/api/documents').then(r => r.json()).then(data => {
+            const list = document.getElementById('doc-list');
+            data.forEach(d => {
+                list.innerHTML += `<div style="display: inline-block; width: 60px; text-align: center; margin: 5px; cursor: pointer;">
+                    <div style="width: 32px; height: 32px; background: #ffff00; border: 1px solid #000; margin: 0 auto;"></div>
+                    <span style="font-size: 10px;">${d.name}</span>
                 </div>`;
             });
         });
