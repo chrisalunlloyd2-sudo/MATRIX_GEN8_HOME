@@ -1,12 +1,15 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # 🌅 AGENT WAKE: Unified Matrix Initializer
-# [timedat: 2026-05-23]
+# [timedat: $(date +%Y-%m-%dT%H:%M:%S)]
 
 echo "--- 🚀 MATRIX AGENTIC WAKE INITIATED ---"
 
+# 0. Watchdog Pre-Flight (Downloads Environment & Checks Integrity)
+python3 ~/VIPER_SCRIPT_LIBRARY/scripts/WATCHDOG_DOCTOR.py
+
 # 1. Load Agentic Network
 echo "[+] Waking Memory Daemon & Inference..."
-python3 ~/genetic_flow/memory_daemon/gemini_daemon.py &
+python3 ~/genetic_flow/memory_daemon/gemini_daemon.py > /dev/null 2>&1 &
 ~/llama.cpp/build/bin/llama-server -m /sdcard/MatrixVault/GGUF/h2o-danube3-500m-chat-q4_k_m.gguf --port 8080 --ctx-size 512 --threads 4 > /dev/null 2>&1 &
 sleep 3
 
