@@ -15,6 +15,7 @@
         #pocket-mail { top: 60px; left: 360px; width: 300px; height: 250px; z-index: 11; }
         #pocket-docs { top: 100px; left: 60px; width: 400px; height: 300px; z-index: 12; }
         #pocket-excel { top: 150px; left: 100px; width: 600px; height: 400px; display: none; z-index: 15; }
+        #pocket-net { top: 200px; left: 200px; width: 350px; height: 250px; display: none; z-index: 16; }
         
         /* Start Menu Styles */
         #start-menu { 
@@ -83,6 +84,13 @@
                 </table>
             </div>
         </div>
+
+        <div class="window" id="pocket-net">
+            <div class="window-header"><span>Network Devices</span><span class="close-btn" onclick="document.getElementById('pocket-net').style.display='none'">X</span></div>
+            <div class="window-content" id="device-list" style="padding: 10px;">
+                <!-- Devices will be loaded here -->
+            </div>
+        </div>
     </div>
 
     <div id="taskbar">
@@ -94,6 +102,7 @@
         <div class="start-item" onclick="openWindow('pocket-cmd')"><div class="start-icon"></div>Pocket CMD</div>
         <div class="start-item" onclick="openWindow('pocket-mail')"><div class="start-icon"></div>Pocket Mail</div>
         <div class="start-item" onclick="openWindow('pocket-docs')"><div class="start-icon"></div>My Documents</div>
+        <div class="start-item" onclick="openWindow('pocket-net')"><div class="start-icon"></div>Network Devices</div>
         <div style="height: 20px; background: #808080; color: #fff; font-size: 9px; padding: 2px 10px; font-weight: bold;">PROJECTS</div>
         <div class="start-item" onclick="alert('Switching to Singularity...')">Singularity</div>
         <div class="start-item" onclick="alert('Switching to H2O Matrix...')">H2O Matrix</div>
@@ -281,8 +290,26 @@
             });
         }
 
+        // Load Devices
+        function loadDevices() {
+            fetch('/api/devices').then(r => r.json()).then(data => {
+                const list = document.getElementById('device-list');
+                list.innerHTML = '';
+                data.forEach(dev => {
+                    list.innerHTML += `<div style="border-bottom: 1px solid #ccc; padding: 5px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <b>${dev.device_id}</b> (${dev.os})<br>
+                            <small>${dev.ip} - ${dev.status}</small>
+                        </div>
+                        <button onclick="alert('Connecting to ${dev.device_id}...')">Link</button>
+                    </div>`;
+                });
+            });
+        }
+
         // Init
         loadRootDocs();
+        loadDevices();
         
         // Simple window dragging
         let draggedWin = null, offsetX = 0, offsetY = 0;

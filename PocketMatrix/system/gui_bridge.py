@@ -3,8 +3,10 @@ import os
 import subprocess
 import sqlite3
 import glob
+from PocketMatrix.system.ce_simulator import CESubstrateSimulator
 
 app = Flask(__name__)
+device_sim = CESubstrateSimulator()
 
 DOCUMENTS_DIR = os.path.expanduser("~/PocketMatrix/documents")
 LEDGER_DB = os.path.expanduser("~/.matrix_ide/database/ledger.db")
@@ -126,6 +128,20 @@ def get_mail():
         return jsonify(logs)
     except:
         return jsonify([])
+
+@app.route('/api/devices')
+def list_devices():
+    return jsonify([
+        device_sim.get_status(),
+        {"device_id": "Main_Substrate", "ip": "127.0.0.1", "os": "Android/Matrix", "status": "ACTIVE"}
+    ])
+
+@app.route('/api/remote/cmd', methods=['POST'])
+def run_remote_cmd():
+    req = request.json
+    cmd = req.get('command')
+    output = device_sim.simulate_shell(cmd)
+    return jsonify({"output": output})
 
 if __name__ == '__main__':
     app.run(port=8081, host='0.0.0.0')
