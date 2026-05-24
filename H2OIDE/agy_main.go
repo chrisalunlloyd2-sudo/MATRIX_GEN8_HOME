@@ -95,7 +95,8 @@ func interactiveLoop() {
 func callLLM(userPrompt string) (string, error) {
 	requestBody, _ := json.Marshal(ChatCompletionRequest{
 		Messages: []Message{
-			{Role: "user", Content: "Translate the task to exactly one raw bash command. NO markdown. Task: " + userPrompt},
+			{Role: "system", Content: "Respond ONLY with the bash command string. No markdown."},
+			{Role: "user", Content: "Task: " + userPrompt + "\nCommand: "},
 		},
 		MaxTokens:   256,
 		Temperature: 0.0,
@@ -116,11 +117,32 @@ func callLLM(userPrompt string) (string, error) {
 	if len(chatResp.Choices) > 0 {
 		text := chatResp.Choices[0].Message.Content
 		
-		// Clean hallucinations
-		text = strings.ReplaceAll(text, "```bash", "")
-		text = strings.ReplaceAll(text, "```", "")
-		text = strings.Split(text, "<|")[0] // Stop before any template markers
-		text = strings.Split(text, "\n")[0] // Take only first line
+		// 1. Check for Markdown blocks
+		if strings.Contains(text, "```bash") {
+			text = strings.Split(text, "```bash")[1]
+			text = strings.Split(text, "```")[0]
+		} else if strings.Contains(text, "```") {
+			text = strings.Split(text, "```")[1]
+			text = strings.Split(text, "```")[0]
+		}
+
+		// 2. Fallback: Take the first line that contains common bash tokens
+		lines := strings.Split(text, "\n")
+		for _, line := range lines {
+			trimmed := strings.TrimSpace(line)
+			if trimmed == "" { continue }
+			// If it looks like a sentence, skip it
+			if strings.HasPrefix(trimmed, "The") || strings.HasPrefix(trimmed, "This") || strings.HasPrefix(trimmed, "Here") || strings.HasPrefix(trimmed, "Sure") {
+				continue
+			}
+			if strings.HasPrefix(trimmed, "echo") || strings.HasPrefix(trimmed, "touch") || strings.HasPrefix(trimmed, "mkdir") || strings.HasPrefix(trimmed, "python") || strings.HasPrefix(trimmed, "sqlite3") {
+				text = trimmed
+				break
+			}
+		}
+
+		// 3. Clean remaining template markers
+		text = strings.Split(text, "<|")[0]
 		text = strings.TrimSpace(text)
 		
 		logInteraction(userPrompt, text)

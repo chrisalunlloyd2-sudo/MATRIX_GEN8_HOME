@@ -71,7 +71,7 @@ CURRICULUM = [
     },
     {
         "name": "Level 8: Multi-File Python Automation",
-        "task": "echo 'def run(): print(\"Gen8\")' > logic.py && echo 'import logic; logic.run()' > main.py && python main.py",
+        "task": "Create logic.py that prints Gen8, then create main.py to import and run it, and finally execute main.py with python.",
         "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "logic.py")) and os.path.exists(os.path.join(WORKSPACE, "main.py")),
         "cleanup": ["rm logic.py main.py"]
     },
