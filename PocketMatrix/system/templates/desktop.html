@@ -132,6 +132,7 @@
             <div class="excel-toolbar">
                 <input type="text" id="new-todo" placeholder="New reminder..." style="flex-grow:1;">
                 <button onclick="addTodo()">Add</button>
+                <button onclick="syncGoogleKeep()" style="background:#88cc88;">G-Sync</button>
             </div>
             <div class="window-content" id="todo-list" style="height: calc(100% - 50px); padding: 5px; box-sizing: border-box;"></div>
         </div>
@@ -246,6 +247,11 @@
                 method: 'PUT', headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({id: id, status: status})
             }).then(() => loadTodos());
+        }
+        function syncGoogleKeep() {
+            fetch('/api/todo/sync', { method: 'POST' })
+            .then(r => r.json())
+            .then(data => alert(data.message));
         }
 
         // --- Notes CE Logic ---

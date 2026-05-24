@@ -4,6 +4,7 @@ import subprocess
 import sqlite3
 import glob
 import datetime
+import PocketMatrix.system.google_bridge as google_bridge
 
 app = Flask(__name__)
 
@@ -160,10 +161,22 @@ def handle_todo():
         return jsonify({"status": "SUCCESS"})
 
 
-# --- GMAIL / MAIL (Mocked for Security) ---
+@app.route('/api/todo/sync', methods=['POST'])
+def sync_todo_google():
+    conn = sqlite3.connect(TODO_DB)
+    c = conn.cursor()
+    c.execute("SELECT id, task, status FROM tasks")
+    tasks = [{"id": r[0], "task": r[1], "status": r[2]} for r in c.fetchall()]
+    conn.close()
+    
+    success, msg = google_bridge.sync_keep(tasks)
+    return jsonify({"status": "SUCCESS" if success else "ERROR", "message": msg})
+
+
+# --- GMAIL / MAIL (Live Integration) ---
 @app.route('/api/mail')
 def get_mail():
-    # Shows KQML messages as mail, plus a mock Gmail config
+    # Shows KQML messages as mail
     conn = sqlite3.connect(LEDGER_DB)
     c = conn.cursor()
     c.execute("SELECT * FROM successful_scripts ORDER BY timestamp DESC LIMIT 5")
@@ -171,7 +184,7 @@ def get_mail():
     conn.close()
     
     mail_list = [{"from": "MatrixEngine@localhost", "subject": f"Mutation Success: {m[1]}", "body": m[3]} for m in logs]
-    mail_list.insert(0, {"from": "System@PocketMatrix", "subject": "Gmail Integration Status", "body": "Gmail is currently operating in local-mock mode. To send actual email, configure the SMTP bridge with your Google App Password in the backend."})
+    mail_list.insert(0, {"from": "System@PocketMatrix", "subject": "Gmail Bridge Ready", "body": "Gmail is running in LIVE mode. Emails composed here will be sent via SMTP using your configured App Password."})
     
     return jsonify(mail_list)
 
@@ -180,9 +193,9 @@ def send_mail():
     to = request.json.get('to')
     subject = request.json.get('subject')
     body = request.json.get('body')
-    # Actual SMTP logic would go here. We return success for the gamified loop.
-    print(f"📧 [GMAIL BRIDGE] Simulating send to {to}. Subject: {subject}")
-    return jsonify({"status": "SUCCESS", "message": "Email routed to Gmail Bridge."})
+    
+    success, msg = google_bridge.send_gmail(to, subject, body)
+    return jsonify({"status": "SUCCESS" if success else "ERROR", "message": msg})
 
 if __name__ == '__main__':
     app.run(port=8081, host='0.0.0.0')
