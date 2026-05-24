@@ -36,3 +36,4 @@ genetic_flow/models/
 # Personal configs
 .bash_history
 .bashrc
+oauth_creds.json
