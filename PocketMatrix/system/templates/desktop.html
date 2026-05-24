@@ -66,6 +66,10 @@
             <div class="d-icon-img" style="background:#fff; border-color:#999;"></div>
             <span>ToDo Sync</span>
         </div>
+        <div class="d-icon" onclick="openWindow('pocket-ie')">
+            <div class="d-icon-img" style="background:#00f; border-color:#0ff; border-radius: 50%;"></div>
+            <span>Internet Explorer<br>(Ingestion)</span>
+        </div>
     </div>
 
     <div id="desktop">
@@ -150,6 +154,19 @@
             </div>
         </div>
 
+        <!-- Internet Explorer -->
+        <div class="window" id="pocket-ie" style="top: 30px; left: 180px; width: 450px; height: 350px; display: none;">
+            <div class="window-header"><span>Internet Explorer (Ingestion View)</span><span class="close-btn" onclick="document.getElementById('pocket-ie').style.display='none'">X</span></div>
+            <div class="excel-toolbar">
+                <input type="text" id="ie-url" placeholder="Enter URL to scrape (e.g., https://docs.python.org/)..." style="flex-grow:1;">
+                <button onclick="crawlWeb()">Crawl & Digest</button>
+            </div>
+            <div class="window-content" style="height: calc(100% - 50px); padding: 5px; box-sizing: border-box; background: #e0e0e0;">
+                <div id="ie-status" style="font-weight: bold; margin-bottom: 5px;">Ready.</div>
+                <textarea id="ie-output" style="width:100%; height:calc(100% - 20px); border:2px inset #fff; background:#fff; resize:none;" readonly></textarea>
+            </div>
+        </div>
+
     </div>
 
     <!-- Taskbar -->
@@ -165,6 +182,7 @@
         <div class="start-item" onclick="openWindow('pocket-docs')"><div class="start-icon"></div>My Documents</div>
         <div class="start-item" onclick="openWindow('pocket-todo')"><div class="start-icon"></div>Pocket ToDo</div>
         <div class="start-item" onclick="openWindow('pocket-notes')"><div class="start-icon"></div>Notes CE</div>
+        <div class="start-item" onclick="openWindow('pocket-ie')"><div class="start-icon" style="background:#00f;"></div>Internet Explorer</div>
         <div class="start-item" onclick="openWindow('pocket-net')"><div class="start-icon"></div>Network Devices</div>
         <div style="height: 20px; background: #808080; color: #fff; font-size: 9px; padding: 2px 10px; font-weight: bold;">PROJECTS</div>
         <div class="start-item" onclick="alert('Hypersyncing to Desktop 95 Environment...')">Sync to Desktop</div>
@@ -312,6 +330,36 @@
 
         // --- Explorer Logic (Hypersync) ---
         const docList = document.getElementById('doc-list');
+...
+        // --- Webcrawl / Ingestion Logic ---
+        function crawlWeb() {
+            const url = document.getElementById('ie-url').value;
+            const statusLabel = document.getElementById('ie-status');
+            const outputArea = document.getElementById('ie-output');
+            
+            if(!url) return;
+            
+            statusLabel.innerText = "Crawling & Digesting... (This may take a moment)";
+            outputArea.value = "";
+            
+            fetch('/api/webcrawl', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({url: url})
+            }).then(r => r.json()).then(data => {
+                if(data.error) {
+                    statusLabel.innerText = "Error during ingestion.";
+                    outputArea.value = data.error;
+                } else {
+                    statusLabel.innerText = `Ingestion Complete: Formatted into Ask Logic`;
+                    outputArea.value = data.ai_logic;
+                }
+            }).catch(e => {
+                statusLabel.innerText = "Fetch error.";
+                outputArea.value = String(e);
+            });
+        }
+
         const docsTitle = document.getElementById('docs-title');
         const docsToolbar = document.getElementById('docs-toolbar');
         let currentDbPath = "";

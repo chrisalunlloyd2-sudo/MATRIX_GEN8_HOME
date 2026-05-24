@@ -5,8 +5,10 @@ import sqlite3
 import glob
 import datetime
 import PocketMatrix.system.google_bridge as google_bridge
+from PocketMatrix.system.ingestion_engine import IngestionEngine
 
 app = Flask(__name__)
+ingestor = IngestionEngine()
 
 HOME_DIR = os.path.expanduser("~")
 DOCUMENTS_DIR = os.path.join(HOME_DIR, "PocketMatrix/documents")
@@ -196,6 +198,24 @@ def send_mail():
     
     success, msg = google_bridge.send_gmail(to, subject, body)
     return jsonify({"status": "SUCCESS" if success else "ERROR", "message": msg})
+
+@app.route('/api/webcrawl', methods=['POST'])
+def web_crawl():
+    url = request.json.get('url')
+    if not url:
+        return jsonify({"error": "No URL provided."}), 400
+        
+    raw_data = ingestor.fetch_and_parse(url)
+    if raw_data.startswith("ERROR"):
+        return jsonify({"error": raw_data}), 500
+        
+    formatted_logic = ingestor.format_for_danube(raw_data, url)
+    
+    # Process the formatted logic through the Danube model to extract instructions
+    result = subprocess.run(["agy", "-p", formatted_logic], capture_output=True, text=True)
+    ai_response = result.stdout.strip()
+    
+    return jsonify({"source": url, "ai_logic": ai_response})
 
 if __name__ == '__main__':
     app.run(port=8081, host='0.0.0.0')
