@@ -16,6 +16,18 @@
         #pocket-docs { top: 100px; left: 60px; width: 400px; height: 300px; z-index: 12; }
         #pocket-excel { top: 150px; left: 100px; width: 600px; height: 400px; display: none; z-index: 15; }
         
+        /* Start Menu Styles */
+        #start-menu { 
+            position: absolute; bottom: 30px; left: 0; width: 180px; background: #c0c0c0; border: 2px outset #fff; 
+            display: none; z-index: 1000; box-shadow: 2px -2px 5px rgba(0,0,0,0.5);
+        }
+        .start-item { 
+            padding: 5px 10px; display: flex; align-items: center; cursor: pointer; font-size: 11px;
+            border-bottom: 1px solid #999;
+        }
+        .start-item:hover { background: #000080; color: #fff; }
+        .start-icon { width: 16px; height: 16px; margin-right: 10px; background: #999; }
+        
         .icon { display: inline-block; width: 70px; text-align: center; margin: 10px; cursor: pointer; vertical-align: top; }
         .icon-img { width: 32px; height: 32px; margin: 0 auto 5px auto; background-size: cover; }
         .icon-folder { background: #e8d06a; border: 1px solid #b59b36; border-radius: 2px 2px 0 0; position: relative; }
@@ -74,11 +86,36 @@
     </div>
 
     <div id="taskbar">
-        <button id="start-btn">Start</button>
+        <button id="start-btn" onclick="toggleStartMenu()">Start</button>
         <div style="margin-left: 10px; font-size: 11px; padding: 2px 5px; border: 1px inset #fff;">My Documents</div>
     </div>
 
+    <div id="start-menu">
+        <div class="start-item" onclick="openWindow('pocket-cmd')"><div class="start-icon"></div>Pocket CMD</div>
+        <div class="start-item" onclick="openWindow('pocket-mail')"><div class="start-icon"></div>Pocket Mail</div>
+        <div class="start-item" onclick="openWindow('pocket-docs')"><div class="start-icon"></div>My Documents</div>
+        <div style="height: 20px; background: #808080; color: #fff; font-size: 9px; padding: 2px 10px; font-weight: bold;">PROJECTS</div>
+        <div class="start-item" onclick="alert('Switching to Singularity...')">Singularity</div>
+        <div class="start-item" onclick="alert('Switching to H2O Matrix...')">H2O Matrix</div>
+        <div style="height: 1px; background: #fff; margin: 2px 0;"></div>
+        <div class="start-item" onclick="location.reload()">Shut Down...</div>
+    </div>
+
     <script>
+        // --- Start Menu ---
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function openWindow(id) {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('start-menu').style.display = 'none';
+            // Bring to front
+            document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
+            document.getElementById(id).style.zIndex = 100;
+        }
+
         // --- CMD Logic ---
         const cmdIn = document.getElementById('cmd-in');
         const cmdOut = document.getElementById('cmd-out');
@@ -213,14 +250,34 @@
                 // Populate Body
                 const tbody = document.getElementById('excel-body');
                 tbody.innerHTML = '';
-                data.rows.forEach((row, rIdx) => {
-                    let tr = `<tr><td style="background:#c0c0c0;text-align:center;">${rIdx + 1}</td>`;
-                    row.forEach(cell => {
-                        tr += `<td contenteditable="true">${cell !== null ? cell : ''}</td>`;
+                data.rows.forEach((row) => {
+                    const rowid = row[0];
+                    const rowData = row.slice(1);
+                    let tr = `<tr><td style="background:#c0c0c0;text-align:center;">${rowid}</td>`;
+                    rowData.forEach((cell, idx) => {
+                        const colName = data.columns[idx];
+                        tr += `<td contenteditable="true" onblur="updateCell('${rowid}', '${colName}', this.innerText)">${cell !== null ? cell : ''}</td>`;
                     });
                     tr += `</tr>`;
                     tbody.innerHTML += tr;
                 });
+            });
+        }
+
+        function updateCell(rowid, colName, newVal) {
+            fetch('/api/db/update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    db_path: currentDbPath,
+                    table: document.getElementById('excel-table-select').value,
+                    rowid: rowid,
+                    column: colName,
+                    value: newVal
+                })
+            }).then(r => r.json()).then(data => {
+                if (data.error) alert("Save Failed: " + data.error);
+                else console.log("Cell updated.");
             });
         }
 

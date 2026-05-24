@@ -51,6 +51,29 @@ def list_databases():
                 dbs.append({"name": os.path.basename(file), "path": rel_path, "type": "db"})
     return jsonify(dbs)
 
+@app.route('/api/db/update', methods=['POST'])
+def update_database():
+    req = request.json
+    db_rel_path = req.get('db_path')
+    table = req.get('table')
+    rowid = req.get('rowid') # Using physical ROWID for precise targeting
+    column = req.get('column')
+    value = req.get('value')
+    
+    db_path = os.path.join(HOME_DIR, db_rel_path)
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        # Note: In a production environment, column names should be white-listed to prevent SQL injection.
+        # Here we assume internal-only pedagogical usage on a private substrate.
+        query = f"UPDATE {table} SET {column} = ? WHERE rowid = ?"
+        c.execute(query, (value, rowid))
+        conn.commit()
+        conn.close()
+        return jsonify({"status": "SUCCESS"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/db/query', methods=['POST'])
 def query_database():
     req = request.json
@@ -73,13 +96,13 @@ def query_database():
         if not tables:
             return jsonify({"tables": [], "columns": [], "rows": []})
             
-        # For simplicity, load the first table or a specified one
         table_to_load = req.get('table', tables[0])
         
         c.execute(f"PRAGMA table_info({table_to_load})")
         columns = [col[1] for col in c.fetchall()]
         
-        c.execute(f"SELECT * FROM {table_to_load} LIMIT 100")
+        # Include ROWID for unique targeting during updates
+        c.execute(f"SELECT rowid, * FROM {table_to_load} LIMIT 100")
         rows = c.fetchall()
         
         conn.close()
