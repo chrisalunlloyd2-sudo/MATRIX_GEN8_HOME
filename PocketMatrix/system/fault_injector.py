@@ -9,9 +9,18 @@ class DynamicFaultInjector:
             ("THREAD_DEADLOCK", "Priority inversion detected on Mutex0x9"),
             ("NETWORK_STACK_KILL", "Winsock interface ungracefully terminated")
         ]
+        self.history = set()
 
     def inject_fault(self):
-        fault, desc = random.choice(self.fault_types)
+        # Gen 5 Optimization: Memory Tracking
+        available_faults = [f for f in self.fault_types if f[0] not in self.history]
+        if not available_faults:
+            self.history.clear() # Reset memory if all faults experienced
+            available_faults = self.fault_types
+            
+        fault, desc = random.choice(available_faults)
+        self.history.add(fault)
+        
         print(f"⚡ [FAULT INJECTOR] Triggering sandbox fault: {fault}")
         time.sleep(1)
         print(f"💥 SYSTEM FAULT: {desc}")

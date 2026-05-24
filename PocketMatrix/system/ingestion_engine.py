@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
+import functools
 
 class IngestionEngine:
     def __init__(self):
@@ -15,6 +16,7 @@ class IngestionEngine:
         text = re.sub(r'\s+', ' ', text)
         return text.strip()
 
+    @functools.lru_cache(maxsize=32)
     def fetch_and_parse(self, url):
         """Fetches a URL and attempts to extract instructional/FAQ content."""
         try:
