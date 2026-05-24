@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 )
@@ -41,7 +42,30 @@ func logInteraction(prompt, response string) {
 	}
 }
 
+func checkAndStartServices() {
+	// 1. Check llama-server (8080)
+	resp, err := http.Get("http://localhost:8080/health")
+	if err != nil || resp.StatusCode != 200 {
+		fmt.Println("[!] llama-server OFFLINE. Triggering WAKE...")
+		go subprocessRun("bash", os.ExpandEnv("$HOME/WAKE.sh"))
+		time.Sleep(5 * time.Second) // Allow time for model loading
+	}
+
+	// 2. Check gemini_daemon (Unix Socket)
+	if _, err := os.Stat("/data/data/com.termux/files/usr/tmp/gemini_cli.sock"); os.IsNotExist(err) {
+		fmt.Println("[!] gemini_daemon OFFLINE. Triggering WAKE...")
+		go subprocessRun("bash", os.ExpandEnv("$HOME/WAKE.sh"))
+	}
+}
+
+func subprocessRun(cmd string, args ...string) {
+	c := exec.Command(cmd, args...)
+	c.Start() // Run in background
+}
+
 func main() {
+	checkAndStartServices()
+	
 	promptFlag := flag.String("p", "", "Run a one-shot command headlessly")
 	flag.Parse()
 
