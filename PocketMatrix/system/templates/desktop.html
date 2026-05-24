@@ -70,6 +70,10 @@
             <div class="d-icon-img" style="background:#00f; border-color:#0ff; border-radius: 50%;"></div>
             <span>Internet Explorer<br>(Ingestion)</span>
         </div>
+        <div class="d-icon" onclick="openWindow('pocket-taskmgr')">
+            <div class="d-icon-img" style="background:#555; border-color:#aaa;"></div>
+            <span>Task Manager</span>
+        </div>
     </div>
 
     <div id="desktop">
@@ -164,6 +168,20 @@
             <div class="window-content" style="height: calc(100% - 50px); padding: 5px; box-sizing: border-box; background: #e0e0e0;">
                 <div id="ie-status" style="font-weight: bold; margin-bottom: 5px;">Ready.</div>
                 <textarea id="ie-output" style="width:100%; height:calc(100% - 20px); border:2px inset #fff; background:#fff; resize:none;" readonly></textarea>
+            </div>
+        </div>
+
+        <!-- Task Manager -->
+        <div class="window" id="pocket-taskmgr" style="top: 120px; left: 250px; width: 450px; height: 300px; display: none; z-index: 17;">
+            <div class="window-header"><span>Task Manager (Kernel View)</span><span class="close-btn" onclick="document.getElementById('pocket-taskmgr').style.display='none'">X</span></div>
+            <div class="excel-toolbar">
+                <button onclick="loadTasks()">Refresh Processes</button>
+            </div>
+            <div class="window-content" style="height: calc(100% - 50px); overflow: auto;">
+                <table class="excel95" id="task-grid">
+                    <thead><tr><th style="width:50px;">PID</th><th>Command / Kernel</th></tr></thead>
+                    <tbody id="task-body"></tbody>
+                </table>
             </div>
         </div>
 
@@ -364,32 +382,86 @@
         const docsToolbar = document.getElementById('docs-toolbar');
         let currentDbPath = "";
 
+        let currentExplorerPath = "";
+
         function loadRootDocs() {
             docsTitle.innerText = "Global Explorer";
             docsToolbar.style.display = "none";
             docList.style.height = "calc(100% - 20px)";
             docList.innerHTML = `
-                <div class="icon" onclick="loadProjects()"><div class="icon-img icon-folder"></div><span>All Projects</span></div>
+                <div class="icon" onclick="loadDirectory('')"><div class="icon-img icon-folder"></div><span>All Projects</span></div>
                 <div class="icon" onclick="loadDatabases()"><div class="icon-img icon-db"></div><span>All Databases</span></div>
                 <div class="icon" onclick="alert('Network Syncing...')"><div class="icon-img icon-folder" style="background:#88cc88;"></div><span>Network Sync</span></div>
             `;
         }
 
-        function loadProjects() {
-            docsTitle.innerText = "All Projects";
+        function loadDirectory(path) {
+            currentExplorerPath = path;
+            docsTitle.innerText = path ? `Explorer - ${path}` : "All Projects";
             docsToolbar.style.display = "flex";
+            
+            // Rebuild toolbar
+            docsToolbar.innerHTML = '';
+            if (path !== "") {
+                const parentPath = path.substring(0, path.lastIndexOf('/')) || '';
+                docsToolbar.innerHTML += `<button onclick="loadDirectory('${parentPath}')">⬆ Up</button>`;
+            } else {
+                docsToolbar.innerHTML += `<button onclick="loadRootDocs()">⬅ Global View</button>`;
+            }
+            docsToolbar.innerHTML += `<span style="margin-left:10px; font-size:10px;">~/${path}</span>`;
+            
             docList.style.height = "calc(100% - 45px)";
-            fetch('/api/projects').then(r => r.json()).then(data => {
+            fetch('/api/files', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: path})
+            }).then(r => r.json()).then(data => {
                 docList.innerHTML = '';
+                if(data.error) { docList.innerHTML = 'Error: ' + data.error; return; }
                 data.forEach(d => {
-                    docList.innerHTML += `
-                    <div class="icon" onclick="alert('Entering Project: ${d.name}')">
-                        <div class="icon-img icon-folder"></div>
-                        <span style="font-size: 10px; word-wrap: break-word;">${d.name}</span>
-                    </div>`;
+                    if (d.type === 'folder') {
+                        docList.innerHTML += `
+                        <div class="icon" onclick="loadDirectory('${d.path}')">
+                            <div class="icon-img icon-folder"></div>
+                            <span style="font-size: 10px; word-wrap: break-word;">${d.name}</span>
+                        </div>`;
+                    } else {
+                        // File icon
+                        docList.innerHTML += `
+                        <div class="icon" onclick="openTextFile('${d.path}', '${d.name}')">
+                            <div class="icon-img" style="background:#fff; border:1px solid #999;"></div>
+                            <span style="font-size: 10px; word-wrap: break-word;">${d.name}</span>
+                        </div>`;
+                    }
                 });
             });
         }
+
+        function openTextFile(path, name) {
+            fetch('/api/file/read', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: path})
+            }).then(r => r.json()).then(data => {
+                if(data.error) { alert("Error reading file: " + data.error); return; }
+                openWindow('pocket-notes');
+                document.getElementById('note-title').value = name;
+                document.getElementById('note-body').value = data.content;
+            });
+        }
+
+        function loadProjects() {
+            loadDirectory('');
+        }
+
+        function loadTasks() {
+            fetch('/api/tasks').then(r => r.json()).then(data => {
+                const tbody = document.getElementById('task-body');
+                tbody.innerHTML = '';
+                data.forEach(t => {
+                    tbody.innerHTML += `<tr><td style="text-align:center;">${t.pid}</td><td>${t.cmd}</td></tr>`;
+                });
+            });
+        }
+
 
         function loadDatabases() {
             docsTitle.innerText = "Global Databases";

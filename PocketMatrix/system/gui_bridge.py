@@ -67,18 +67,15 @@ def list_projects():
 @app.route('/api/databases')
 def list_databases():
     dbs = []
-    search_paths = [
-        f"{HOME_DIR}/*.db",
-        f"{HOME_DIR}/**/*.db"
-    ]
-    found = set()
-    for pattern in search_paths:
-        for file in glob.glob(pattern, recursive=True):
-            if '/.cache/' in file or '/.npm/' in file: continue # Skip junk
-            if file not in found:
-                found.add(file)
-                rel_path = os.path.relpath(file, HOME_DIR)
-                dbs.append({"name": os.path.basename(file), "path": rel_path, "type": "db"})
+    # Fast os.walk to ensure true global database tracking across all projects
+    for root, dirs, files in os.walk(HOME_DIR):
+        # Exclude hidden and junk directories to maintain performance
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d not in ['node_modules', '__pycache__', 'build_staging']]
+        for file in files:
+            if file.endswith('.db') or file.endswith('.sqlite'):
+                full_path = os.path.join(root, file)
+                rel_path = os.path.relpath(full_path, HOME_DIR)
+                dbs.append({"name": file, "path": rel_path, "type": "db"})
     return jsonify(dbs)
 
 @app.route('/api/db/query', methods=['POST'])
@@ -216,6 +213,57 @@ def web_crawl():
     ai_response = result.stdout.strip()
     
     return jsonify({"source": url, "ai_logic": ai_response})
+
+@app.route('/api/tasks')
+def get_tasks():
+    try:
+        # Get process list (Termux compatible)
+        result = subprocess.run(['ps'], capture_output=True, text=True)
+        lines = result.stdout.strip().split('\n')
+        tasks = []
+        for line in lines[1:]: # skip header
+            parts = line.split(maxsplit=8) # PID TTY TIME CMD
+            if len(parts) >= 4:
+                pid = parts[0]
+                cmd = parts[-1]
+                # Filter to show relevant matrix/kernel processes
+                if 'python' in cmd or 'agy' in cmd or 'bash' in cmd or 'llama' in cmd:
+                    tasks.append({"pid": pid, "cmd": cmd})
+        return jsonify(tasks)
+    except:
+        return jsonify([])
+
+@app.route('/api/files', methods=['POST'])
+def list_files():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    if not os.path.exists(target_path) or not os.path.isdir(target_path):
+        return jsonify({"error": "Invalid path"}), 400
+    
+    items = []
+    for f in os.listdir(target_path):
+        if f.startswith('.'): continue
+        full_p = os.path.join(target_path, f)
+        rel_p = os.path.relpath(full_p, HOME_DIR)
+        is_dir = os.path.isdir(full_p)
+        items.append({"name": f, "path": rel_p, "type": "folder" if is_dir else "file"})
+    
+    # Sort folders first, then files
+    items.sort(key=lambda x: (0 if x['type'] == 'folder' else 1, x['name'].lower()))
+    return jsonify(items)
+
+@app.route('/api/file/read', methods=['POST'])
+def read_file():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    if not os.path.exists(target_path) or not os.path.isfile(target_path):
+        return jsonify({"error": "Invalid file"}), 400
+    try:
+        with open(target_path, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read(50000) # limit to 50KB for UI
+        return jsonify({"content": content})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(port=8081, host='0.0.0.0')
