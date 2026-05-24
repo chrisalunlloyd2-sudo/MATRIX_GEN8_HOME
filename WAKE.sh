@@ -21,7 +21,11 @@ fi
 # 3. Scan Priorities
 python3 ~/TODO_SCANNER.py
 
-# 4. Final Sync Check
+# 4. Agentic Interaction Layer (Auto-Config)
+echo "[+] Initializing Interaction Layer..."
+python3 ~/GAME_SUBSTRATE/mechanics/AGENT_LAYER.py "welcome wake success"
+
+# 5. Final Sync Check
 echo "[+] Verifying GitHub Secure Tunnel..."
 if [ -f ~/.gemini/github_token.txt ]; then
     echo "    [AUTH] Enterprise PAT Verified."
