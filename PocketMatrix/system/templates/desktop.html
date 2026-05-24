@@ -6,42 +6,80 @@
         body { background: #008080; font-family: 'Tahoma', sans-serif; overflow: hidden; margin: 0; }
         #taskbar { position: absolute; bottom: 0; width: 100%; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; }
         #start-btn { height: 22px; width: 60px; background: #c0c0c0; border: 2px outset #fff; font-weight: bold; margin-left: 2px; cursor: pointer; }
-        .window { position: absolute; background: #c0c0c0; border: 2px outset #fff; padding: 2px; }
-        .window-header { background: #000080; color: #fff; padding: 2px 5px; font-weight: bold; display: flex; justify-content: space-between; }
-        .window-content { background: #fff; border: 2px inset #fff; height: 200px; width: 300px; overflow-y: auto; font-size: 12px; }
-        #pocket-cmd { top: 50px; left: 50px; }
-        #pocket-mail { top: 100px; left: 400px; }
-        #pocket-docs { top: 150px; left: 150px; }
+        .window { position: absolute; background: #c0c0c0; border: 2px outset #fff; padding: 2px; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+        .window-header { background: #000080; color: #fff; padding: 2px 5px; font-weight: bold; display: flex; justify-content: space-between; cursor: move; }
+        .window-header span.close-btn { cursor: pointer; background: #c0c0c0; color: #000; border: 1px outset #fff; padding: 0 2px; font-size: 10px; }
+        .window-content { background: #fff; border: 2px inset #fff; overflow-y: auto; font-size: 12px; }
+        
+        #pocket-cmd { top: 20px; left: 20px; width: 320px; z-index: 10; }
+        #pocket-mail { top: 60px; left: 360px; width: 300px; height: 250px; z-index: 11; }
+        #pocket-docs { top: 100px; left: 60px; width: 400px; height: 300px; z-index: 12; }
+        #pocket-excel { top: 150px; left: 100px; width: 600px; height: 400px; display: none; z-index: 15; }
+        
+        .icon { display: inline-block; width: 70px; text-align: center; margin: 10px; cursor: pointer; vertical-align: top; }
+        .icon-img { width: 32px; height: 32px; margin: 0 auto 5px auto; background-size: cover; }
+        .icon-folder { background: #e8d06a; border: 1px solid #b59b36; border-radius: 2px 2px 0 0; position: relative; }
+        .icon-folder::before { content: ""; position: absolute; top: -4px; left: 0; width: 12px; height: 4px; background: #e8d06a; border: 1px solid #b59b36; border-bottom: none; border-radius: 2px 2px 0 0; }
+        .icon-db { background: #4a90e2; border: 1px solid #0050a0; border-radius: 50% 50% 50% 50% / 20% 20% 20% 20%; position: relative; }
+        .icon-db::after { content: ""; position: absolute; top: 5px; left: -1px; right: -1px; border-top: 1px solid #0050a0; border-bottom: 1px solid #0050a0; height: 10px; }
+        
+        table.excel95 { border-collapse: collapse; width: 100%; font-family: 'Arial', sans-serif; font-size: 11px; }
+        table.excel95 th { background: #c0c0c0; border: 1px outset #fff; padding: 2px 5px; font-weight: normal; text-align: center; }
+        table.excel95 td { border: 1px solid #ccc; padding: 2px 5px; white-space: nowrap; }
+        .excel-toolbar { background: #c0c0c0; padding: 5px; border-bottom: 2px inset #fff; display: flex; gap: 10px; align-items: center; }
+        select, button { font-family: 'Tahoma', sans-serif; font-size: 11px; }
     </style>
 </head>
 <body>
     <div id="desktop">
         <div class="window" id="pocket-cmd">
-            <div class="window-header"><span>Pocket CMD</span><span>[X]</span></div>
-            <div class="window-content" id="cmd-out" style="background: #000; color: #0f0; font-family: monospace;">
-                H2O Matrix [Version 8.0]<br>>
+            <div class="window-header"><span>Pocket CMD</span><span class="close-btn" onclick="document.getElementById('pocket-cmd').style.display='none'">X</span></div>
+            <div class="window-content" style="height: 200px; display: flex; flex-direction: column;">
+                <div id="cmd-out" style="flex-grow: 1; background: #000; color: #0f0; font-family: monospace; padding: 2px; overflow-y: auto;">
+                    H2O Matrix [Version 8.0]<br>>
+                </div>
+                <input type="text" id="cmd-in" style="width: 100%; border: none; border-top: 1px solid #333; background: #000; color: #0f0; outline: none; padding: 2px; box-sizing: border-box; font-family: monospace;">
             </div>
-            <input type="text" id="cmd-in" style="width: 100%; border: none; background: #000; color: #0f0; outline: none;">
         </div>
 
         <div class="window" id="pocket-mail">
-            <div class="window-header"><span>Pocket Mail (KQML)</span><span>[X]</span></div>
-            <div class="window-content" id="mail-list"></div>
+            <div class="window-header"><span>Pocket Mail (KQML)</span><span class="close-btn" onclick="document.getElementById('pocket-mail').style.display='none'">X</span></div>
+            <div class="window-content" id="mail-list" style="height: calc(100% - 20px);"></div>
         </div>
 
         <div class="window" id="pocket-docs">
-            <div class="window-header"><span>My Documents</span><span>[X]</span></div>
-            <div class="window-content" id="doc-list" style="padding: 10px;">
+            <div class="window-header"><span id="docs-title">My Documents</span><span class="close-btn" onclick="document.getElementById('pocket-docs').style.display='none'">X</span></div>
+            <div class="excel-toolbar" id="docs-toolbar" style="display: none;">
+                <button onclick="loadRootDocs()">⬅ Up</button>
+            </div>
+            <div class="window-content" id="doc-list" style="height: calc(100% - 20px); padding: 10px; box-sizing: border-box;">
                 <!-- Projects will be loaded here -->
+            </div>
+        </div>
+
+        <div class="window" id="pocket-excel">
+            <div class="window-header"><span id="excel-title">Excel 95 - Database Viewer</span><span class="close-btn" onclick="document.getElementById('pocket-excel').style.display='none'">X</span></div>
+            <div class="excel-toolbar">
+                <label>Table:</label>
+                <select id="excel-table-select" onchange="loadTableData()"></select>
+                <button onclick="loadTableData()">Refresh</button>
+            </div>
+            <div class="window-content" style="height: calc(100% - 50px); overflow: auto;">
+                <table class="excel95" id="excel-grid">
+                    <thead><tr id="excel-headers"></tr></thead>
+                    <tbody id="excel-body"></tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <div id="taskbar">
         <button id="start-btn">Start</button>
+        <div style="margin-left: 10px; font-size: 11px; padding: 2px 5px; border: 1px inset #fff;">My Documents</div>
     </div>
 
     <script>
+        // --- CMD Logic ---
         const cmdIn = document.getElementById('cmd-in');
         const cmdOut = document.getElementById('cmd-out');
 
@@ -54,14 +92,14 @@
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({command: val})
                 }).then(r => r.json()).then(data => {
-                    cmdOut.innerHTML += data.output + "<br>> ";
+                    cmdOut.innerHTML += data.output.replace(/\n/g, '<br>') + "<br>> ";
                     cmdOut.scrollTop = cmdOut.scrollHeight;
                 });
                 cmdIn.value = '';
             }
         });
 
-        // Load Mail
+        // --- Mail Logic ---
         fetch('/api/mail').then(r => r.json()).then(data => {
             const list = document.getElementById('mail-list');
             data.forEach(m => {
@@ -73,16 +111,142 @@
             });
         });
 
-        // Load Documents
-        fetch('/api/documents').then(r => r.json()).then(data => {
-            const list = document.getElementById('doc-list');
-            data.forEach(d => {
-                list.innerHTML += `<div style="display: inline-block; width: 60px; text-align: center; margin: 5px; cursor: pointer;">
-                    <div style="width: 32px; height: 32px; background: #ffff00; border: 1px solid #000; margin: 0 auto;"></div>
-                    <span style="font-size: 10px;">${d.name}</span>
-                </div>`;
+        // --- Explorer Logic ---
+        const docList = document.getElementById('doc-list');
+        const docsTitle = document.getElementById('docs-title');
+        const docsToolbar = document.getElementById('docs-toolbar');
+        let currentDbPath = "";
+
+        function loadRootDocs() {
+            docsTitle.innerText = "My Documents";
+            docsToolbar.style.display = "none";
+            docList.style.height = "calc(100% - 20px)";
+            
+            fetch('/api/documents/root').then(r => r.json()).then(data => {
+                docList.innerHTML = '';
+                data.forEach(d => {
+                    docList.innerHTML += `
+                    <div class="icon" onclick="openFolder('${d.id}', '${d.name}')">
+                        <div class="icon-img icon-folder"></div>
+                        <span style="font-size: 10px;">${d.name}</span>
+                    </div>`;
+                });
+            });
+        }
+
+        function openFolder(id, name) {
+            docsTitle.innerText = name;
+            docsToolbar.style.display = "flex";
+            docList.style.height = "calc(100% - 45px)";
+            
+            if (id === 'global_db') {
+                fetch('/api/databases').then(r => r.json()).then(data => {
+                    docList.innerHTML = '';
+                    data.forEach(db => {
+                        docList.innerHTML += `
+                        <div class="icon" onclick="openDatabase('${db.path}', '${db.name}')" title="${db.path}">
+                            <div class="icon-img icon-db"></div>
+                            <span style="font-size: 10px; word-wrap: break-word;">${db.name}</span>
+                        </div>`;
+                    });
+                });
+            } else {
+                docList.innerHTML = '<div style="color: #666; font-style: italic;">Folder is empty or linking pending.</div>';
+            }
+        }
+
+        // --- Excel 95 Database Viewer Logic ---
+        function openDatabase(path, name) {
+            currentDbPath = path;
+            document.getElementById('pocket-excel').style.display = 'block';
+            document.getElementById('excel-title').innerText = `Excel 95 - [${name}]`;
+            
+            // Bring to front
+            document.getElementById('pocket-excel').style.zIndex = 100;
+            document.getElementById('pocket-docs').style.zIndex = 10;
+            
+            loadTableData(null);
+        }
+
+        function loadTableData(tableName = null) {
+            const payload = { db_path: currentDbPath };
+            if (tableName) {
+                payload.table = tableName;
+            } else {
+                // If triggered by select dropdown change
+                const sel = document.getElementById('excel-table-select');
+                if (sel.value) payload.table = sel.value;
+            }
+
+            fetch('/api/db/query', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            }).then(r => r.json()).then(data => {
+                if (data.error) {
+                    alert("Error: " + data.error);
+                    return;
+                }
+
+                // Populate Select
+                const sel = document.getElementById('excel-table-select');
+                if (!tableName && (!sel.options.length || sel.options[0].value !== data.tables[0])) {
+                    sel.innerHTML = '';
+                    data.tables.forEach(t => {
+                        const opt = document.createElement('option');
+                        opt.value = t; opt.text = t;
+                        if (t === data.current_table) opt.selected = true;
+                        sel.appendChild(opt);
+                    });
+                }
+
+                // Populate Headers
+                const headers = document.getElementById('excel-headers');
+                headers.innerHTML = '<th></th>'; // Row number column
+                const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                data.columns.forEach((col, idx) => {
+                    // Excel style headers (A, B, C...)
+                    const l = idx < 26 ? letters[idx] : letters[Math.floor(idx/26)-1] + letters[idx%26];
+                    headers.innerHTML += `<th>${l}<br><small style="font-size:8px;">${col}</small></th>`;
+                });
+
+                // Populate Body
+                const tbody = document.getElementById('excel-body');
+                tbody.innerHTML = '';
+                data.rows.forEach((row, rIdx) => {
+                    let tr = `<tr><td style="background:#c0c0c0;text-align:center;">${rIdx + 1}</td>`;
+                    row.forEach(cell => {
+                        tr += `<td contenteditable="true">${cell !== null ? cell : ''}</td>`;
+                    });
+                    tr += `</tr>`;
+                    tbody.innerHTML += tr;
+                });
+            });
+        }
+
+        // Init
+        loadRootDocs();
+        
+        // Simple window dragging
+        let draggedWin = null, offsetX = 0, offsetY = 0;
+        document.querySelectorAll('.window-header').forEach(header => {
+            header.addEventListener('mousedown', e => {
+                if (e.target.classList.contains('close-btn')) return;
+                draggedWin = header.parentElement;
+                offsetX = e.clientX - draggedWin.offsetLeft;
+                offsetY = e.clientY - draggedWin.offsetTop;
+                // Bring to front
+                document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
+                draggedWin.style.zIndex = 100;
             });
         });
+        document.addEventListener('mousemove', e => {
+            if (draggedWin) {
+                draggedWin.style.left = (e.clientX - offsetX) + 'px';
+                draggedWin.style.top = (e.clientY - offsetY) + 'px';
+            }
+        });
+        document.addEventListener('mouseup', () => draggedWin = null);
     </script>
 </body>
 </html>
