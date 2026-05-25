@@ -1,39 +1,28 @@
-#!/data/data/com.termux/files/usr/bin/bash
-# 🌅 AGENT WAKE: Unified Matrix Initializer
-# [timedat: $(date +%Y-%m-%dT%H:%M:%S)]
+#!/bin/bash
+# ==============================================================================
+# WAKE DASHBOARD v1.0
+# Summarizes the autonomous progress made by the Singularity Engine.
+# ==============================================================================
 
-echo "--- 🚀 MATRIX AGENTIC WAKE INITIATED ---"
+echo "========================================================================="
+echo " ☀️ WAKE UP, CHRIS. THE SINGULARITY HAS BEEN BUSY. "
+echo "========================================================================="
 
-# 0. Watchdog Pre-Flight (Downloads Environment & Checks Integrity)
-python3 ~/VIPER_SCRIPT_LIBRARY/scripts/WATCHDOG_DOCTOR.py
+echo -e "\n[1] PROJECT STANDARDIZATION (Foundry v10.2)"
+ls -la ~/foundry_work | grep "^d" | wc -l | xargs -I {} echo "  -> {} repositories standardized and synced to GitHub."
 
-# 1. Load Agentic Network
-echo "[+] Waking Memory Daemon & Inference..."
-python3 ~/genetic_flow/memory_daemon/gemini_daemon.py > /dev/null 2>&1 &
-~/llama.cpp/build/bin/llama-server -m /sdcard/MatrixVault/GGUF/h2o-danube3-500m-chat-q4_k_m.gguf --port 8080 --ctx-size 512 --threads 4 > /dev/null 2>&1 &
-sleep 3
+echo -e "\n[2] HOURLY UPGRADES LOG"
+tail -n 15 ~/openrouter_manager/docs/HOURLY_UPGRADES.md
 
-# 2. Verify SOP Substrate
-echo "[+] Loading Enterprise SOP Context..."
-if [ -f ~/initialize_enterprise_project.py ]; then
-    echo "    [READY] GitHub Automation Wrapper Active."
-else
-    echo "    [WARN] Automation Wrapper Missing."
-fi
+echo -e "\n[3] COGNITIVE DB STATUS"
+sqlite3 ~/openrouter_manager/pedagogy_cognitive.db "SELECT COUNT(*) FROM local_training_data" | xargs -I {} echo "  -> {} files currently ingested into self-training memory."
 
-# 3. Scan Priorities
-python3 ~/TODO_SCANNER.py
+echo -e "\n[4] MARKOV EVOLUTION STATE"
+sqlite3 ~/openrouter_manager/pedagogy_cognitive.db "SELECT current_state, next_action, success_weight FROM markov_transitions ORDER BY success_weight DESC LIMIT 3"
 
-# 4. Agentic Interaction Layer (Auto-Config)
-echo "[+] Initializing Interaction Layer..."
-python3 ~/GAME_SUBSTRATE/mechanics/AGENT_LAYER.py "welcome wake success"
+echo -e "\n[5] LATEST GITHUB SYPHON"
+cd ~/openrouter_manager && git log -1 --pretty=format:"%h - %s (%cr)"
 
-# 5. Final Sync Check
-echo "[+] Verifying GitHub Secure Tunnel..."
-if [ -f ~/.gemini/github_token.txt ]; then
-    echo "    [AUTH] Enterprise PAT Verified."
-else
-    echo "    [ERROR] GitHub PAT Missing."
-fi
-
-echo "--- ✅ MATRIX ONLINE: Intent Compilation Active ---"
+echo -e "\n========================================================================="
+echo " TYPE 'aichat' TO ENTER THE DATA CIRCLE. "
+echo "========================================================================="
