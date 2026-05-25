@@ -55081,3 +55081,460 @@ Hello</s><|answer|>Hi there</s><|prompt|>How are you?</s><|answer|>'
 349.20.592.738 I slot print_timing: id  0 | task 25150 |    graphs reused =      19961
 349.20.592.827 I slot      release: id  0 | task 25150 | stop processing: n_tokens = 40, truncated = 0
 349.20.592.865 I srv  update_slots: all slots are idle
+349.21.708.796 I srv  params_from_: Chat format: peg-native
+349.21.709.072 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 0.162 (> 0.100 thold), f_keep = 0.150
+349.21.709.085 I srv  get_availabl: updating prompt cache
+349.21.709.136 W srv   prompt_save:  - saving prompt with length 40, total state size = 1.876 MiB (draft: 0.000 MiB)
+349.21.713.133 I srv          load:  - looking for better prompt, base f_keep = 0.150, sim = 0.162
+349.21.713.182 I srv          load:  - found better prompt with f_keep = 0.902, sim = 1.000
+349.21.714.095 I srv        update:  - cache state: 17 prompts, 89.466 MiB (limits: 0.000 MiB, 2048 tokens, 2048 est)
+349.21.714.129 I srv        update:    - prompt 0xf4e71378:      73 tokens, checkpoints:  0,     3.423 MiB
+349.21.714.130 I srv        update:    - prompt 0xf4e71828:      83 tokens, checkpoints:  0,     3.892 MiB
+349.21.714.132 I srv        update:    - prompt 0xf4e71f58:      83 tokens, checkpoints:  0,     3.892 MiB
+349.21.714.134 I srv        update:    - prompt 0xf4e71d28:     147 tokens, checkpoints:  0,     6.893 MiB
+349.21.714.136 I srv        update:    - prompt 0xf4e71eb8:      61 tokens, checkpoints:  0,     2.860 MiB
+349.21.714.138 I srv        update:    - prompt 0xf4e71468:     133 tokens, checkpoints:  0,     6.236 MiB
+349.21.714.140 I srv        update:    - prompt 0xf4e72048:      99 tokens, checkpoints:  0,     4.642 MiB
+349.21.714.141 I srv        update:    - prompt 0xf4e71af8:     112 tokens, checkpoints:  0,     5.252 MiB
+349.21.714.143 I srv        update:    - prompt 0xf4e71e68:     163 tokens, checkpoints:  0,     7.643 MiB
+349.21.714.145 I srv        update:    - prompt 0xf4e71aa8:     111 tokens, checkpoints:  0,     5.205 MiB
+349.21.714.146 I srv        update:    - prompt 0xf4e71288:      97 tokens, checkpoints:  0,     4.548 MiB
+349.21.714.148 I srv        update:    - prompt 0xf4e71be8:     125 tokens, checkpoints:  0,     5.861 MiB
+349.21.714.150 I srv        update:    - prompt 0xf4e71b98:      76 tokens, checkpoints:  0,     3.564 MiB
+349.21.714.152 I srv        update:    - prompt 0xf4e721d8:      87 tokens, checkpoints:  0,     4.080 MiB
+349.21.714.153 I srv        update:    - prompt 0xf4e71b48:     101 tokens, checkpoints:  0,     4.736 MiB
+349.21.714.155 I srv        update:    - prompt 0xf4e71ff8:     317 tokens, checkpoints:  0,    14.863 MiB
+349.21.714.157 I srv        update:    - prompt 0xf4e71dc8:      40 tokens, checkpoints:  0,     1.876 MiB
+349.21.714.161 I srv  get_availabl: prompt cache update took 5.07 ms
+349.21.714.317 I slot launch_slot_: id  0 | task 25153 | processing task, is_child = 0
+349.21.714.331 W slot update_slots: id  0 | task 25153 | need to evaluate at least 1 token for each active slot (n_past = 37, task.n_tokens() = 37)
+349.21.714.333 W slot update_slots: id  0 | task 25153 | n_past was set to 36
+349.22.053.337 I slot print_timing: id  0 | task 25153 | prompt eval time =      70.21 ms /     1 tokens (   70.21 ms per token,    14.24 tokens per second)
+349.22.053.357 I slot print_timing: id  0 | task 25153 |        eval time =     268.78 ms /     5 tokens (   53.76 ms per token,    18.60 tokens per second)
+349.22.053.359 I slot print_timing: id  0 | task 25153 |       total time =     338.99 ms /     6 tokens
+349.22.053.362 I slot print_timing: id  0 | task 25153 |    graphs reused =      19966
+349.22.053.401 I slot      release: id  0 | task 25153 | stop processing: n_tokens = 41, truncated = 0
+349.22.053.419 I srv  update_slots: all slots are idle
+349.25.634.413 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 0.154 (> 0.100 thold), f_keep = 0.146
+349.25.634.422 I srv  get_availabl: updating prompt cache
+349.25.634.446 W srv   prompt_save:  - saving prompt with length 41, total state size = 1.923 MiB (draft: 0.000 MiB)
+349.25.635.869 I srv          load:  - looking for better prompt, base f_keep = 0.146, sim = 0.154
+349.25.635.885 I srv          load:  - found better prompt with f_keep = 0.975, sim = 1.000
+349.25.636.878 I srv        update:  - cache state: 17 prompts, 89.513 MiB (limits: 0.000 MiB, 2048 tokens, 2048 est)
+349.25.636.887 I srv        update:    - prompt 0xf4e71378:      73 tokens, checkpoints:  0,     3.423 MiB
+349.25.636.889 I srv        update:    - prompt 0xf4e71828:      83 tokens, checkpoints:  0,     3.892 MiB
+349.25.636.891 I srv        update:    - prompt 0xf4e71f58:      83 tokens, checkpoints:  0,     3.892 MiB
+349.25.636.893 I srv        update:    - prompt 0xf4e71d28:     147 tokens, checkpoints:  0,     6.893 MiB
+349.25.636.895 I srv        update:    - prompt 0xf4e71eb8:      61 tokens, checkpoints:  0,     2.860 MiB
+349.25.636.897 I srv        update:    - prompt 0xf4e71468:     133 tokens, checkpoints:  0,     6.236 MiB
+349.25.636.898 I srv        update:    - prompt 0xf4e72048:      99 tokens, checkpoints:  0,     4.642 MiB
+349.25.636.900 I srv        update:    - prompt 0xf4e71af8:     112 tokens, checkpoints:  0,     5.252 MiB
+349.25.636.902 I srv        update:    - prompt 0xf4e71e68:     163 tokens, checkpoints:  0,     7.643 MiB
+349.25.636.904 I srv        update:    - prompt 0xf4e71aa8:     111 tokens, checkpoints:  0,     5.205 MiB
+349.25.636.906 I srv        update:    - prompt 0xf4e71288:      97 tokens, checkpoints:  0,     4.548 MiB
+349.25.636.907 I srv        update:    - prompt 0xf4e71be8:     125 tokens, checkpoints:  0,     5.861 MiB
+349.25.636.909 I srv        update:    - prompt 0xf4e71b98:      76 tokens, checkpoints:  0,     3.564 MiB
+349.25.636.911 I srv        update:    - prompt 0xf4e721d8:      87 tokens, checkpoints:  0,     4.080 MiB
+349.25.636.913 I srv        update:    - prompt 0xf4e71b48:     101 tokens, checkpoints:  0,     4.736 MiB
+349.25.636.915 I srv        update:    - prompt 0xf4e71ff8:     317 tokens, checkpoints:  0,    14.863 MiB
+349.25.636.916 I srv        update:    - prompt 0xf4e72098:      41 tokens, checkpoints:  0,     1.923 MiB
+349.25.636.921 I srv  get_availabl: prompt cache update took 2.49 ms
+349.25.637.064 I slot launch_slot_: id  0 | task 25159 | processing task, is_child = 0
+349.25.637.079 W slot update_slots: id  0 | task 25159 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.25.637.081 W slot update_slots: id  0 | task 25159 | n_past was set to 38
+349.25.788.138 I slot print_timing: id  0 | task 25159 | prompt eval time =      78.81 ms /     1 tokens (   78.81 ms per token,    12.69 tokens per second)
+349.25.788.167 I slot print_timing: id  0 | task 25159 |        eval time =      72.22 ms /     2 tokens (   36.11 ms per token,    27.69 tokens per second)
+349.25.788.174 I slot print_timing: id  0 | task 25159 |       total time =     151.03 ms /     3 tokens
+349.25.788.193 I slot print_timing: id  0 | task 25159 |    graphs reused =      19968
+349.25.788.239 I slot      release: id  0 | task 25159 | stop processing: n_tokens = 40, truncated = 0
+349.25.788.273 I srv  update_slots: all slots are idle
+349.25.795.728 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.25.795.924 I slot launch_slot_: id  0 | task 25162 | processing task, is_child = 0
+349.25.795.961 W slot update_slots: id  0 | task 25162 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.25.795.966 W slot update_slots: id  0 | task 25162 | n_past was set to 38
+349.25.930.654 I slot print_timing: id  0 | task 25162 | prompt eval time =      68.74 ms /     1 tokens (   68.74 ms per token,    14.55 tokens per second)
+349.25.930.664 I slot print_timing: id  0 | task 25162 |        eval time =      65.94 ms /     2 tokens (   32.97 ms per token,    30.33 tokens per second)
+349.25.930.666 I slot print_timing: id  0 | task 25162 |       total time =     134.68 ms /     3 tokens
+349.25.930.669 I slot print_timing: id  0 | task 25162 |    graphs reused =      19970
+349.25.930.697 I slot      release: id  0 | task 25162 | stop processing: n_tokens = 40, truncated = 0
+349.25.930.717 I srv  update_slots: all slots are idle
+349.25.940.961 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.25.941.230 I slot launch_slot_: id  0 | task 25165 | processing task, is_child = 0
+349.25.941.311 W slot update_slots: id  0 | task 25165 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.25.941.315 W slot update_slots: id  0 | task 25165 | n_past was set to 38
+349.26.075.013 I slot print_timing: id  0 | task 25165 | prompt eval time =      67.04 ms /     1 tokens (   67.04 ms per token,    14.92 tokens per second)
+349.26.075.023 I slot print_timing: id  0 | task 25165 |        eval time =      66.65 ms /     2 tokens (   33.32 ms per token,    30.01 tokens per second)
+349.26.075.025 I slot print_timing: id  0 | task 25165 |       total time =     133.69 ms /     3 tokens
+349.26.075.027 I slot print_timing: id  0 | task 25165 |    graphs reused =      19972
+349.26.075.064 I slot      release: id  0 | task 25165 | stop processing: n_tokens = 40, truncated = 0
+349.26.075.084 I srv  update_slots: all slots are idle
+349.26.090.805 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.26.091.058 I slot launch_slot_: id  0 | task 25168 | processing task, is_child = 0
+349.26.091.074 W slot update_slots: id  0 | task 25168 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.26.091.076 W slot update_slots: id  0 | task 25168 | n_past was set to 38
+349.26.224.009 I slot print_timing: id  0 | task 25168 | prompt eval time =      65.17 ms /     1 tokens (   65.17 ms per token,    15.34 tokens per second)
+349.26.224.040 I slot print_timing: id  0 | task 25168 |        eval time =      67.72 ms /     2 tokens (   33.86 ms per token,    29.53 tokens per second)
+349.26.224.046 I slot print_timing: id  0 | task 25168 |       total time =     132.90 ms /     3 tokens
+349.26.224.076 I slot print_timing: id  0 | task 25168 |    graphs reused =      19974
+349.26.224.169 I slot      release: id  0 | task 25168 | stop processing: n_tokens = 40, truncated = 0
+349.26.224.208 I srv  update_slots: all slots are idle
+349.26.235.436 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.26.235.725 I slot launch_slot_: id  0 | task 25171 | processing task, is_child = 0
+349.26.235.786 W slot update_slots: id  0 | task 25171 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.26.235.794 W slot update_slots: id  0 | task 25171 | n_past was set to 38
+349.26.369.834 I slot print_timing: id  0 | task 25171 | prompt eval time =      67.16 ms /     1 tokens (   67.16 ms per token,    14.89 tokens per second)
+349.26.369.865 I slot print_timing: id  0 | task 25171 |        eval time =      66.88 ms /     2 tokens (   33.44 ms per token,    29.90 tokens per second)
+349.26.369.867 I slot print_timing: id  0 | task 25171 |       total time =     134.04 ms /     3 tokens
+349.26.369.870 I slot print_timing: id  0 | task 25171 |    graphs reused =      19976
+349.26.369.898 I slot      release: id  0 | task 25171 | stop processing: n_tokens = 40, truncated = 0
+349.26.369.953 I srv  update_slots: all slots are idle
+349.26.382.747 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.26.382.930 I slot launch_slot_: id  0 | task 25174 | processing task, is_child = 0
+349.26.382.948 W slot update_slots: id  0 | task 25174 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.26.382.951 W slot update_slots: id  0 | task 25174 | n_past was set to 38
+349.26.512.807 I slot print_timing: id  0 | task 25174 | prompt eval time =      64.51 ms /     1 tokens (   64.51 ms per token,    15.50 tokens per second)
+349.26.512.818 I slot print_timing: id  0 | task 25174 |        eval time =      65.33 ms /     2 tokens (   32.66 ms per token,    30.61 tokens per second)
+349.26.512.820 I slot print_timing: id  0 | task 25174 |       total time =     129.84 ms /     3 tokens
+349.26.512.823 I slot print_timing: id  0 | task 25174 |    graphs reused =      19978
+349.26.512.861 I slot      release: id  0 | task 25174 | stop processing: n_tokens = 40, truncated = 0
+349.26.512.882 I srv  update_slots: all slots are idle
+349.26.528.666 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.26.528.829 I slot launch_slot_: id  0 | task 25177 | processing task, is_child = 0
+349.26.528.842 W slot update_slots: id  0 | task 25177 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.26.528.845 W slot update_slots: id  0 | task 25177 | n_past was set to 38
+349.26.660.058 I slot print_timing: id  0 | task 25177 | prompt eval time =      65.57 ms /     1 tokens (   65.57 ms per token,    15.25 tokens per second)
+349.26.660.066 I slot print_timing: id  0 | task 25177 |        eval time =      65.63 ms /     2 tokens (   32.81 ms per token,    30.48 tokens per second)
+349.26.660.069 I slot print_timing: id  0 | task 25177 |       total time =     131.20 ms /     3 tokens
+349.26.660.071 I slot print_timing: id  0 | task 25177 |    graphs reused =      19980
+349.26.660.096 I slot      release: id  0 | task 25177 | stop processing: n_tokens = 40, truncated = 0
+349.26.660.115 I srv  update_slots: all slots are idle
+349.26.673.725 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.26.673.997 I slot launch_slot_: id  0 | task 25180 | processing task, is_child = 0
+349.26.674.062 W slot update_slots: id  0 | task 25180 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.26.674.064 W slot update_slots: id  0 | task 25180 | n_past was set to 38
+349.26.804.516 I slot print_timing: id  0 | task 25180 | prompt eval time =      65.25 ms /     1 tokens (   65.25 ms per token,    15.33 tokens per second)
+349.26.804.526 I slot print_timing: id  0 | task 25180 |        eval time =      65.18 ms /     2 tokens (   32.59 ms per token,    30.68 tokens per second)
+349.26.804.528 I slot print_timing: id  0 | task 25180 |       total time =     130.43 ms /     3 tokens
+349.26.804.531 I slot print_timing: id  0 | task 25180 |    graphs reused =      19982
+349.26.804.572 I slot      release: id  0 | task 25180 | stop processing: n_tokens = 40, truncated = 0
+349.26.804.593 I srv  update_slots: all slots are idle
+349.31.851.482 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.31.851.657 I slot launch_slot_: id  0 | task 25183 | processing task, is_child = 0
+349.31.851.673 W slot update_slots: id  0 | task 25183 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.31.851.675 W slot update_slots: id  0 | task 25183 | n_past was set to 38
+349.31.989.031 I slot print_timing: id  0 | task 25183 | prompt eval time =      67.90 ms /     1 tokens (   67.90 ms per token,    14.73 tokens per second)
+349.31.989.045 I slot print_timing: id  0 | task 25183 |        eval time =      69.44 ms /     2 tokens (   34.72 ms per token,    28.80 tokens per second)
+349.31.989.049 I slot print_timing: id  0 | task 25183 |       total time =     137.34 ms /     3 tokens
+349.31.989.051 I slot print_timing: id  0 | task 25183 |    graphs reused =      19984
+349.31.989.079 I slot      release: id  0 | task 25183 | stop processing: n_tokens = 40, truncated = 0
+349.31.989.100 I srv  update_slots: all slots are idle
+349.31.995.857 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.31.996.034 I slot launch_slot_: id  0 | task 25186 | processing task, is_child = 0
+349.31.996.062 W slot update_slots: id  0 | task 25186 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.31.996.065 W slot update_slots: id  0 | task 25186 | n_past was set to 38
+349.32.134.469 I slot print_timing: id  0 | task 25186 | prompt eval time =      71.17 ms /     1 tokens (   71.17 ms per token,    14.05 tokens per second)
+349.32.134.485 I slot print_timing: id  0 | task 25186 |        eval time =      67.22 ms /     2 tokens (   33.61 ms per token,    29.75 tokens per second)
+349.32.134.489 I slot print_timing: id  0 | task 25186 |       total time =     138.39 ms /     3 tokens
+349.32.134.498 I slot print_timing: id  0 | task 25186 |    graphs reused =      19986
+349.32.134.523 I slot      release: id  0 | task 25186 | stop processing: n_tokens = 40, truncated = 0
+349.32.134.541 I srv  update_slots: all slots are idle
+349.32.140.214 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.32.140.391 I slot launch_slot_: id  0 | task 25189 | processing task, is_child = 0
+349.32.140.429 W slot update_slots: id  0 | task 25189 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.32.140.435 W slot update_slots: id  0 | task 25189 | n_past was set to 38
+349.32.272.099 I slot print_timing: id  0 | task 25189 | prompt eval time =      66.30 ms /     1 tokens (   66.30 ms per token,    15.08 tokens per second)
+349.32.272.123 I slot print_timing: id  0 | task 25189 |        eval time =      65.34 ms /     2 tokens (   32.67 ms per token,    30.61 tokens per second)
+349.32.272.129 I slot print_timing: id  0 | task 25189 |       total time =     131.63 ms /     3 tokens
+349.32.272.144 I slot print_timing: id  0 | task 25189 |    graphs reused =      19988
+349.32.272.214 I slot      release: id  0 | task 25189 | stop processing: n_tokens = 40, truncated = 0
+349.32.272.253 I srv  update_slots: all slots are idle
+349.32.278.499 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.32.278.681 I slot launch_slot_: id  0 | task 25192 | processing task, is_child = 0
+349.32.278.706 W slot update_slots: id  0 | task 25192 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.32.278.709 W slot update_slots: id  0 | task 25192 | n_past was set to 38
+349.32.411.206 I slot print_timing: id  0 | task 25192 | prompt eval time =      65.49 ms /     1 tokens (   65.49 ms per token,    15.27 tokens per second)
+349.32.411.218 I slot print_timing: id  0 | task 25192 |        eval time =      66.99 ms /     2 tokens (   33.50 ms per token,    29.85 tokens per second)
+349.32.411.220 I slot print_timing: id  0 | task 25192 |       total time =     132.49 ms /     3 tokens
+349.32.411.230 I slot print_timing: id  0 | task 25192 |    graphs reused =      19990
+349.32.411.262 I slot      release: id  0 | task 25192 | stop processing: n_tokens = 40, truncated = 0
+349.32.411.279 I srv  update_slots: all slots are idle
+349.32.420.207 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.32.420.373 I slot launch_slot_: id  0 | task 25195 | processing task, is_child = 0
+349.32.420.398 W slot update_slots: id  0 | task 25195 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.32.420.400 W slot update_slots: id  0 | task 25195 | n_past was set to 38
+349.32.557.661 I slot print_timing: id  0 | task 25195 | prompt eval time =      71.11 ms /     1 tokens (   71.11 ms per token,    14.06 tokens per second)
+349.32.557.671 I slot print_timing: id  0 | task 25195 |        eval time =      66.14 ms /     2 tokens (   33.07 ms per token,    30.24 tokens per second)
+349.32.557.674 I slot print_timing: id  0 | task 25195 |       total time =     137.25 ms /     3 tokens
+349.32.557.676 I slot print_timing: id  0 | task 25195 |    graphs reused =      19992
+349.32.557.708 I slot      release: id  0 | task 25195 | stop processing: n_tokens = 40, truncated = 0
+349.32.557.727 I srv  update_slots: all slots are idle
+349.32.564.142 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.32.564.398 I slot launch_slot_: id  0 | task 25198 | processing task, is_child = 0
+349.32.564.426 W slot update_slots: id  0 | task 25198 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.32.564.431 W slot update_slots: id  0 | task 25198 | n_past was set to 38
+349.32.704.607 I slot print_timing: id  0 | task 25198 | prompt eval time =      72.20 ms /     1 tokens (   72.20 ms per token,    13.85 tokens per second)
+349.32.704.621 I slot print_timing: id  0 | task 25198 |        eval time =      67.95 ms /     2 tokens (   33.98 ms per token,    29.43 tokens per second)
+349.32.704.625 I slot print_timing: id  0 | task 25198 |       total time =     140.16 ms /     3 tokens
+349.32.704.629 I slot print_timing: id  0 | task 25198 |    graphs reused =      19994
+349.32.704.665 I slot      release: id  0 | task 25198 | stop processing: n_tokens = 40, truncated = 0
+349.32.704.692 I srv  update_slots: all slots are idle
+349.32.710.262 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.32.710.427 I slot launch_slot_: id  0 | task 25201 | processing task, is_child = 0
+349.32.710.451 W slot update_slots: id  0 | task 25201 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.32.710.454 W slot update_slots: id  0 | task 25201 | n_past was set to 38
+349.32.842.136 I slot print_timing: id  0 | task 25201 | prompt eval time =      65.06 ms /     1 tokens (   65.06 ms per token,    15.37 tokens per second)
+349.32.842.145 I slot print_timing: id  0 | task 25201 |        eval time =      66.61 ms /     2 tokens (   33.31 ms per token,    30.02 tokens per second)
+349.32.842.147 I slot print_timing: id  0 | task 25201 |       total time =     131.67 ms /     3 tokens
+349.32.842.150 I slot print_timing: id  0 | task 25201 |    graphs reused =      19996
+349.32.842.178 I slot      release: id  0 | task 25201 | stop processing: n_tokens = 40, truncated = 0
+349.32.842.196 I srv  update_slots: all slots are idle
+349.32.849.983 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.32.850.115 I slot launch_slot_: id  0 | task 25204 | processing task, is_child = 0
+349.32.850.134 W slot update_slots: id  0 | task 25204 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.32.850.135 W slot update_slots: id  0 | task 25204 | n_past was set to 38
+349.32.987.712 I slot print_timing: id  0 | task 25204 | prompt eval time =      65.38 ms /     1 tokens (   65.38 ms per token,    15.30 tokens per second)
+349.32.987.722 I slot print_timing: id  0 | task 25204 |        eval time =      72.19 ms /     2 tokens (   36.09 ms per token,    27.71 tokens per second)
+349.32.987.725 I slot print_timing: id  0 | task 25204 |       total time =     137.56 ms /     3 tokens
+349.32.987.732 I slot print_timing: id  0 | task 25204 |    graphs reused =      19998
+349.32.987.762 I slot      release: id  0 | task 25204 | stop processing: n_tokens = 40, truncated = 0
+349.32.987.780 I srv  update_slots: all slots are idle
+349.37.999.871 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.38.000.046 I slot launch_slot_: id  0 | task 25207 | processing task, is_child = 0
+349.38.000.081 W slot update_slots: id  0 | task 25207 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.38.000.084 W slot update_slots: id  0 | task 25207 | n_past was set to 38
+349.38.136.026 I slot print_timing: id  0 | task 25207 | prompt eval time =      69.70 ms /     1 tokens (   69.70 ms per token,    14.35 tokens per second)
+349.38.136.034 I slot print_timing: id  0 | task 25207 |        eval time =      66.23 ms /     2 tokens (   33.12 ms per token,    30.20 tokens per second)
+349.38.136.036 I slot print_timing: id  0 | task 25207 |       total time =     135.93 ms /     3 tokens
+349.38.136.038 I slot print_timing: id  0 | task 25207 |    graphs reused =      20000
+349.38.136.068 I slot      release: id  0 | task 25207 | stop processing: n_tokens = 40, truncated = 0
+349.38.136.086 I srv  update_slots: all slots are idle
+349.38.141.547 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.38.141.716 I slot launch_slot_: id  0 | task 25210 | processing task, is_child = 0
+349.38.141.742 W slot update_slots: id  0 | task 25210 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.38.141.745 W slot update_slots: id  0 | task 25210 | n_past was set to 38
+349.38.277.300 I slot print_timing: id  0 | task 25210 | prompt eval time =      68.27 ms /     1 tokens (   68.27 ms per token,    14.65 tokens per second)
+349.38.277.313 I slot print_timing: id  0 | task 25210 |        eval time =      67.27 ms /     2 tokens (   33.64 ms per token,    29.73 tokens per second)
+349.38.277.317 I slot print_timing: id  0 | task 25210 |       total time =     135.55 ms /     3 tokens
+349.38.277.325 I slot print_timing: id  0 | task 25210 |    graphs reused =      20002
+349.38.277.355 I slot      release: id  0 | task 25210 | stop processing: n_tokens = 40, truncated = 0
+349.38.277.385 I srv  update_slots: all slots are idle
+349.38.282.233 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.38.282.378 I slot launch_slot_: id  0 | task 25213 | processing task, is_child = 0
+349.38.282.404 W slot update_slots: id  0 | task 25213 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.38.282.407 W slot update_slots: id  0 | task 25213 | n_past was set to 38
+349.38.413.249 I slot print_timing: id  0 | task 25213 | prompt eval time =      63.93 ms /     1 tokens (   63.93 ms per token,    15.64 tokens per second)
+349.38.413.285 I slot print_timing: id  0 | task 25213 |        eval time =      66.88 ms /     2 tokens (   33.44 ms per token,    29.90 tokens per second)
+349.38.413.292 I slot print_timing: id  0 | task 25213 |       total time =     130.81 ms /     3 tokens
+349.38.413.302 I slot print_timing: id  0 | task 25213 |    graphs reused =      20004
+349.38.413.371 I slot      release: id  0 | task 25213 | stop processing: n_tokens = 40, truncated = 0
+349.38.413.405 I srv  update_slots: all slots are idle
+349.38.421.002 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.38.421.174 I slot launch_slot_: id  0 | task 25216 | processing task, is_child = 0
+349.38.421.199 W slot update_slots: id  0 | task 25216 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.38.421.203 W slot update_slots: id  0 | task 25216 | n_past was set to 38
+349.38.554.628 I slot print_timing: id  0 | task 25216 | prompt eval time =      66.98 ms /     1 tokens (   66.98 ms per token,    14.93 tokens per second)
+349.38.554.637 I slot print_timing: id  0 | task 25216 |        eval time =      66.44 ms /     2 tokens (   33.22 ms per token,    30.10 tokens per second)
+349.38.554.640 I slot print_timing: id  0 | task 25216 |       total time =     133.42 ms /     3 tokens
+349.38.554.642 I slot print_timing: id  0 | task 25216 |    graphs reused =      20006
+349.38.554.669 I slot      release: id  0 | task 25216 | stop processing: n_tokens = 40, truncated = 0
+349.38.554.687 I srv  update_slots: all slots are idle
+349.38.559.305 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.38.559.461 I slot launch_slot_: id  0 | task 25219 | processing task, is_child = 0
+349.38.559.482 W slot update_slots: id  0 | task 25219 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.38.559.491 W slot update_slots: id  0 | task 25219 | n_past was set to 38
+349.38.691.241 I slot print_timing: id  0 | task 25219 | prompt eval time =      65.11 ms /     1 tokens (   65.11 ms per token,    15.36 tokens per second)
+349.38.691.252 I slot print_timing: id  0 | task 25219 |        eval time =      66.64 ms /     2 tokens (   33.32 ms per token,    30.01 tokens per second)
+349.38.691.254 I slot print_timing: id  0 | task 25219 |       total time =     131.75 ms /     3 tokens
+349.38.691.257 I slot print_timing: id  0 | task 25219 |    graphs reused =      20008
+349.38.691.286 I slot      release: id  0 | task 25219 | stop processing: n_tokens = 40, truncated = 0
+349.38.691.304 I srv  update_slots: all slots are idle
+349.38.695.878 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.38.696.005 I slot launch_slot_: id  0 | task 25222 | processing task, is_child = 0
+349.38.696.021 W slot update_slots: id  0 | task 25222 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.38.696.026 W slot update_slots: id  0 | task 25222 | n_past was set to 38
+349.38.841.081 I slot print_timing: id  0 | task 25222 | prompt eval time =      69.78 ms /     1 tokens (   69.78 ms per token,    14.33 tokens per second)
+349.38.841.089 I slot print_timing: id  0 | task 25222 |        eval time =      75.27 ms /     2 tokens (   37.63 ms per token,    26.57 tokens per second)
+349.38.841.091 I slot print_timing: id  0 | task 25222 |       total time =     145.05 ms /     3 tokens
+349.38.841.094 I slot print_timing: id  0 | task 25222 |    graphs reused =      20010
+349.38.841.119 I slot      release: id  0 | task 25222 | stop processing: n_tokens = 40, truncated = 0
+349.38.841.137 I srv  update_slots: all slots are idle
+349.38.847.953 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.38.848.149 I slot launch_slot_: id  0 | task 25225 | processing task, is_child = 0
+349.38.848.171 W slot update_slots: id  0 | task 25225 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.38.848.173 W slot update_slots: id  0 | task 25225 | n_past was set to 38
+349.39.004.969 I slot print_timing: id  0 | task 25225 | prompt eval time =      88.33 ms /     1 tokens (   88.33 ms per token,    11.32 tokens per second)
+349.39.004.982 I slot print_timing: id  0 | task 25225 |        eval time =      68.45 ms /     2 tokens (   34.23 ms per token,    29.22 tokens per second)
+349.39.004.985 I slot print_timing: id  0 | task 25225 |       total time =     156.78 ms /     3 tokens
+349.39.004.997 I slot print_timing: id  0 | task 25225 |    graphs reused =      20012
+349.39.005.022 I slot      release: id  0 | task 25225 | stop processing: n_tokens = 40, truncated = 0
+349.39.005.039 I srv  update_slots: all slots are idle
+349.39.010.529 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.39.010.645 I slot launch_slot_: id  0 | task 25228 | processing task, is_child = 0
+349.39.010.657 W slot update_slots: id  0 | task 25228 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.39.010.659 W slot update_slots: id  0 | task 25228 | n_past was set to 38
+349.39.146.488 I slot print_timing: id  0 | task 25228 | prompt eval time =      63.90 ms /     1 tokens (   63.90 ms per token,    15.65 tokens per second)
+349.39.146.497 I slot print_timing: id  0 | task 25228 |        eval time =      71.91 ms /     2 tokens (   35.96 ms per token,    27.81 tokens per second)
+349.39.146.499 I slot print_timing: id  0 | task 25228 |       total time =     135.82 ms /     3 tokens
+349.39.146.502 I slot print_timing: id  0 | task 25228 |    graphs reused =      20014
+349.39.146.529 I slot      release: id  0 | task 25228 | stop processing: n_tokens = 40, truncated = 0
+349.39.146.547 I srv  update_slots: all slots are idle
+349.44.189.260 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.44.189.859 I slot launch_slot_: id  0 | task 25231 | processing task, is_child = 0
+349.44.189.979 W slot update_slots: id  0 | task 25231 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.44.189.995 W slot update_slots: id  0 | task 25231 | n_past was set to 38
+349.44.330.763 I slot print_timing: id  0 | task 25231 | prompt eval time =      71.68 ms /     1 tokens (   71.68 ms per token,    13.95 tokens per second)
+349.44.330.798 I slot print_timing: id  0 | task 25231 |        eval time =      69.09 ms /     2 tokens (   34.54 ms per token,    28.95 tokens per second)
+349.44.330.804 I slot print_timing: id  0 | task 25231 |       total time =     140.77 ms /     3 tokens
+349.44.330.849 I slot print_timing: id  0 | task 25231 |    graphs reused =      20016
+349.44.330.941 I slot      release: id  0 | task 25231 | stop processing: n_tokens = 40, truncated = 0
+349.44.330.976 I srv  update_slots: all slots are idle
+349.44.339.014 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.44.339.236 I slot launch_slot_: id  0 | task 25234 | processing task, is_child = 0
+349.44.339.268 W slot update_slots: id  0 | task 25234 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.44.339.273 W slot update_slots: id  0 | task 25234 | n_past was set to 38
+349.44.473.578 I slot print_timing: id  0 | task 25234 | prompt eval time =      69.37 ms /     1 tokens (   69.37 ms per token,    14.42 tokens per second)
+349.44.473.589 I slot print_timing: id  0 | task 25234 |        eval time =      64.93 ms /     2 tokens (   32.46 ms per token,    30.80 tokens per second)
+349.44.473.592 I slot print_timing: id  0 | task 25234 |       total time =     134.29 ms /     3 tokens
+349.44.473.594 I slot print_timing: id  0 | task 25234 |    graphs reused =      20018
+349.44.473.632 I slot      release: id  0 | task 25234 | stop processing: n_tokens = 40, truncated = 0
+349.44.473.652 I srv  update_slots: all slots are idle
+349.44.484.324 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.44.484.505 I slot launch_slot_: id  0 | task 25237 | processing task, is_child = 0
+349.44.484.541 W slot update_slots: id  0 | task 25237 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.44.484.546 W slot update_slots: id  0 | task 25237 | n_past was set to 38
+349.44.622.368 I slot print_timing: id  0 | task 25237 | prompt eval time =      71.46 ms /     1 tokens (   71.46 ms per token,    13.99 tokens per second)
+349.44.622.377 I slot print_timing: id  0 | task 25237 |        eval time =      66.35 ms /     2 tokens (   33.18 ms per token,    30.14 tokens per second)
+349.44.622.380 I slot print_timing: id  0 | task 25237 |       total time =     137.81 ms /     3 tokens
+349.44.622.382 I slot print_timing: id  0 | task 25237 |    graphs reused =      20020
+349.44.622.408 I slot      release: id  0 | task 25237 | stop processing: n_tokens = 40, truncated = 0
+349.44.622.428 I srv  update_slots: all slots are idle
+349.44.629.138 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.44.629.262 I slot launch_slot_: id  0 | task 25240 | processing task, is_child = 0
+349.44.629.276 W slot update_slots: id  0 | task 25240 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.44.629.278 W slot update_slots: id  0 | task 25240 | n_past was set to 38
+349.44.773.670 I slot print_timing: id  0 | task 25240 | prompt eval time =      65.90 ms /     1 tokens (   65.90 ms per token,    15.17 tokens per second)
+349.44.773.709 I slot print_timing: id  0 | task 25240 |        eval time =      78.45 ms /     2 tokens (   39.23 ms per token,    25.49 tokens per second)
+349.44.773.715 I slot print_timing: id  0 | task 25240 |       total time =     144.36 ms /     3 tokens
+349.44.773.723 I slot print_timing: id  0 | task 25240 |    graphs reused =      20022
+349.44.773.813 I slot      release: id  0 | task 25240 | stop processing: n_tokens = 40, truncated = 0
+349.44.773.847 I srv  update_slots: all slots are idle
+349.44.781.305 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.44.781.554 I slot launch_slot_: id  0 | task 25243 | processing task, is_child = 0
+349.44.781.606 W slot update_slots: id  0 | task 25243 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.44.781.611 W slot update_slots: id  0 | task 25243 | n_past was set to 38
+349.44.925.293 I slot print_timing: id  0 | task 25243 | prompt eval time =      69.49 ms /     1 tokens (   69.49 ms per token,    14.39 tokens per second)
+349.44.925.312 I slot print_timing: id  0 | task 25243 |        eval time =      74.18 ms /     2 tokens (   37.09 ms per token,    26.96 tokens per second)
+349.44.925.314 I slot print_timing: id  0 | task 25243 |       total time =     143.67 ms /     3 tokens
+349.44.925.317 I slot print_timing: id  0 | task 25243 |    graphs reused =      20024
+349.44.925.408 I slot      release: id  0 | task 25243 | stop processing: n_tokens = 40, truncated = 0
+349.44.925.428 I srv  update_slots: all slots are idle
+349.44.933.411 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.44.933.628 I slot launch_slot_: id  0 | task 25246 | processing task, is_child = 0
+349.44.933.641 W slot update_slots: id  0 | task 25246 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.44.933.643 W slot update_slots: id  0 | task 25246 | n_past was set to 38
+349.45.070.081 I slot print_timing: id  0 | task 25246 | prompt eval time =      66.97 ms /     1 tokens (   66.97 ms per token,    14.93 tokens per second)
+349.45.070.114 I slot print_timing: id  0 | task 25246 |        eval time =      69.43 ms /     2 tokens (   34.72 ms per token,    28.80 tokens per second)
+349.45.070.120 I slot print_timing: id  0 | task 25246 |       total time =     136.40 ms /     3 tokens
+349.45.070.145 I slot print_timing: id  0 | task 25246 |    graphs reused =      20026
+349.45.070.230 I slot      release: id  0 | task 25246 | stop processing: n_tokens = 40, truncated = 0
+349.45.070.268 I srv  update_slots: all slots are idle
+349.45.079.423 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.45.079.744 I slot launch_slot_: id  0 | task 25249 | processing task, is_child = 0
+349.45.079.795 W slot update_slots: id  0 | task 25249 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.45.079.799 W slot update_slots: id  0 | task 25249 | n_past was set to 38
+349.45.215.292 I slot print_timing: id  0 | task 25249 | prompt eval time =      67.74 ms /     1 tokens (   67.74 ms per token,    14.76 tokens per second)
+349.45.215.318 I slot print_timing: id  0 | task 25249 |        eval time =      67.72 ms /     2 tokens (   33.86 ms per token,    29.53 tokens per second)
+349.45.215.379 I slot print_timing: id  0 | task 25249 |       total time =     135.46 ms /     3 tokens
+349.45.215.383 I slot print_timing: id  0 | task 25249 |    graphs reused =      20028
+349.45.215.434 I slot      release: id  0 | task 25249 | stop processing: n_tokens = 40, truncated = 0
+349.45.215.471 I srv  update_slots: all slots are idle
+349.45.226.544 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.45.226.723 I slot launch_slot_: id  0 | task 25252 | processing task, is_child = 0
+349.45.226.738 W slot update_slots: id  0 | task 25252 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.45.226.740 W slot update_slots: id  0 | task 25252 | n_past was set to 38
+349.45.357.570 I slot print_timing: id  0 | task 25252 | prompt eval time =      65.13 ms /     1 tokens (   65.13 ms per token,    15.35 tokens per second)
+349.45.357.584 I slot print_timing: id  0 | task 25252 |        eval time =      65.69 ms /     2 tokens (   32.84 ms per token,    30.45 tokens per second)
+349.45.357.586 I slot print_timing: id  0 | task 25252 |       total time =     130.81 ms /     3 tokens
+349.45.357.622 I slot print_timing: id  0 | task 25252 |    graphs reused =      20030
+349.45.357.670 I slot      release: id  0 | task 25252 | stop processing: n_tokens = 40, truncated = 0
+349.45.357.699 I srv  update_slots: all slots are idle
+349.50.404.821 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.50.405.135 I slot launch_slot_: id  0 | task 25255 | processing task, is_child = 0
+349.50.405.215 W slot update_slots: id  0 | task 25255 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.50.405.221 W slot update_slots: id  0 | task 25255 | n_past was set to 38
+349.50.545.430 I slot print_timing: id  0 | task 25255 | prompt eval time =      69.41 ms /     1 tokens (   69.41 ms per token,    14.41 tokens per second)
+349.50.545.458 I slot print_timing: id  0 | task 25255 |        eval time =      70.78 ms /     2 tokens (   35.39 ms per token,    28.25 tokens per second)
+349.50.545.465 I slot print_timing: id  0 | task 25255 |       total time =     140.19 ms /     3 tokens
+349.50.545.486 I slot print_timing: id  0 | task 25255 |    graphs reused =      20032
+349.50.545.565 I slot      release: id  0 | task 25255 | stop processing: n_tokens = 40, truncated = 0
+349.50.545.597 I srv  update_slots: all slots are idle
+349.50.555.916 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.50.556.065 I slot launch_slot_: id  0 | task 25258 | processing task, is_child = 0
+349.50.556.081 W slot update_slots: id  0 | task 25258 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.50.556.082 W slot update_slots: id  0 | task 25258 | n_past was set to 38
+349.50.690.194 I slot print_timing: id  0 | task 25258 | prompt eval time =      67.93 ms /     1 tokens (   67.93 ms per token,    14.72 tokens per second)
+349.50.690.205 I slot print_timing: id  0 | task 25258 |        eval time =      66.17 ms /     2 tokens (   33.08 ms per token,    30.23 tokens per second)
+349.50.690.207 I slot print_timing: id  0 | task 25258 |       total time =     134.10 ms /     3 tokens
+349.50.690.209 I slot print_timing: id  0 | task 25258 |    graphs reused =      20034
+349.50.690.236 I slot      release: id  0 | task 25258 | stop processing: n_tokens = 40, truncated = 0
+349.50.690.256 I srv  update_slots: all slots are idle
+349.50.697.213 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.50.697.491 I slot launch_slot_: id  0 | task 25261 | processing task, is_child = 0
+349.50.697.550 W slot update_slots: id  0 | task 25261 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.50.697.555 W slot update_slots: id  0 | task 25261 | n_past was set to 38
+349.50.837.833 I slot print_timing: id  0 | task 25261 | prompt eval time =      66.25 ms /     1 tokens (   66.25 ms per token,    15.09 tokens per second)
+349.50.837.841 I slot print_timing: id  0 | task 25261 |        eval time =      74.02 ms /     2 tokens (   37.01 ms per token,    27.02 tokens per second)
+349.50.837.844 I slot print_timing: id  0 | task 25261 |       total time =     140.27 ms /     3 tokens
+349.50.837.846 I slot print_timing: id  0 | task 25261 |    graphs reused =      20036
+349.50.837.880 I slot      release: id  0 | task 25261 | stop processing: n_tokens = 40, truncated = 0
+349.50.837.901 I srv  update_slots: all slots are idle
+349.50.844.902 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.50.845.071 I slot launch_slot_: id  0 | task 25264 | processing task, is_child = 0
+349.50.845.089 W slot update_slots: id  0 | task 25264 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.50.845.092 W slot update_slots: id  0 | task 25264 | n_past was set to 38
+349.50.998.666 I slot print_timing: id  0 | task 25264 | prompt eval time =      82.52 ms /     1 tokens (   82.52 ms per token,    12.12 tokens per second)
+349.50.998.675 I slot print_timing: id  0 | task 25264 |        eval time =      71.05 ms /     2 tokens (   35.52 ms per token,    28.15 tokens per second)
+349.50.998.678 I slot print_timing: id  0 | task 25264 |       total time =     153.56 ms /     3 tokens
+349.50.998.680 I slot print_timing: id  0 | task 25264 |    graphs reused =      20038
+349.50.998.726 I slot      release: id  0 | task 25264 | stop processing: n_tokens = 40, truncated = 0
+349.50.998.746 I srv  update_slots: all slots are idle
+349.51.005.358 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.51.005.503 I slot launch_slot_: id  0 | task 25267 | processing task, is_child = 0
+349.51.005.525 W slot update_slots: id  0 | task 25267 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.51.005.526 W slot update_slots: id  0 | task 25267 | n_past was set to 38
+349.51.153.440 I slot print_timing: id  0 | task 25267 | prompt eval time =      72.15 ms /     1 tokens (   72.15 ms per token,    13.86 tokens per second)
+349.51.153.450 I slot print_timing: id  0 | task 25267 |        eval time =      75.75 ms /     2 tokens (   37.87 ms per token,    26.40 tokens per second)
+349.51.153.452 I slot print_timing: id  0 | task 25267 |       total time =     147.89 ms /     3 tokens
+349.51.153.455 I slot print_timing: id  0 | task 25267 |    graphs reused =      20040
+349.51.153.496 I slot      release: id  0 | task 25267 | stop processing: n_tokens = 40, truncated = 0
+349.51.153.517 I srv  update_slots: all slots are idle
+349.51.163.280 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.51.163.410 I slot launch_slot_: id  0 | task 25270 | processing task, is_child = 0
+349.51.163.430 W slot update_slots: id  0 | task 25270 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.51.163.433 W slot update_slots: id  0 | task 25270 | n_past was set to 38
+349.51.306.587 I slot print_timing: id  0 | task 25270 | prompt eval time =      76.35 ms /     1 tokens (   76.35 ms per token,    13.10 tokens per second)
+349.51.306.595 I slot print_timing: id  0 | task 25270 |        eval time =      66.79 ms /     2 tokens (   33.40 ms per token,    29.94 tokens per second)
+349.51.306.597 I slot print_timing: id  0 | task 25270 |       total time =     143.14 ms /     3 tokens
+349.51.306.599 I slot print_timing: id  0 | task 25270 |    graphs reused =      20042
+349.51.306.623 I slot      release: id  0 | task 25270 | stop processing: n_tokens = 40, truncated = 0
+349.51.306.641 I srv  update_slots: all slots are idle
+349.51.314.402 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.51.314.535 I slot launch_slot_: id  0 | task 25273 | processing task, is_child = 0
+349.51.314.556 W slot update_slots: id  0 | task 25273 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.51.314.558 W slot update_slots: id  0 | task 25273 | n_past was set to 38
+349.51.469.374 I slot print_timing: id  0 | task 25273 | prompt eval time =      74.19 ms /     1 tokens (   74.19 ms per token,    13.48 tokens per second)
+349.51.469.406 I slot print_timing: id  0 | task 25273 |        eval time =      80.60 ms /     2 tokens (   40.30 ms per token,    24.81 tokens per second)
+349.51.469.417 I slot print_timing: id  0 | task 25273 |       total time =     154.79 ms /     3 tokens
+349.51.469.437 I slot print_timing: id  0 | task 25273 |    graphs reused =      20044
+349.51.469.520 I slot      release: id  0 | task 25273 | stop processing: n_tokens = 40, truncated = 0
+349.51.469.558 I srv  update_slots: all slots are idle
+349.51.478.165 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.975
+349.51.478.326 I slot launch_slot_: id  0 | task 25276 | processing task, is_child = 0
+349.51.478.371 W slot update_slots: id  0 | task 25276 | need to evaluate at least 1 token for each active slot (n_past = 39, task.n_tokens() = 39)
+349.51.478.373 W slot update_slots: id  0 | task 25276 | n_past was set to 38
+349.51.619.727 I slot print_timing: id  0 | task 25276 | prompt eval time =      68.94 ms /     1 tokens (   68.94 ms per token,    14.51 tokens per second)
+349.51.619.739 I slot print_timing: id  0 | task 25276 |        eval time =      72.41 ms /     2 tokens (   36.20 ms per token,    27.62 tokens per second)
+349.51.619.742 I slot print_timing: id  0 | task 25276 |       total time =     141.34 ms /     3 tokens
+349.51.619.744 I slot print_timing: id  0 | task 25276 |    graphs reused =      20046
+349.51.619.771 I slot      release: id  0 | task 25276 | stop processing: n_tokens = 40, truncated = 0
+349.51.619.790 I srv  update_slots: all slots are idle
