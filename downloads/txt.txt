@@ -1,1 +1,3 @@
-This is a new text file created by the OpenRouter Manager.
+VERIFIED_MANIFESTATION
+[CMD]
+ls ~/downloads/txt.txt
