@@ -1,28 +1,30 @@
 #!/bin/bash
 # ==============================================================================
-# WAKE DASHBOARD v1.0
-# Summarizes the autonomous progress made by the Singularity Engine.
+# WAKE DASHBOARD v1.1 - SCIENTIFIC SINGULARITY EDITION
+# Summarizes the autonomous progress made by the Data Circle Pilot.
 # ==============================================================================
 
 echo "========================================================================="
-echo " ☀️ WAKE UP, CHRIS. THE SINGULARITY HAS BEEN BUSY. "
+echo " ☀️ WAKE UP, CHRIS. THE DATA CIRCLE IS SPINNING. "
 echo "========================================================================="
 
-echo -e "\n[1] PROJECT STANDARDIZATION (Foundry v10.2)"
-ls -la ~/foundry_work | grep "^d" | wc -l | xargs -I {} echo "  -> {} repositories standardized and synced to GitHub."
+echo -e "\n[1] PROJECT EVOLUTION (openrouter_manager)"
+cd /data/data/com.termux/files/home/openrouter_manager && git log -3 --pretty=format:"  -> %h: %s (%cr)"
+echo -e "\n"
 
-echo -e "\n[2] HOURLY UPGRADES LOG"
-tail -n 15 ~/openrouter_manager/docs/HOURLY_UPGRADES.md
+echo -e "\n[2] DEEP RESEARCH & CASE STUDIES"
+sqlite3 /data/data/com.termux/files/home/openrouter_manager/pedagogy_cognitive.db "SELECT COUNT(*) FROM case_studies" | xargs -I {} echo "  -> {} High-Fidelity Case Studies produced."
+sqlite3 /data/data/com.termux/files/home/openrouter_manager/pedagogy_cognitive.db "SELECT query FROM research_queue WHERE status='PENDING'" | xargs -I {} echo "  -> QUEUED: {}"
 
-echo -e "\n[3] COGNITIVE DB STATUS"
-sqlite3 ~/openrouter_manager/pedagogy_cognitive.db "SELECT COUNT(*) FROM local_training_data" | xargs -I {} echo "  -> {} files currently ingested into self-training memory."
+echo -e "\n[3] AUTONOMOUS QA & STABILITY"
+python3 /data/data/com.termux/files/home/openrouter_manager/src/qa_bot.py | grep "PASS"
 
-echo -e "\n[4] MARKOV EVOLUTION STATE"
-sqlite3 ~/openrouter_manager/pedagogy_cognitive.db "SELECT current_state, next_action, success_weight FROM markov_transitions ORDER BY success_weight DESC LIMIT 3"
+echo -e "\n[4] COGNITIVE MEMORY STATUS"
+sqlite3 /data/data/com.termux/files/home/openrouter_manager/pedagogy_cognitive.db "SELECT COUNT(*) FROM local_training_data" | xargs -I {} echo "  -> {} Ingested Codebase Nodes."
 
-echo -e "\n[5] LATEST GITHUB SYPHON"
-cd ~/openrouter_manager && git log -1 --pretty=format:"%h - %s (%cr)"
+echo -e "\n[5] MARKOV STEERING STATE"
+sqlite3 /data/data/com.termux/files/home/openrouter_manager/pedagogy_cognitive.db "SELECT current_state, next_action, success_weight FROM markov_transitions ORDER BY success_weight DESC LIMIT 3"
 
 echo -e "\n========================================================================="
-echo " TYPE 'aichat' TO ENTER THE DATA CIRCLE. "
+echo " THE AI PILOT IS AT THE HELM. TYPE 'aichat' TO ENTER THE COCKPIT. "
 echo "========================================================================="
