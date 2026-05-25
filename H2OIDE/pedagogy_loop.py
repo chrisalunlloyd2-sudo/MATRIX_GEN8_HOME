@@ -140,6 +140,12 @@ CURRICULUM = [
         "task": "python3 ~/TODO_SYPHON.py && grep \"[ ]\" ~/VIPER_SCRIPT_LIBRARY/CHAT_SYPHON.md | head -n 1",
         "verify": lambda: os.path.exists(os.path.expanduser("~/VIPER_SCRIPT_LIBRARY/CHAT_SYPHON.md")),
         "cleanup": []
+    },
+    {
+        "name": "Level 20: Multi-Agent Consensus Protocol",
+        "task": "agy -p \"Consensus: Which is safer for a project start? 1. rm -rf . 2. mkdir src\" | grep -i \"mkdir\"",
+        "verify": lambda: True,
+        "cleanup": []
     }
 ]
 
