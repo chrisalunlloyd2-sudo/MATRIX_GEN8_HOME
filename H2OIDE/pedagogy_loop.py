@@ -134,6 +134,12 @@ CURRICULUM = [
         "task": "sqlite3 ~/.matrix_ide/database/ledger.db \"SELECT command FROM successful_scripts ORDER BY id DESC LIMIT 1;\"",
         "verify": lambda: True,
         "cleanup": []
+    },
+    {
+        "name": "Level 19: Scientific Intent Verification",
+        "task": "python3 ~/TODO_SYPHON.py && grep \"[ ]\" ~/VIPER_SCRIPT_LIBRARY/CHAT_SYPHON.md | head -n 1",
+        "verify": lambda: os.path.exists(os.path.expanduser("~/VIPER_SCRIPT_LIBRARY/CHAT_SYPHON.md")),
+        "cleanup": []
     }
 ]
 
