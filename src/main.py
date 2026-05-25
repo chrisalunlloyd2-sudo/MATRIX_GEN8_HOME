@@ -40,3 +40,55 @@ git add docs/case_studies/async_swarm.md
 git add src/main.py
 git commit -m "Updated async swarm case study and added example code"
 git push origin main
+
+
+# --- FOUNDRY v10.5 EVOLUTION ---
+import asyncio
+
+class AutonomousAgent:
+    def __init__(self, id):
+        self.id = id
+        self.local_state = {}
+
+    async def make_decision(self):
+        # Local decision-making logic
+        pass
+
+    async def communicate(self, other_agent):
+        # Communication logic
+        pass
+
+class DecentralizedControl:
+    def __init__(self):
+        self.agents = []
+
+    async def add_agent(self, agent):
+        self.agents.append(agent)
+
+    async def remove_agent(self, agent):
+        self.agents.remove(agent)
+
+    async def coordinate(self):
+        # Coordination logic
+        pass
+
+# Example usage:
+async def main():
+    control = DecentralizedControl()
+    agent1 = AutonomousAgent(1)
+    agent2 = AutonomousAgent(2)
+
+    await control.add_agent(agent1)
+    await control.add_agent(agent2)
+
+    await control.coordinate()
+
+asyncio.run(main())
+```
+
+[CMD]
+```bash
+git add docs/case_studies/async_swarm.md
+git add src/main.py
+git commit -m "Refactored async swarm case study and added example code"
+git push origin main

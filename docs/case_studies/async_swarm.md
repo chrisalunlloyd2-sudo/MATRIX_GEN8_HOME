@@ -265,3 +265,18 @@ graph LR
     A[Autonomous Agent] -->|Local Decision-Making|> B[Decentralized Control]
     B -->|Swarm Coordination|> C[Global Objective]
     C -->|Feedback Loop|> A
+
+
+# --- FOUNDRY v10.5 EVOLUTION ---
+# Asynchronous Swarm Coordination Patterns: A Comprehensive Case Study
+===========================================================
+
+## Introduction
+Asynchronous swarm coordination patterns are a crucial component of distributed systems, enabling multiple agents to collaborate towards a common objective. This case study provides an in-depth examination of async swarm coordination, including its underlying principles, applications, and challenges.
+
+### Visual Overview
+```mermaid
+graph LR
+    A[Autonomous Agent] -->|Local Decision-Making|> B[Decentralized Control]
+    B -->|Swarm Coordination|> C[Global Objective]
+    C -->|Feedback Loop|> A
