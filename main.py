@@ -1,36 +1,3 @@
-# 🚀 ESTABLISHING FASTAPI/POSTGRESQL BOILERPLATE
-To establish a robust FastAPI/PostgreSQL boilerplate, we'll follow a structured approach, ensuring performance, security, and scalability.
-
-### Step 1: Project Initialization
-First, create a new directory for your project and initialize a new Python project using `poetry` or `pip`. For this example, we'll use `poetry`.
-
-[CMD]
-```bash
-mkdir fastapi_postgres_boilerplate
-cd fastapi_postgres_boilerplate
-poetry init -n
-poetry add fastapi uvicorn python-dotenv psycopg2-binary
-```
-
-### Step 2: Database Setup
-Next, set up your PostgreSQL database. You can use a local instance or a cloud-based service like AWS RDS. For this example, we'll assume you have a local PostgreSQL instance running.
-
-Create a new file named `.env` to store your database credentials.
-
-[FILE:.env]
-```makefile
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=your_username
-DB_PASSWORD=your_password
-DB_NAME=your_database_name
-```
-
-### Step 3: FastAPI Application Setup
-Create a new file named `main.py` to set up your FastAPI application.
-
-[FILE: main.py]
-```python
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
@@ -99,9 +66,3 @@ To test the application, you can use a tool like `curl` or a REST client like Po
 [CMD]
 ```bash
 curl http://localhost:8000/healthcheck
-```
-
-This should return a JSON response with a message indicating that the application is running correctly.
-
-[STATUS: SATISFIED]
-[NEXT_STEP: Implementing Authentication and Authorization]
