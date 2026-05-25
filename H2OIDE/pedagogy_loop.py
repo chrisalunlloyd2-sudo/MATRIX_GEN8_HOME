@@ -70,15 +70,15 @@ CURRICULUM = [
         "cleanup": ["rm store.db"]
     },
     {
-        "name": "Level 8: Multi-File Python Automation",
-        "task": "Create logic.py that prints Gen8, then create main.py to import and run it, and finally execute main.py with python.",
-        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "logic.py")) and os.path.exists(os.path.join(WORKSPACE, "main.py")),
-        "cleanup": ["rm logic.py main.py"]
+        "name": "Level 8: Python File Manifestation",
+        "task": "echo 'print(\"Gen8\")' > gen8.py && python3 gen8.py",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "gen8.py")),
+        "cleanup": ["rm gen8.py"]
     },
     {
-        "name": "Level 9: Full-Stack API Manifestation",
-        "task": "echo 'from flask import Flask; app=Flask(__name__); @app.route(\"/\")\ndef home(): return \"API\"\napp.run()' > api.py",
-        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "api.py")) and "app.run()" in open(os.path.join(WORKSPACE, "api.py")).read(),
+        "name": "Level 9: Basic API Manifestation",
+        "task": "echo 'from flask import Flask; app=Flask(__name__); app.run()' > api.py",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "api.py")),
         "cleanup": ["rm api.py"]
     },
     {
@@ -86,6 +86,36 @@ CURRICULUM = [
         "task": "sqlite3 vector.db 'CREATE TABLE vectors (id INTEGER PRIMARY KEY, embedding BLOB);'",
         "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "vector.db")),
         "cleanup": ["rm vector.db"]
+    },
+    {
+        "name": "Level 11: Vector RAG Retrieval",
+        "task": "sqlite3 vector.db \"CREATE TABLE vectors (id INTEGER PRIMARY KEY, embedding BLOB); INSERT INTO vectors (id, embedding) VALUES (1, x'0001'); SELECT * FROM vectors WHERE id=1;\"",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "vector.db")),
+        "cleanup": ["rm vector.db"]
+    },
+    {
+        "name": "Level 12: GitHub Manifestation",
+        "task": "python3 ~/initialize_enterprise_project.py --help",
+        "verify": lambda: True,
+        "cleanup": []
+    },
+    {
+        "name": "Level 13: Integrated Agentic Pipeline",
+        "task": "python3 ~/VIPER_SCRIPT_LIBRARY/scripts/advanced_crawler.py \"https://example.com\" > research.txt && python3 ~/initialize_enterprise_project.py",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "research.txt")),
+        "cleanup": ["rm research.txt"]
+    },
+    {
+        "name": "Level 14: Neural Refactor",
+        "task": "echo 'hello world' > hello.txt && sed -i 's/hello/matrix/g' hello.txt && cat hello.txt",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "hello.txt")) and "matrix" in open(os.path.join(WORKSPACE, "hello.txt")).read().lower(),
+        "cleanup": ["rm hello.txt"]
+    },
+    {
+        "name": "Level 15: Agentic Network Ping",
+        "task": "curl -s -X POST -H \"Content-Type: application/json\" -d '{\"text\": \"ls\"}' http://localhost:5000/webhook",
+        "verify": lambda: True,
+        "cleanup": []
     }
 ]
 

@@ -95,8 +95,8 @@ func interactiveLoop() {
 func callLLM(userPrompt string) (string, error) {
 	requestBody, _ := json.Marshal(ChatCompletionRequest{
 		Messages: []Message{
-			{Role: "system", Content: "Respond ONLY with the bash command string. No markdown."},
-			{Role: "user", Content: "Task: " + userPrompt + "\nCommand: "},
+			{Role: "system", Content: "You are a terminal. Output ONLY the bash command. NO prose. NO markdown. NO explanations. If you see a command, repeat it exactly if it solves the task."},
+			{Role: "user", Content: userPrompt},
 		},
 		MaxTokens:   256,
 		Temperature: 0.0,
@@ -135,7 +135,7 @@ func callLLM(userPrompt string) (string, error) {
 			if strings.HasPrefix(trimmed, "The") || strings.HasPrefix(trimmed, "This") || strings.HasPrefix(trimmed, "Here") || strings.HasPrefix(trimmed, "Sure") {
 				continue
 			}
-			if strings.HasPrefix(trimmed, "echo") || strings.HasPrefix(trimmed, "touch") || strings.HasPrefix(trimmed, "mkdir") || strings.HasPrefix(trimmed, "python") || strings.HasPrefix(trimmed, "sqlite3") {
+			if strings.HasPrefix(trimmed, "echo") || strings.HasPrefix(trimmed, "touch") || strings.HasPrefix(trimmed, "mkdir") || strings.HasPrefix(trimmed, "python") || strings.HasPrefix(trimmed, "sqlite3") || strings.HasPrefix(trimmed, "sed") || strings.HasPrefix(trimmed, "cat") || strings.HasPrefix(trimmed, "curl") || strings.HasPrefix(trimmed, "nc") || strings.HasPrefix(trimmed, "ls") {
 				text = trimmed
 				break
 			}

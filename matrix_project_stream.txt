@@ -1,0 +1,6 @@
+# 🌊 PROJECT STREAM: AUTONOMOUS MATRIX DASHBOARD
+1. [SHELL] mkdir -p matrix_dash/src matrix_dash/assets
+2. [SHELL] touch matrix_dash/src/main.py matrix_dash/src/utils.py matrix_dash/README.md
+3. [PYTHON] Write a Flask monitoring dashboard in matrix_dash/src/main.py that polls port 8080 and 5000.
+4. [SHELL] Create a styled index.html in matrix_dash/src/templates/ with a dark Matrix aesthetic.
+5. [GIT] Initialize repo in matrix_dash and push to GitHub.

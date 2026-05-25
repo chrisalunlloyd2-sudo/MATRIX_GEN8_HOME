@@ -75,21 +75,18 @@ def main():
             except:
                 pass
 
-    print("[Daemon] Monitoring logs for tasks in batches of 10...")
+    print("[Daemon] Monitoring logs for tasks...")
     while True:
         with open(LOG_FILE, 'r') as f:
             lines = f.readlines()
             
         unprocessed = lines[processed_count:]
         
-        # Read all in batches of 10
-        while len(unprocessed) >= 10:
-            batch = unprocessed[:10]
-            process_batch(batch)
-            processed_count += 10
+        if len(unprocessed) > 0:
+            process_batch(unprocessed)
+            processed_count += len(unprocessed)
             with open(PROCESSED_FILE, 'w') as f:
                 f.write(str(processed_count))
-            unprocessed = lines[processed_count:]
             
         time.sleep(5)
 

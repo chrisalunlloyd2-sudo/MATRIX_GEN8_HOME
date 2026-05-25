@@ -1,0 +1,14 @@
+# A New Text Document
+
+This is a new text document created using the OpenRouter Manager project. It is stored in the downloads folder.
+
+## Metadata
+* File Name: text.txt
+* File Path: downloads/text.txt
+* File Size: 0 bytes
+* File Type: text/plain
+```
+
+[CMD]
+```bash
+touch ~/Downloads/text.txt
