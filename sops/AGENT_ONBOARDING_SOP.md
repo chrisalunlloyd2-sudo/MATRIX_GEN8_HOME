@@ -1,60 +1,68 @@
-# AGENT_ONBOARDING_SOP.md
-## Standard Operating Procedure: Agent Onboarding
-### Overview
-This Standard Operating Procedure (SOP) outlines the steps required to onboard a new agent to the OpenRouter Manager system. The goal of this process is to ensure that all agents are properly configured, trained, and integrated into the system to maximize efficiency and effectiveness.
+# AGENT_ONBOARDING_SOP
+## TABLE OF CONTENTS
+1. [Introduction](#introduction)
+2. [Pre-Onboarding](#pre-onboarding)
+3. [Onboarding Process](#onboarding-process)
+4. [Post-Onboarding](#post-onboarding)
+5. [Troubleshooting](#troubleshooting)
 
-### Visual Badges
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Build Status](https://img.shields.io/badge/Build%20Status-Passing-green.svg)](https://github.com/chrisalunlloyd2-sudo/openrouter_manager/actions)
-[![Version](https://img.shields.io/badge/Version-1.0.0-orange.svg)](https://github.com/chrisalunlloyd2-sudo/openrouter_manager/releases)
+## Introduction
+The AGENT_ONBOARDING_SOP is designed to ensure a seamless and efficient onboarding process for new agents. This document outlines the steps and procedures to be followed during the onboarding process.
 
-### ASCII Tree
-├── .git/
+## Pre-Onboarding
+Before the onboarding process begins, the following steps must be completed:
+1. **Create a new GitHub repository** for the agent's project.
+2. **Initialize the repository** with the necessary files and directories.
+3. **Configure the repository** settings, including permissions and access control.
+
+## Onboarding Process
+The onboarding process consists of the following steps:
+1. **Agent Registration**: The agent must register with the system by providing the necessary information, including their name, email address, and GitHub username.
+2. **Repository Setup**: The agent's repository must be set up with the necessary files and directories, including the `README.md`, `src/`, and `tests/` directories.
+3. **Dependency Installation**: The agent must install the necessary dependencies, including Python 3.10+ and the required packages.
+4. **Code Generation**: The agent must generate the necessary code, including the `main.py` file and any additional files required for the project.
+
+## Post-Onboarding
+After the onboarding process is complete, the following steps must be taken:
+1. **Verify Repository**: Verify that the repository has been set up correctly and that all necessary files and directories are present.
+2. **Test Code**: Test the generated code to ensure that it is working as expected.
+3. **Provide Feedback**: Provide feedback to the agent on their onboarding experience and offer suggestions for improvement.
+
+## Troubleshooting
+If any issues arise during the onboarding process, the following troubleshooting steps can be taken:
+1. **Check Repository**: Check the repository settings and permissions to ensure that they are configured correctly.
+2. **Verify Dependencies**: Verify that the necessary dependencies have been installed correctly.
+3. **Review Code**: Review the generated code to ensure that it is correct and functioning as expected.
+```
+
+[CMD]
+```bash
+# Create a new GitHub repository
+git init
+git add.
+git commit -m "Initial commit"
+git remote add origin https://github.com/chrisalunlloyd2-sudo/openrouter_manager.git
+git push -u origin master
+
+# Initialize the repository with the necessary files and directories
+mkdir src
+mkdir tests
+touch README.md
+touch src/main.py
+touch tests/test_main.py
+
+# Configure the repository settings
+git config --global user.name "chrisalunlloyd2-sudo"
+git config --global user.email "chrisalunlloyd2-sudo@example.com"
+```
+
+[ASCII TREE TEMPLATE]
+```
+├──.git/
 ├── README.md
 ├── sops/
-│   ├── AGENT_ONBOARDING_SOP.md
-│   └── TODO.md
+│   └── AGENT_ONBOARDING_SOP.md
 ├── src/
 │   └── main.py
 └── tests/
-
-### Onboarding Process
-The onboarding process for a new agent consists of the following steps:
-
-1. **Agent Creation**: Create a new agent instance and configure its basic settings, such as agent name, description, and authentication credentials.
-2. **Training and Configuration**: Train the agent using the provided training data and configure its parameters to optimize performance.
-3. **Integration with OpenRouter Manager**: Integrate the agent with the OpenRouter Manager system, including setting up communication protocols and data exchange formats.
-4. **Testing and Validation**: Test and validate the agent's functionality and performance to ensure it meets the required standards.
-5. **Deployment and Monitoring**: Deploy the agent to the production environment and monitor its performance and behavior to identify areas for improvement.
-
-### Axiomatic Breakdown
-The onboarding process can be broken down into the following functional axioms:
-
-* **UI**: User interface for agent creation and configuration
-* **DB**: Database for storing agent settings and training data
-* **State**: Agent state management for tracking agent status and behavior
-* **API**: Application programming interface for integrating with OpenRouter Manager
-
-### Multi-Platform Setups
-The onboarding process can be performed on the following platforms:
-
-#### Windows Setup
-1. Install Python 3.10+ from python.org
-2. Open PowerShell
-3. Run: pip install -r requirements.txt
-4. Execute: python src/main.py
-
-#### Android Setup (Termux)
-1. Install Termux
-2. pkg install python git
-3. pip install -r requirements.txt
-4. python src/main.py
-
-### Conclusion
-The agent onboarding process is a critical component of the OpenRouter Manager system. By following this SOP, agents can be properly configured, trained, and integrated into the system to maximize efficiency and effectiveness.
-```
-[CMD]
-```bash
-git add sops/AGENT_ONBOARDING_SOP.md
-git commit -m "Added AGENT_ONBOARDING_SOP.md"
-git push origin main
+    └── test_main.py
