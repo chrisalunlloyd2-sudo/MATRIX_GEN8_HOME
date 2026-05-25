@@ -128,6 +128,12 @@ CURRICULUM = [
         "task": "echo '{\"state\": \"active\"}' > state.json && cp state.json backup_state.json && rm state.json && mv backup_state.json state.json",
         "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "state.json")) and "active" in open(os.path.join(WORKSPACE, "state.json")).read(),
         "cleanup": ["rm state.json"]
+    },
+    {
+        "name": "Level 18: RAG Awareness",
+        "task": "sqlite3 ~/.matrix_ide/database/ledger.db \"SELECT command FROM successful_scripts ORDER BY id DESC LIMIT 1;\"",
+        "verify": lambda: True,
+        "cleanup": []
     }
 ]
 
