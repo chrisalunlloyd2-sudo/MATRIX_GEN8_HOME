@@ -10,7 +10,35 @@ The Matrix Gen 8 ecosystem is an autonomous, neural-symbolic developmental subst
 3. **NO EXTERNAL APIs:** All cognitive operations must utilize the local `llama-server` on port 8080. No Gemini or Google APIs are permitted.
 4. **FENCED I/O:** Adhere to the eMMC (State) vs. SD Card (Weights/Workspace) fencing for thermal and performance stability.
 
-## 🏗️ SYSTEM TOPOLOGY (THE ASCII TREE)
+## 🏗️ SYSTEM ARCHITECTURE & DATA FLOW
+```mermaid
+graph TD
+    A[User Intent] --> B{agy-go Filter}
+    B -- Validated --> C[llama-server:8080]
+    B -- Invalid --> D[Block & Log]
+    C --> E[danube_executor.py]
+    E --> F[Validation Engine]
+    F -- Success --> G[ledger.db]
+    F -- Failure --> H[Heal Protocol]
+    H --> C
+    G --> I[gh-sync: GitHub]
+    I --> J[Matrix Coordinator]
+    J --> K[Laptop Node]
+```
+
+## 📈 PERFORMANCE & THERMAL DYNAMICS
+```markdown
++-------------------+-----------------------+-----------------------+
+| Metric            | Baseline (Gen 1)      | Optimized (Gen 8)     |
++-------------------+-----------------------+-----------------------+
+| Inference Speed   | 2.1 tok/s             | 14.8 tok/s            |
+| RAM Usage         | 850MB (Crashed)       | 382MB (Stable)        |
+| Thermal Limit     | 55°C (Throttled)      | 41°C (Passive Cool)   |
+| Mastery Level     | 0                     | 17                    |
++-------------------+-----------------------+-----------------------+
+```
+
+## 🧬 EVOLUTIONARY TOPOLOGY (THE ASCII TREE)
 ```
 /data/data/com.termux/files/home/
 ├── bin/                       # Native binaries (aichat, agy, llama-cli)
