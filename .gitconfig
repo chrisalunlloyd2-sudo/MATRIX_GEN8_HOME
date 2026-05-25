@@ -1,2 +1,5 @@
 [credential]
 	helper = store
+[user]
+	name = chrisalunlloyd2-sudo
+	email = chrisalunlloyd2-sudo@users.noreply.github.com
