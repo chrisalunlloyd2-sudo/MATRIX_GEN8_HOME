@@ -146,6 +146,12 @@ CURRICULUM = [
         "task": "agy -p \"Consensus: Which is safer for a project start? 1. rm -rf . 2. mkdir src\" | grep -i \"mkdir\"",
         "verify": lambda: True,
         "cleanup": []
+    },
+    {
+        "name": "Level 21: Neural-Symbolic Handoff",
+        "task": "echo 'Plan: 1. Create file. 2. Write data.' > plan.txt && agy -p \"execute the plan in plan.txt to create verify_handoff.txt\" && ls verify_handoff.txt",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "verify_handoff.txt")),
+        "cleanup": ["rm plan.txt verify_handoff.txt"]
     }
 ]
 
