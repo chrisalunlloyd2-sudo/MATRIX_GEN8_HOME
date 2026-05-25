@@ -116,6 +116,18 @@ CURRICULUM = [
         "task": "curl -s -X POST -H \"Content-Type: application/json\" -d '{\"text\": \"ls\"}' http://localhost:5000/webhook",
         "verify": lambda: True,
         "cleanup": []
+    },
+    {
+        "name": "Level 16: Recursive Project Spawning",
+        "task": "echo 'import os; os.makedirs(\"spawned_project\", exist_ok=True); open(\"spawned_project/director.py\", \"w\").write(\"print(\\\"Spawned Director Active\\\")\")' > spawner.py && python3 spawner.py",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "spawned_project/director.py")),
+        "cleanup": ["rm -rf spawned_project spawner.py"]
+    },
+    {
+        "name": "Level 17: State Snapshot & Persistence",
+        "task": "echo '{\"state\": \"active\"}' > state.json && cp state.json backup_state.json && rm state.json && mv backup_state.json state.json",
+        "verify": lambda: os.path.exists(os.path.join(WORKSPACE, "state.json")) and "active" in open(os.path.join(WORKSPACE, "state.json")).read(),
+        "cleanup": ["rm state.json"]
     }
 ]
 
