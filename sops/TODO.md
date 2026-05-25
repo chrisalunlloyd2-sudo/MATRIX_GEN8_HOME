@@ -1,36 +1,22 @@
-## Updated TODO List for OpenRouter Manager
+# TODOs for OpenRouter Manager
+## Short-term objectives:
+1. **Implement Node 2: Executor** - Develop deterministic Regex extraction and multi-language compilation.
+2. **Enhance Node 1: Director** - Integrate pacing and Markov Hashing for improved performance.
+3. **Sync with GitHub** - Regularly push updates to `https://github.com/chrisalunlloyd2-sudo/openrouter_manager`.
 
-### High Priority
-1. **Implement Advanced Encryption**: Utilize `age` encryption for secure data storage.
-2. **Optimize Database Queries**: Reduce query execution time by 30% for better performance.
-3. **Enhance User Authentication**: Integrate 2FA for enhanced security.
+## Long-term objectives:
+1. **Develop Node 3: Syphon** - Create a seamless GitHub sync mechanism.
+2. **Integrate React/Tailwind components** - Enhance frontend user experience.
+3. **Build FastAPI backends** - Ensure high-performance backend operations.
 
-### Medium Priority
-1. **Automate Backup Process**: Schedule daily backups to prevent data loss.
-2. **Improve Error Handling**: Develop more informative error messages for easier debugging.
-3. **Update Documentation**: Reflect recent changes in the README.md and wiki.
-
-### Low Priority
-1. **Refactor Legacy Code**: Update outdated functions for better readability and maintainability.
-2. **Conduct Performance Audit**: Identify and address potential performance bottlenecks.
+## Next Steps:
+- Update Node 1: Director to include adaptive pacing.
+- Implement unit tests for Node 2: Executor.
+- Explore OneDrive API for state syncing across devices.
 ```
 
 [CMD]
 ```bash
 git add sops/TODO.md
-git commit -m "Updated TODO list for OpenRouter Manager"
+git commit -m "Update TODOs for OpenRouter Manager"
 git push origin main
-```
-
-To ensure seamless synchronization across devices, the following command will be executed:
-
-[CMD]
-```bash
-onedrive --sync
-```
-
-Before proceeding, I will run `advanced_crawler.py` to verify the latest APIs and standards:
-
-[CMD]
-```bash
-python advanced_crawler.py --check-apis
