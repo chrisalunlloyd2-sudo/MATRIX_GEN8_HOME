@@ -1,35 +1,35 @@
 import re
-import os
+import sys
 
-def scrub_content(content):
-    # 1. Scrub SHA256/Hex Hashes (32+ chars)
-    content = re.sub(r'[a-fA-F0-9]{32,}', '[HASH_REDACTED]', content)
+def scrub_output(text):
+    """
+    [PERFORMATIVE: SCRUB] High-entropy prose extractor.
+    Strips apologies, explanations, and markdown.
+    """
+    # 1. Strip markdown blocks
+    text = re.sub(r'`{3}.*?\n', '', text)
+    text = re.sub(r'`{3}', '', text)
     
-    # 2. Scrub absolute paths containing home directory
-    home_path = os.path.expanduser("~")
-    content = content.replace(home_path, "~")
+    # 2. Strip common AI 'qualifiers'
+    qualifiers = [
+        r"^I can help with that.*",
+        r"^Sure, here is.*",
+        r"^Certainly.*",
+        r"^Based on your request.*",
+        r"^To accomplish this.*",
+        r"^Here's the command.*"
+    ]
+    for q in qualifiers:
+        text = re.sub(q, '', text, flags=re.IGNORECASE | re.MULTILINE)
     
-    # 3. Scrub GitHub PATs or potential tokens
-    content = re.sub(r'ghp_[a-zA-Z0-9]{36}', '[TOKEN_REDACTED]', content)
-    
-    # 4. Scrub specific numeric IDs from logs that look like sensitive hashes
-    # (Example: 10+ digit integers in scientific results)
-    content = re.sub(r'\d{10,}', '[ID_REDACTED]', content)
-    
-    return content
-
-def scrub_file(file_path):
-    if not os.path.exists(file_path): return
-    with open(file_path, 'r') as f:
-        content = f.read()
-    
-    scrubbed = scrub_content(content)
-    
-    with open(file_path, 'w') as f:
-        f.write(scrubbed)
-    print(f"✅ Scrubbed: {file_path}")
+    # 3. Extract the first line that looks like a command
+    lines = [l.strip() for l in text.split('\n') if l.strip()]
+    for line in lines:
+        if any(line.startswith(token) for token in ['echo', 'touch', 'mkdir', 'python', 'sqlite3', 'sed', 'cat', 'curl', 'ls']):
+            return line
+            
+    return text.strip()
 
 if __name__ == "__main__":
-    targets = ["SCIENTIFIC_LOG.md", "PROJECT_LOG.md", "900_STEPS_SINGULARITY.md"]
-    for t in targets:
-        scrub_file(t)
+    if len(sys.argv) > 1:
+        print(scrub_output(" ".join(sys.argv[1:])))
