@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /data/data/com.termux/files/home/openrouter_manager
+python3 danube_director.py

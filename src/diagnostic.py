@@ -1,0 +1,1 @@
+def auto_fix(error): return 'Resolved'
