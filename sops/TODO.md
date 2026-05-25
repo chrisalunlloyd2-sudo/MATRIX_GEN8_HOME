@@ -1,11 +1,14 @@
-# Updated TODO list for Iteration 173
-- Task 1: Update documentation
-- Task 2: Run tests
-- Task 3: Sync repository
+# TODO
+## Priority
+* [ ] Task 1
+* [ ] Task 2
+## Done
+* [x] Task 3
+* [x] Task 4
 ```
 
 [CMD]
 ```bash
 git add sops/TODO.md
-git commit -m "Update TODO.md for Iteration 173"
+git commit -m "Iteration 174: Update TODO.md"
 git push origin main
