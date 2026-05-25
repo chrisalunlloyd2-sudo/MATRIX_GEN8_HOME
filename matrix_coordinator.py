@@ -52,14 +52,30 @@ def coordinate_learning():
     """Poll for new successful patterns from other agents."""
     print("[Coordinator] Monitoring Agentic Network for new pedagogical patterns...")
     harvest_network_patterns()
+def force_diversify_laptop():
+    """Sends a signal to the laptop node to break repetition loops."""
+    print("[Coordinator] Sending FORCE_DIVERSIFY signal to Laptop Agent Network...")
+    try:
+        # Trigger the EntropyInjector remotely
+        subprocess.run([
+            "ssh", f"user@{LAPTOP_IP}",
+            "python3 ~/foundry_work/SimsMerged/tools/EntropyInjector.py"
+        ], check=True)
+        print("[Coordinator] Entropy Injection Signal Sent.")
+    except Exception as e:
+        print(f"[Coordinator Error] Failed to send signal: {e}")
 
 def main():
     print("=====================================================================")
     print(" MATRIX COORDINATOR ACTIVE (Gen 8) ")
     print(" Goal: Get goals done & advance all programmatic goals. ")
     print("=====================================================================\n")
-    
+
+    # Check for Project Pink fix request
+    force_diversify_laptop()
+
     while True:
+...
         # Perform periodic sync to prevent state loss
         sync_to_laptop()
         coordinate_learning()

@@ -3,14 +3,24 @@ import subprocess
 import time
 import shutil
 
-# 🛡️ SCIENTIFIC EXECUTOR (v1.0)
-# [MANDATE: TEST, VALIDATE, ROLLBACK]
+# 🛡️ SCIENTIFIC EXECUTOR (v1.1)
+# [MANDATE: TEST, VALIDATE, ROLLBACK, ZERO-DELETION]
 
 BACKUP_DIR = os.path.expanduser('~/backup_vault/')
 
+def is_deletion_attempt(command):
+    destructive_tokens = ['rm ', 'rm -rf', 'unlink ', 'truncate -s 0', '> /dev/null']
+    return any(token in command for token in destructive_tokens)
+
 def execute_safely(command, test_cmd=None):
     print(f"--- 🧪 SCIENTIFIC EXECUTION: {command} ---")
-    
+
+    # --- ABSOLUTE MANDATE: ZERO DELETION ---
+    if is_deletion_attempt(command):
+        print("[🛑 CRITICAL BLOCK] Deletion attempt detected. MANDATE: NEVER DELETE, ONLY BUILD AND MERGE.")
+        print("[!] Command rejected by Scientific Executor.")
+        return False
+...
     # 1. Snapshot State
     timestamp = int(time.time())
     snapshot_path = os.path.join(BACKUP_DIR, f"snapshot_{timestamp}")
