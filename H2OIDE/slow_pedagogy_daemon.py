@@ -79,6 +79,9 @@ def execute_pedagogy_cycle(generation):
     # 4. Safe GitHub Sync
     try:
         print(f"[{timestamp_now}] Pushing Gen {generation} to GitHub...")
+        # FORCE CLEAR GIT LOCKS
+        subprocess.run(["rm", "-f", ".git/index.lock"], cwd=SANDBOX_DIR)
+        
         subprocess.run(["git", "add", "."], cwd=SANDBOX_DIR)
         subprocess.run(["git", "commit", "-m", f"[LAB-DAEMON] Gen {generation} - {timestamp_now.isoformat()}"], cwd=SANDBOX_DIR)
         subprocess.run(["git", "push", "origin", "main"], cwd=SANDBOX_DIR)
