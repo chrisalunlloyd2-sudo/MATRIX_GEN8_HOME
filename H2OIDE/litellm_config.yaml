@@ -1,0 +1,14 @@
+model_list:
+  - model_name: h2o-matrix
+    litellm_params:
+      model: gemini/gemini-1.5-flash
+      api_key: "os.environ/GEMINI_API_KEY"
+  - model_name: h2o-matrix-fallback
+    litellm_params:
+      model: openai/danube-local
+      api_base: "http://localhost:8080/v1"
+      api_key: "sk-local"
+
+router_settings:
+  routing_strategy: usage-based-routing
+  fallbacks: [{"h2o-matrix": ["h2o-matrix-fallback"]}]
