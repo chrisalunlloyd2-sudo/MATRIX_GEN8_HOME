@@ -10,6 +10,7 @@ import hashlib
 from h2o_db_schema import init_layered_schema, DB_PATH
 import subprocess
 from headless_project_suite import inject_context, update_state, set_roadmap, advance_step
+from fuzzy_logic_gate import match_predictive_topology
 
 class H2OIDE(cmd.Cmd):
     intro = """
@@ -141,11 +142,17 @@ class H2OIDE(cmd.Cmd):
         if "BASH" in intent:
             sys_prompt = "You are a terminal expert. The user wants a bash command. Provide ONLY the bash command, no prose."
         elif "CODE" in intent:
-            sys_prompt = "You are a senior developer. The user wants code. Provide clean, highly optimized code with brief comments."
+            sys_prompt = "You are a senior developer acting as a Fuzzy Logic Filter. Do NOT write from scratch. Use the provided topological template and fill in the blanks/variables based on user intent."
             advance_step() # Move forward in project when code is generated
         else:
             sys_prompt = "You are a helpful pedagogical AI assistant. Chat normally with the user."
             
+        # [PREDICTIVE TOPOLOGY GATE]
+        topology = match_predictive_topology(line)
+        if topology and "CODE" in intent:
+            print(f"[*] Fuzzy Gate Activated. Loading Predictive Topology: {topology['filename']}")
+            contextual_line = f"[PREDICTIVE TOPOLOGY LOADED]\nTEMPLATE:\n{topology['content']}\n\nUSER INTENT:\n{contextual_line}\n\n[TASK]: Fill in the blanks or append properties to this template exactly as requested. Do NOT generate from scratch."
+
         print("[*] Evolving prompt & predicting response...")
         response = self.call_ai_engine(contextual_line, system_prompt=sys_prompt)
         print(f"\n[H2O ({intent})] {response}\n")
