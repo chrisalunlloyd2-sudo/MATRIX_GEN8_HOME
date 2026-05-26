@@ -85,6 +85,10 @@ The **Matrix Coordinator** node facilitates non-stop learning by:
 - **Cognitive Load-Balancing:** Offloading heavy inference tasks to the Laptop while maintaining local autonomy for critical state transitions.
 - **Recursive Pedagogy:** Sharing successful code patterns (L1-L100) across all agents in the network.
 
+## 🔬 SCIENTIFIC DOCUMENTATION
+For a deep-dive into the architectural "why" and dual-platform setup instructions (Windows x Android), see:
+- [**SCIENTIFIC_SETUP_LOG.md**](./H2OIDE/SCIENTIFIC_SETUP_LOG.md)
+
 ## 🛠️ SETUP & INITIALIZATION (SOP)
 ### Android (Termux)
 1. Run `WAKE.sh` to initialize the substrate and check thermal health.
