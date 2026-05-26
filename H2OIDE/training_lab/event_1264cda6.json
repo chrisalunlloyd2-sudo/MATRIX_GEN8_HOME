@@ -1,0 +1,18 @@
+{
+  "event_id": "1264cda6",
+  "event_name": "Hourly Genetic Refinement Gen 2",
+  "timestamp": "2026-05-26T07:53:15.741935",
+  "input": "mirror core python to go script library",
+  "variant_a": {
+    "name": "Standard Jaccard",
+    "score": 0.3333333333333333,
+    "latency_ms": 0.030994415283203125
+  },
+  "variant_b": {
+    "name": "Markov-Weighted",
+    "score": 0.5666666666666667,
+    "latency_ms": 0.3142356872558594
+  },
+  "winner": "B",
+  "algebraic_delta": 0.23333333333333334
+}
