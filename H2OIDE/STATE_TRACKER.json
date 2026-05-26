@@ -10,5 +10,11 @@
     "active": true,
     "max_prompt_length": 512
   },
-  "last_updated": ""
+  "last_updated": "2026-05-26T07:28:06.194581",
+  "roadmap": [
+    "Scaffold headless logic for Setup Matrix Gen 8 Neural Synapse",
+    "Inject webcrawl data and build core math",
+    "Make GitHub beautiful and articulate"
+  ],
+  "current_step": 2
 }
