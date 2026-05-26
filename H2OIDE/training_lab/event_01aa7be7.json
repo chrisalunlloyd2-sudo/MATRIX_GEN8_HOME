@@ -1,0 +1,18 @@
+{
+  "event_id": "01aa7be7",
+  "event_name": "Predictive Route Optimization",
+  "timestamp": "2026-05-26T07:52:18.499989",
+  "input": "make a react dashboard",
+  "variant_a": {
+    "name": "Standard Jaccard",
+    "score": 0.2857142857142857,
+    "latency_ms": 0.04363059997558594
+  },
+  "variant_b": {
+    "name": "Markov-Weighted",
+    "score": 0.48571428571428565,
+    "latency_ms": 0.43773651123046875
+  },
+  "winner": "B",
+  "algebraic_delta": 0.19999999999999996
+}
