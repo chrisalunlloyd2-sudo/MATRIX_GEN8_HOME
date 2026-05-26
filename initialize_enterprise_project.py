@@ -31,23 +31,51 @@ def generate_ascii_tree(path="."):
     """Simple ASCII tree generator."""
     output = []
     # Simplified tree logic
-    files = os.listdir(path)
-    for f in sorted(files):
-        if f.startswith('.'): continue
-        output.append(f"├── {f}")
+    try:
+        files = os.listdir(path)
+        for f in sorted(files):
+            if f.startswith('.'): continue
+            output.append(f"├── {f}")
+    except:
+        pass
     return "\n".join(output)
+
+def generate_high_fidelity_readme(project_name, tree):
+    template_path = os.path.expanduser("~/H2OIDE/README_TEMPLATE.md")
+    if not os.path.exists(template_path):
+        # Fallback inline template if file missing
+        template = "# 🌌 {{PROJECT_NAME}}\n\n## 🧬 EVOLUTIONARY TOPOLOGY\n```\n{{ASCII_TREE}}\n```"
+    else:
+        with open(template_path, 'r') as f:
+            template = f.read()
+
+    # Contextual inference for replacements
+    # This can be expanded with real AI calls if needed, 
+    # but here we use reasonable defaults or environment cues.
+    replacements = {
+        "{{PROJECT_NAME}}": project_name,
+        "{{TIMESTAMP}}": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "{{OBJECTIVE}}": "The Singularity Manifestation",
+        "{{DESCRIPTION}}": f"The {project_name} ecosystem is an autonomous, neural-symbolic developmental substrate designed for 32-bit Android environments.",
+        "{{HIGHLIGHTS}}": "- Autonomous state synchronization.\n- Deterministic symbolic execution.\n- Seamless agentic coordination.",
+        "{{PACKAGE_TABLE}}": f"| **`{project_name}`** | Core | Primary manifestation of the {project_name} logic engine. |",
+        "{{ASCII_TREE}}": tree
+    }
+
+    for key, val in replacements.items():
+        template = template.replace(key, val)
+    
+    return template
 
 def initialize():
     # Use current directory name as project name
     project_root = os.getcwd()
     project_name = os.path.basename(project_root)
     
-    # Specific override for root home if needed
     if project_name == "home" or project_name == "":
          project_name = "MATRIX_GEN8_HOME"
 
     token = get_token()
-    
     if not token:
         print("[-] Missing OAuth token. Cannot proceed.")
         return
@@ -76,20 +104,32 @@ def initialize():
     subprocess.run(["git", "remote", "add", "origin", remote_url], check=False)
     subprocess.run(["git", "branch", "-M", "main"], check=False)
 
-    # 3. Create Enterprise Docs
-    if not os.path.exists("README.md"):
-        tree = generate_ascii_tree()
-        with open("README.md", "w") as f:
-            f.write(f"# 🌌 {project_name}\n\n## 📋 TOPOLOGICAL FILE TREE\n```text\n{tree}\n```\n\n## ⚡ PERFORMATIVES\n- [PERFORMATIVE: INITIALIZE] Project manifestation.\n")
+    # 3. Create Enterprise Docs (High-Fidelity Standard)
+    tree = generate_ascii_tree()
     
-    for doc in ["Blueprint.md", "CHANGELOG.md", "PROJECT_LOG.md"]:
+    # Always update README to standard if it doesn't meet v10.1 criteria
+    # "NEVER DELETE EVERYTHING" mandate: we preserve the old README as README_LEGACY.md if it exists
+    if os.path.exists("README.md"):
+        with open("README.md", "r") as f:
+            old_content = f.read()
+        if "# 🌌" not in old_content: # Check for our signature
+            print("[*] Migrating legacy README to standard v10.1 format.")
+            os.rename("README.md", "README_LEGACY.md")
+            with open("README.md", "w") as f:
+                f.write(generate_high_fidelity_readme(project_name, tree))
+    else:
+        with open("README.md", "w") as f:
+            f.write(generate_high_fidelity_readme(project_name, tree))
+    
+    # Ensure mandatory documents exist
+    for doc in ["Blueprint.md", "CHANGELOG.md", "PROJECT_LOG.md", "ROADMAP.md"]:
         if not os.path.exists(doc):
             with open(doc, "w") as f:
                 f.write(f"# {doc.split('.')[0]}\nInitial manifestation: {datetime.now().isoformat()}\n")
 
     # 4. Sync State
     subprocess.run(["git", "add", "."], check=False)
-    subprocess.run(["git", "commit", "-m", "Enterprise: Automated Project Sync"], check=False)
+    subprocess.run(["git", "commit", "-m", f"[MANIFEST] v10.1 High-Fidelity Enterprise Sync: {project_name}"], check=False)
     
     print("--- 📡 Checking Network Connectivity ---")
     try:
