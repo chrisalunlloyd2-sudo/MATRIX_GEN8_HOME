@@ -22,6 +22,9 @@ echo "    -> Local API endpoints unified at http://localhost:4000/v1"
 echo "[*] Starting H2OIDE Headless Daemon..."
 nohup python3 ~/H2OIDE/daemon.py > ~/daemon.log 2>&1 &
 
+echo "[*] Starting Slow Pedagogy Background Daemon (1/hour)..."
+nohup nice -n 19 python3 ~/H2OIDE/slow_pedagogy_daemon.py > ~/slow_pedagogy.log 2>&1 &
+
 echo "[*] Substrate Ready."
 echo ""
 echo ">>> Enter the cockpit by typing: aichat"
