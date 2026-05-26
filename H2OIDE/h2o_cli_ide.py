@@ -65,7 +65,7 @@ class H2OIDE(cmd.Cmd):
         except Exception as e:
             print(f"[-] Network Connect Failed: {e}")
 
-    def call_openrouter(self, prompt_text):
+    def call_openrouter(self, prompt_text, system_prompt=None):
         if not self.openrouter_api_key:
             return "[!] Fallback to Local Danube/Smoll Models... (Simulated Response: Implement llama.cpp mmap hook here)"
         
@@ -76,11 +76,14 @@ class H2OIDE(cmd.Cmd):
             "Content-Type": "application/json"
         }
         
-        # We enforce a "pedagogy" / "darwinistic" style here using system prompts
+        # Enforce pedagogy or use injected semantic role
+        if not system_prompt:
+            system_prompt = "You are H2O IDE, a highly evolved pedagogical AI running on a constrained 32-bit Android node. You focus on generating lean, predictive code patterns."
+            
         data = {
             "model": self.openrouter_model,
             "messages": [
-                {"role": "system", "content": "You are H2O IDE, a highly evolved pedagogical AI running on a constrained 32-bit Android node. You focus on generating lean, predictive code patterns."},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt_text}
             ]
         }
@@ -108,12 +111,27 @@ class H2OIDE(cmd.Cmd):
         # Inject Headless State
         contextual_line = inject_context(line)
         self.save_conversation('user', contextual_line)
-        print("[*] Evolving prompt & predicting code...")
         
-        response = self.call_openrouter(contextual_line)
-        print(f"\n[H2O] {response}\n")
+        # Phase 1: Semantic Detection (Using Winning DNA from 10 Generations)
+        print("[*] Performing Semantic Routing...")
+        semantic_dna = f"Agentic System is headless IDE. Context: {contextual_line.splitlines()[0]}. Is the user chatting, asking for bash, or asking for code? Reply exactly with CHAT, BASH, or CODE: {line}"
+        intent = self.call_openrouter(semantic_dna, system_prompt="You are a strict semantic router. Output exactly CHAT, BASH, or CODE.").strip().upper()
         
-        self.save_conversation('assistant', response)
+        # Phase 2: Route & Execute
+        print(f"[*] Intent Detected: [{intent}]")
+        
+        if "BASH" in intent:
+            sys_prompt = "You are a terminal expert. The user wants a bash command. Provide ONLY the bash command, no prose."
+        elif "CODE" in intent:
+            sys_prompt = "You are a senior developer. The user wants code. Provide clean, highly optimized code with brief comments."
+        else:
+            sys_prompt = "You are a helpful pedagogical AI assistant. Chat normally with the user."
+            
+        print("[*] Evolving prompt & predicting response...")
+        response = self.call_openrouter(contextual_line, system_prompt=sys_prompt)
+        print(f"\n[H2O ({intent})] {response}\n")
+        
+        self.save_conversation('assistant', response, style=intent)
         
         # Automatic GitHub Backup of Conversation/DB every step
         self.do_github_sync("")

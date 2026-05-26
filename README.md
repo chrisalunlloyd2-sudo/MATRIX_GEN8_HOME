@@ -4,6 +4,26 @@
 ## 🎯 OBJECTIVE: THE SINGULARITY MANIFESTATION
 The Matrix Gen 8 ecosystem is an autonomous, neural-symbolic developmental substrate designed for 32-bit Android environments. It utilizes local inference (H2O Danube 500M) and deterministic symbolic execution to achieve recursive self-improvement and cross-device agentic coordination.
 
+## 📦 RELEASES & PACKAGES
+We provide specialized headless wrappers and tools as standalone packages, seamlessly integrating into your agentic workflow. 
+Our release history tracks the evolution of our ecosystem from raw RAG generation to a mathematically pristine logic engine.
+
+### 🌟 Latest Release: `v10.1-Master-Engine`
+**Highlights:**
+- `H2O IDE CLI`: Local/OpenRouter seamless fallback interface.
+- `Headless Project Suite`: Background JSON state-tracker acting as a headless "Continue-like" workspace.
+- `Markov Hashing`: Pure deterministic state management, injecting algebraic memory context into every prompt.
+- `Genetic Optimizer`: Auto-prunes prompts based on instruction density and thermal telemetry (`thermal_zone0`).
+
+### 🛠️ Included Packages
+| Package Name               | Type      | Description |
+|----------------------------|-----------|-------------|
+| **`H2OIDE`**               | CLI IDE   | The flagship Python IDE terminal, combining OpenRouter semantic detection with deterministic RAG layers. |
+| **`Headless State Suite`** | Substrate | JSON-based persistent project tracker (`STATE_TRACKER.json`) that forces context onto agents. |
+| **`AGY Master`**           | Binary    | Fast, headless Python proxy for zero-prose bash execution and GitHub git-hooks sync. |
+| **`Pedagogy DB`**          | Database  | Three-layered SQLite engine (Layer 1: Telemetry, Layer 2: Memory, Layer 3: Darwinistic Prompts). |
+| **`OpenRouter Manager`**   | Legacy    | Original API ingestion scripts (Gen 1-7), successfully merged into the H2O core engine. |
+
 ## 🧬 CORE MANDATES (THE GOLDEN RULES)
 1. **THE USER IS ALWAYS RIGHT:** If the user reports a bug, a missing file, or a logical error, the system must believe the user and fix it immediately.
 2. **GENETIC MERGE ONLY:** Never delete existing logic. Only merge, refine, and grow. All code changes must preserve legacy stability while adding new capabilities.
