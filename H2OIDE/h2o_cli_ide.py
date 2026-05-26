@@ -8,6 +8,7 @@ import requests
 import cmd
 from h2o_db_schema import init_layered_schema, DB_PATH
 import subprocess
+from headless_project_suite import inject_context, update_state
 
 class H2OIDE(cmd.Cmd):
     intro = """
@@ -104,10 +105,12 @@ class H2OIDE(cmd.Cmd):
         if not line:
             return
         
-        self.save_conversation('user', line)
+        # Inject Headless State
+        contextual_line = inject_context(line)
+        self.save_conversation('user', contextual_line)
         print("[*] Evolving prompt & predicting code...")
         
-        response = self.call_openrouter(line)
+        response = self.call_openrouter(contextual_line)
         print(f"\n[H2O] {response}\n")
         
         self.save_conversation('assistant', response)

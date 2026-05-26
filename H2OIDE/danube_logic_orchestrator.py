@@ -4,6 +4,8 @@ import subprocess
 import json
 import time
 import re
+import hashlib
+from headless_project_suite import update_state, get_state, inject_context
 
 # ==============================================================================
 # DANUBE LOGIC ORCHESTRATOR (v4.0)
@@ -18,9 +20,17 @@ class DanubeOrchestrator:
         self.tree = {"goal": goal, "scientific_intent": "", "tasks": [], "current_index": 0}
         self.role = "openrouter-manager-v2"
         self.real_aichat = "/data/data/com.termux/files/usr/bin/aichat"
+        
+        # Markov Hashing Algebra
+        self.markov_state_hash = hashlib.md5(goal.encode()).hexdigest()[:8]
+        update_state("markov_state", self.markov_state_hash)
+        update_state("current_phase", "initialization")
 
     def run_ai(self, prompt, system_instruction=""):
         """Calls OpenRouter via aichat."""
+        # Inject Headless Combinational Context
+        prompt = inject_context(prompt)
+        
         full_prompt = f"{system_instruction}\n\nTask: {prompt}"
         cmd = [self.real_aichat, "--role", self.role, full_prompt]
         try:
@@ -34,6 +44,7 @@ class DanubeOrchestrator:
         """Phase 0: Scientific Intent Distillation (SID).
         Handles sloppy verbage and extracts strict technical performatives.
         """
+        update_state("current_phase", "intent_distillation")
         print(f"[SID] Distilling scientific intent from: '{self.raw_goal}'")
         instruction = (
             "You are a Scientific Intent Distiller. The user might provide 'sloppy' input with typos or informal language. "
@@ -51,6 +62,7 @@ class DanubeOrchestrator:
         if not self.scientific_intent:
             self.distill_intent()
             
+        update_state("current_phase", "planning_logic_tree")
         print(f"[Planner] Generating Logic Tree for distilled intent...")
         instruction = (
             "You are a Project Architect. Break the Scientific Intent into sequential tasks. "
@@ -95,6 +107,10 @@ class DanubeOrchestrator:
 
     def execute_task(self, task):
         """Phase 2: Implementation (Director + Executor)."""
+        update_state("current_phase", f"executing_task: {task['name']}")
+        self.markov_state_hash = hashlib.md5((self.markov_state_hash + task['name']).encode()).hexdigest()[:8]
+        update_state("markov_state", self.markov_state_hash)
+        
         print(f"[Director] Attacking Task: {task['name']} (Attempt {task['attempts']+1})")
         # Mirroring Gemini CLI: Research -> Strategy -> Execution
         instruction = (
@@ -115,6 +131,7 @@ class DanubeOrchestrator:
 
     def test_task(self, task):
         """Phase 3: Validation (Tester)."""
+        update_state("current_phase", f"validating_task: {task['name']}")
         print(f"[Tester] Verifying Task: {task['name']}")
         instruction = (
             "You are a Quality Assurance Engineer. "
@@ -143,6 +160,7 @@ class DanubeOrchestrator:
 
     def sync(self, task_name):
         """Phase 4: Synchronization (Synchronizer)."""
+        update_state("current_phase", f"syncing_task: {task_name}")
         print("[Synchronizer] Syphoning state to GitHub...")
         subprocess.run(["python3", "github_operator.py", f"autonomous: completed {task_name}"])
 

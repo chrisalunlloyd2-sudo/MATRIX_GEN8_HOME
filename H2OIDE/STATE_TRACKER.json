@@ -1,0 +1,14 @@
+{
+  "project_id": "H2O_IDE_CLI",
+  "current_phase": "orchestrator_enhancement",
+  "markov_state": "S1",
+  "environmental_health": {
+    "cpu_temp": 35.0,
+    "duty_cycle_ratio": 1.0
+  },
+  "genetic_pruning": {
+    "active": true,
+    "max_prompt_length": 512
+  },
+  "last_updated": ""
+}
