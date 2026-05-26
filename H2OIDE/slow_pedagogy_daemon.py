@@ -80,7 +80,9 @@ def execute_pedagogy_cycle(generation):
     try:
         print(f"[{timestamp_now}] Pushing Gen {generation} to GitHub...")
         # FORCE CLEAR GIT LOCKS
-        subprocess.run(["rm", "-f", ".git/index.lock"], cwd=SANDBOX_DIR)
+        lock_path = os.path.join(SANDBOX_DIR, ".git/index.lock")
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
         
         subprocess.run(["git", "add", "."], cwd=SANDBOX_DIR)
         subprocess.run(["git", "commit", "-m", f"[LAB-DAEMON] Gen {generation} - {timestamp_now.isoformat()}"], cwd=SANDBOX_DIR)
