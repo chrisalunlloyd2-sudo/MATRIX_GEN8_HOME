@@ -77,30 +77,33 @@ def execute_pedagogy_cycle(generation):
     throttle_cpu()
     
     # 4. Safe GitHub Sync
-    print(f"[{timestamp_now}] Pushing Gen {generation} to GitHub...")
-    subprocess.run(["git", "add", "."], cwd=SANDBOX_DIR)
-    subprocess.run(["git", "commit", "-m", f"[LAB-DAEMON] Gen {generation} - {timestamp_now.isoformat()}"], cwd=SANDBOX_DIR)
-    subprocess.run(["git", "push", "origin", "main"], cwd=SANDBOX_DIR)
-    print(f"[{timestamp_now}] Cycle Complete. Next run in 60 mins.")
+    try:
+        print(f"[{timestamp_now}] Pushing Gen {generation} to GitHub...")
+        subprocess.run(["git", "add", "."], cwd=SANDBOX_DIR)
+        subprocess.run(["git", "commit", "-m", f"[LAB-DAEMON] Gen {generation} - {timestamp_now.isoformat()}"], cwd=SANDBOX_DIR)
+        subprocess.run(["git", "push", "origin", "main"], cwd=SANDBOX_DIR)
+        print(f"[{timestamp_now}] Cycle Complete. Next run in 60 mins.")
+    except Exception as e_git:
+        print(f"[!] Git Sync Error: {e_git}")
 
 if __name__ == "__main__":
     check_lock()
-    print("[*] Starting Training Lab Daemon v4.0 (Stabilized Hourly Rhythm)")
-    
-    # Accurate generation counting
-    existing_files = [f for f in os.listdir(SANDBOX_DIR) if f.startswith("gen_")]
-    current_gen = len(existing_files) + 1
+    print("[*] Starting Training Lab Daemon v4.1 (Maximum Resilience)")
     
     while True:
         try:
+            # Accurate generation counting
+            existing_files = [f for f in os.listdir(SANDBOX_DIR) if f.startswith("gen_")]
+            current_gen = len(existing_files) + 1
+            
             execute_pedagogy_cycle(current_gen)
-            current_gen += 1
-            # Wait for 3600 seconds (1 hour)
+            
+            print(f"[*] Daemon entering 1-hour sleep state...")
             for _ in range(3600):
                 time.sleep(1)
         except Exception as e:
-            print(f"[!] Daemon Error: {e}")
+            print(f"[!] Critical Loop Error: {e}")
             time.sleep(300)
         except KeyboardInterrupt:
-            os.remove(LOCK_FILE)
+            if os.path.exists(LOCK_FILE): os.remove(LOCK_FILE)
             sys.exit(0)
