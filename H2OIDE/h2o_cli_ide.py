@@ -22,7 +22,7 @@ class H2OIDE(cmd.Cmd):
 
     def __init__(self):
         super().__init__()
-        self.openrouter_api_key = self.extract_openrouter_key()
+        self.openrouter_api_key, self.openrouter_model = self.extract_openrouter_config()
         if not self.openrouter_api_key:
             print("[!] OpenRouter API Key not found in aichat config. Will fallback to Local GGUF/Danube.")
         
@@ -31,10 +31,12 @@ class H2OIDE(cmd.Cmd):
         self.session_id = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         self.connect_agentic_network()
 
-    def extract_openrouter_key(self):
+    def extract_openrouter_config(self):
         config_path = os.path.expanduser('~/.config/aichat/config.yaml')
+        api_key = None
+        model = "meta-llama/llama-3.3-70b-instruct"
         if not os.path.exists(config_path):
-            return None
+            return api_key, model
         try:
             with open(config_path, 'r') as f:
                 content = yaml.safe_load(f)
@@ -42,10 +44,13 @@ class H2OIDE(cmd.Cmd):
             clients = content.get('clients', [])
             for client in clients:
                 if client.get('type') == 'openai-compatible' and 'openrouter' in client.get('api_base', ''):
-                    return client.get('api_key')
+                    api_key = client.get('api_key')
+            raw_model = content.get('model', '')
+            if raw_model.startswith('openrouter:'):
+                model = raw_model.split('openrouter:')[1]
         except Exception as e:
             print(f"[-] Error reading aichat config: {e}")
-        return None
+        return api_key, model
 
     def connect_agentic_network(self):
         print("[*] Connecting to Agentic Network...")
@@ -72,7 +77,7 @@ class H2OIDE(cmd.Cmd):
         
         # We enforce a "pedagogy" / "darwinistic" style here using system prompts
         data = {
-            "model": "meta-llama/llama-3-8b-instruct:free", # Using a free fallback model as requested
+            "model": self.openrouter_model,
             "messages": [
                 {"role": "system", "content": "You are H2O IDE, a highly evolved pedagogical AI running on a constrained 32-bit Android node. You focus on generating lean, predictive code patterns."},
                 {"role": "user", "content": prompt_text}
