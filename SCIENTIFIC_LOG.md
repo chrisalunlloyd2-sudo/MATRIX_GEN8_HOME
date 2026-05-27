@@ -38,3 +38,19 @@
 3.  All resulting binaries successfully pass execution tests.
 
 **Status:** Awaiting implementation of Variant A in Phase 1 codebase.
+
+## [A/B TEST HYPOTHESIS: Phase 2 mmap Performance]
+**Objective:** Compare Inference latency on 32-bit Android when using mmap (memory mapping) vs full RAM loading for a 400MB Q2 GGUF model.
+
+**Variant A (mmap enabled):** llama-server --mmap
+*   *Theory:* Allows the OS to handle paging. Should prevent OOM kills on 512MB RAM but might incur I/O latency on slow eMMC.
+
+**Variant B (No mmap):** llama-server --no-mmap
+*   *Theory:* Forces the entire model into active RAM. Likely to trigger Android Low Memory Killer (LMK) immediately on 32-bit fenced hardware.
+
+**Success Criteria:**
+1.  System stability: No process crashes during a 10-turn conversation.
+2.  Inference speed: < 500ms per token (pref 2-3 tokens/sec on 32-bit).
+3.  Memory Headroom: > 50MB free RAM reported by free -m during active inference.
+
+**Status:** Implementation payload written. Awaiting execution in Phase 3.

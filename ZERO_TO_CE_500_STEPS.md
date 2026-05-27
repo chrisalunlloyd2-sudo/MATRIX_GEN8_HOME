@@ -49,3 +49,21 @@
 *   **Step 71-80 (Binary Unpacking & Chmod):** The stream is buffered to local data directory and chmod applied.
 *   **Step 81-90 (Symlink & Path Construction):** Constructing the shell environment (PATH, LD_LIBRARY_PATH).
 *   **Step 91-100 (Subsystem Verification Test):** MainActivity executes a test script to verify environment.
+# 🧠 ZERO-TO-CE: PHASE 2 EXHAUSTIVE MANIFEST (Steps 101-200)
+
+## 🧠 PHASE 2: INFERENCE ENGINE INSTALLATION
+
+### Subsection 2.1: Binary Provisioning (Steps 101-140)
+*   **Step 101-110 (Arch Sanitization):** Explicit verification of ARMv7 architecture via uname -m.
+*   **Step 111-125 (Repo Synchronization):** Updating the package manager with a timeout logic to prevent hanging in low-bandwidth scenarios.
+*   **Step 126-140 (Binary Manifestation):** Execution of pkg install llama.cpp. This installs the 32-bit stable build into the shell environment.
+
+### Subsection 2.2: Model Weight Acquisition (Steps 141-170)
+*   **Step 141-150 (Vault Verification):** Ensure /sdcard/MatrixVault/GGUF is R/W accessible.
+*   **Step 151-165 (Atomic Download Pipeline):** Execution of download_weights.py. Uses 1MB chunked streaming to HuggingFace to keep RAM < 50MB. Rename to .gguf only after SHA256/Byte-count verification.
+*   **Step 166-170 (Permission Persistence):** Ensuring weights have 644 permissions so the local daemon can read them via mmap.
+
+### Subsection 2.3: Inference Daemon Init (Steps 171-200)
+*   **Step 171-180 (Endpoint Configuration):** Writing 127.0.0.1:11434 to state files to unify all future agentic routing.
+*   **Step 181-190 (Thread Tuning):** Setting -t 2 (2 threads) to prevent CPU frequency pinning and thermal throttling on Gen 8 hardware.
+*   **Step 191-200 (Success Handshake):** Executing llama-server --version and logging to SINGULARITY_LOG.md.
