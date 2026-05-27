@@ -118,3 +118,19 @@
 3.  Indexing Speed: > 10 files per second on 32-bit eMMC.
 
 **Status:** Phase 6.1 Indexer manifested. Awaiting benchmark results.
+
+## [A/B TEST HYPOTHESIS: Phase 6.2 Search Prioritization]
+**Objective:** Determine if Recency Weighting improves AI performance in active development tasks on 32-bit hardware.
+
+**Variant A (Pure Semantic):** Simple ORDER BY cosine_similarity DESC.
+*   *Theory:* Might retrieve old, stale code versions if they match keywords better.
+
+**Variant B (Recency-Semantic Hybrid):** ORDER BY (similarity * 0.7) + (recency_score * 0.3) DESC.
+*   *Theory:* Prioritizes the current In-Progress files you are working on, reducing hallucination of old logic.
+
+**Success Criteria:**
+1.  Context Relevance: AI accurately references the latest step in ZERO_TO_CE_500_STEPS.md.
+2.  Response Accuracy: 100% success on "What was the last change I made?" query.
+3.  Retrieval Latency: SQL calculation overhead < 50ms.
+
+**Status:** Implementation in progress.

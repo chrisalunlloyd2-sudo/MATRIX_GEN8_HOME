@@ -135,3 +135,11 @@
 ### Subsection 6.3: Visual Knowledge Manager (Steps 561-600)
 *   **Step 561-580 (UI Integration):** Adding a 'Knowledge' window to the Windows CE interface to allow the user to see what files the AI has indexed.
 *   **Step 581-600 (Performative Audit):** Final stress test of the RAG pipeline. Ensuring <1s retrieval time on 32-bit hardware.
+# 🛡️ ZERO-TO-CE: PHASE 6.2 EXHAUSTIVE MANIFEST (Steps 531-560)
+
+## 🛡️ PHASE 6.2: SEMANTIC SEARCH HARDENING
+
+### Subsection 6.2: Search Prioritization & Recency (Steps 531-560)
+*   **Step 531-540 (Recency Decay Logic):** Updating the RAG search SQL query to multiply cosine similarity by a time-decay factor. Recent file changes in the workspace get higher priority in the context window.
+*   **Step 541-550 (Source-Type Boosting):** Implementing logic to boost .md and .py files over .json or logs, ensuring the AI prioritizes instruction and logic over raw data.
+*   **Step 551-560 (Dynamic K-Top Retrieval):** Modifying the system to fetch the Top-3 recent context chunks AND the Top-2 highest semantic match chunks, creating a hybrid context window.
