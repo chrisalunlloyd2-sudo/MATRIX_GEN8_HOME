@@ -38,3 +38,14 @@
 
 ---
 [STATUS: BLUEPRINT_EXTENSIVE_POPULATED]
+
+## 🏗️ ADVANCED LOGIC: DANUBE LOGIC TREE (v3.0)
+The system now supports multi-layered agentic execution via the `Danube Logic Orchestrator`.
+
+1. **User Goal** -> **Planner** (OpenRouter) -> **Logic Tree (JSON)**
+2. **Logic Tree** -> **Director** (Task Implementation) -> **Headless Payload**
+3. **Headless Payload** -> **Executor** (Local) -> **Filesystem Manifestation**
+4. **Filesystem Manifestation** -> **Tester** (QA) -> **Verification Script**
+5. **Verification Script** -> **Validator** (Local) -> **Success/Failure**
+6. **Success** -> **Synchronizer** (Git) -> **GitHub Cloud**
+7. **Recursive Loop** -> Repeat for next task in Logic Tree.

@@ -43,15 +43,7 @@ def pipeline(df):
     return model
 
 # Load the dataset
-df = pd.read_csv('data.csv')
+# df = pd.read_csv('data.csv')
 
 # Run the pipeline
-pipeline(df)
-```
-
-[CMD]
-```bash
-python data_pipeline.py
-git add data_pipeline.py
-git commit -m "Implemented multi-stage data pipeline"
-git push origin main
+# pipeline(df)

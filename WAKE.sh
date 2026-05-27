@@ -1,30 +1,63 @@
 #!/bin/bash
 echo "======================================================="
-echo "   WAKING MATRIX GEN 8 SUBSTRATE (AI STUDIO MODE)      "
+echo "   WAKING MATRIX GEN 8 SUBSTRATE (v10.2 MASTER)        "
 echo "======================================================="
+
+# 1. Thermal Health
 echo "[*] Checking Thermal Health..."
 TEMP=$(cat /sys/class/thermal/thermal_zone0/temp 2>/dev/null)
 if [ -z "$TEMP" ]; then
-    echo "    -> Thermal sensors offline (Assuming 35.0 C)"
+    echo "    -> [!] Thermal sensors offline."
 else
-    echo "    -> Core Temp: $((${TEMP}/1000)) C"
+    CELSIUS=$((${TEMP}/1000))
+    echo "    -> Core Temp: ${CELSIUS} C"
+    if [ $CELSIUS -gt 42 ]; then
+        echo "    -> [!] WARNING: High Thermal Load Detected."
+    fi
 fi
 
-echo "[*] Launching llama-server on port 8080 with -t 4..."
-# nohup llama-server -m ~/.matrix_ide/models/danube3.gguf -c 8192 -t 4 --port 8080 > ~/llama_server.log 2>&1 &
-echo "    -> (Stubbed for Edge testing)"
+# 2. Database & Vault
+echo "[*] Verifying Substrate Integrity..."
+if [ -f ~/.matrix_ide/database/ledger.db ]; then
+    WAL=$(sqlite3 ~/.matrix_ide/database/ledger.db "PRAGMA journal_mode;" 2>/dev/null)
+    echo "    -> ledger.db: Active (Mode: ${WAL})"
+else
+    echo "    -> [!] ledger.db MISSING."
+fi
 
-echo "[*] Initializing LiteLLM Proxy Gateway (Port 4000)..."
-# Optional: pip install litellm
-nohup litellm --config ~/H2OIDE/litellm_config.yaml --port 4000 > ~/litellm.log 2>&1 &
-echo "    -> Local API endpoints unified at http://localhost:4000/v1"
+if [ -f ~/.gemini/vault_key.txt ]; then
+    echo "    -> Success Vault: Hardened (Key Present)"
+else
+    echo "    -> [!] Success Vault: Key Missing."
+fi
 
-echo "[*] Starting H2OIDE Headless Daemon..."
+# 3. Binaries
+echo "[*] Checking Core Binaries..."
+if [ -f ~/.matrix_ide/core/prompt_evolver ]; then
+    echo "    -> prompt_evolver: Compiled"
+else
+    echo "    -> [!] prompt_evolver missing. Run: rustc ~/.matrix_ide/core/PROMPT_EVOLVER.rs -o ~/.matrix_ide/core/prompt_evolver"
+fi
+
+# 4. Services
+echo "[*] Checking Port 8080 (llama-server)..."
+if command -v netstat &> /dev/null; then
+    L_PORT=$(netstat -tuln | grep :8080)
+else
+    L_PORT=$(lsof -i :8080)
+fi
+
+if [ -z "$L_PORT" ]; then
+    echo "    -> [!] llama-server is NOT running on 8080."
+else
+    echo "    -> llama-server: Online"
+fi
+
+echo "[*] Starting Background Daemons..."
 nohup python3 ~/H2OIDE/daemon.py > ~/daemon.log 2>&1 &
-
-echo "[*] Starting Slow Pedagogy Background Daemon (1/hour)..."
 nohup nice -n 19 python3 ~/H2OIDE/slow_pedagogy_daemon.py > ~/slow_pedagogy.log 2>&1 &
 
-echo "[*] Substrate Ready."
-echo ""
-echo ">>> Enter the cockpit by typing: aichat"
+echo "======================================================="
+echo "   SUBSTRATE READY. PHASE 1 HARDENING COMPLETE.        "
+echo "======================================================="
+echo ">>> Enter the cockpit: python3 ~/FOUNDRY_MASTER.py"

@@ -10,7 +10,7 @@ from headless_project_suite import get_state
 # Methodical Permutations: Frontends, Databases, and Triton Chooser logic.
 
 LAB_DIR = os.path.expanduser("~/H2OIDE/training_lab")
-REMOTE_LAB_DIR = os.path.expanduser("~/H2OIDE/sandbox_repo/lab_events")
+REMOTE_LAB_DIR = os.path.expanduser("~/H2OIDE/training_sandbox/lab_events")
 
 # Permutation Vectors
 FRONTENDS = ["aichat", "aider", "clide"]
@@ -46,14 +46,20 @@ class TritonChooserLab:
         else:
             return "Triton-Accelerated-Kernel"
 
-    def run_permutation_event(self, gen_id):
+    def run_permutation_event(self, gen_id, override_intent=None):
         # 1. Select with Success Weighting
         frontend = random.choices(FRONTENDS, weights=[self.weights.get(x, 1.0) for x in FRONTENDS])[0]
         db = random.choices(DATABASES, weights=[self.weights.get(x, 1.0) for x in DATABASES])[0]
         fmt = random.choices(TRITON_PROMPT_FORMATS, weights=[self.weights.get(x, 1.0) for x in TRITON_PROMPT_FORMATS])[0]
         org = random.choice(ORGANIZATIONS)
         
-        complexity = random.random()
+        # Step 11: If override_intent exists, complexity is forced high
+        if override_intent:
+            complexity = 0.95
+            print(f"[Lab] Intent Lock detected: {override_intent}")
+        else:
+            complexity = random.random()
+            
         kernel = self.triton_chooser_logic(complexity)
 
         event_id = hashlib.md5(f"{frontend}{db}{org}{fmt}{gen_id}".encode()).hexdigest()[:8]
@@ -65,6 +71,7 @@ class TritonChooserLab:
         report = {
             "event_id": event_id,
             "gen_id": gen_id,
+            "intent": override_intent or "Methodical Permutation",
             "config": {
                 "frontend": frontend,
                 "database": db,
@@ -76,7 +83,7 @@ class TritonChooserLab:
                 "complexity": round(complexity, 4),
                 "speed_factor": round(speed_boost, 4),
                 "stability": round(stability_score, 4),
-                "bell_curve_position": "Optimal Center" if 0.45 < complexity < 0.55 else "Standard-Shift"
+                "bell_curve_position": "Entropy-Locked" if override_intent else ("Optimal Center" if 0.45 < complexity < 0.55 else "Standard-Shift")
             }
         }
 
@@ -90,6 +97,7 @@ class TritonChooserLab:
         md_path = os.path.join(REMOTE_LAB_DIR, f"PERMUTATION_{report['event_id']}.md")
         md_content = f"""# 🧪 LAB PERMUTATION: Gen {report['gen_id']}
 **ID:** `{report['event_id']}`
+**INTENT:** `{report['intent']}`
 **KERNEL:** `{report['config']['kernel_selected']}`
 **TRITON PREFERENCE:** `{report['config']['triton_prompt_format']}`
 

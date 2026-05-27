@@ -71,10 +71,37 @@ class MutationInjector:
     """[PERFORMATIVE: INJECT] Executes physical AST block mutations."""
     
     def apply_mutation(self, code, directive):
-        """Writes Pure Transformed Code to Disk."""
-        # This is where Aider or our local Danube LLM would be guided by the directive
-        # For the engine logic, we return the transformed code placeholder
-        return f"# Directive Applied: {directive}\n{code}"
+        """Step 16: Targeted AST-level surgical code changes."""
+        try:
+            tree = ast.parse(code)
+            
+            # Genetic Perturbation Logic
+            if "STRENGTHEN" in directive:
+                # Upgrade operators (e.g., + to *)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+                        node.op = ast.Mult()
+            
+            elif "PERTURB" in directive:
+                # Perturb constants (e.g., n > 0 to n > 1)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+                        node.value += 1
+            
+            elif "OPTIMIZE" in directive:
+                # Add bitwise optimization hints or fast paths
+                # (Simulation: renaming n to optimized_n)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Name) and node.id == 'n':
+                        node.id = 'optimized_n'
+                    if isinstance(node, ast.arg) and node.arg == 'n':
+                        node.arg = 'optimized_n'
+
+            # Unparse back to code (Python 3.9+)
+            return ast.unparse(tree)
+        except Exception as e:
+            # Fallback if AST manipulation fails
+            return f"# Step 16 Injection Failed: {e}\n{code}"
 
 class WeightBackpropagator:
     """[PERFORMATIVE: UPDATE] Symbolic Backprop Step."""

@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /data/data/com.termux/files/home/openrouter_manager
-python3 danube_director.py
+cd /data/data/com.termux/files/home/H2OIDE
+python3 h2o_cli_ide.py

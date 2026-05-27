@@ -278,3 +278,16 @@
 [Mon May 25 06:16:59 2026] TEST 204: SUCCESS
 [Mon May 25 06:17:13 2026] TEST 205: SUCCESS
 [Mon May 25 06:17:21 2026] TEST 206: SUCCESS
+[Wed May 27 06:57:21 2026] TEST 161: FAIL: Missing Recursive Markers
+[Wed May 27 06:57:50 2026] TEST 162: FAIL: Missing Recursive Markers
+[Wed May 27 06:57:56 2026] TEST 163: FAIL: Missing Recursive Markers
+[Wed May 27 06:58:15 2026] TEST 164: FAIL: Missing Recursive Markers
+[Wed May 27 06:58:35 2026] TEST 165: FAIL: Missing Recursive Markers
+[Wed May 27 06:58:42 2026] TEST 166: FAIL: Missing Recursive Markers
+[Wed May 27 06:59:01 2026] TEST 167: FAIL: Missing Recursive Markers
+[Wed May 27 06:59:07 2026] TEST 168: FAIL: Missing Recursive Markers
+[Wed May 27 06:59:25 2026] TEST 169: FAIL: Missing Recursive Markers
+[Wed May 27 06:59:54 2026] TEST 170: FAIL: Missing Recursive Markers
+[Wed May 27 07:00:05 2026] TEST 171: FAIL: Missing Recursive Markers
+[Wed May 27 07:00:31 2026] TEST 172: FAIL: Missing Recursive Markers
+[Wed May 27 07:00:38 2026] TEST 173: FAIL: Missing Recursive Markers

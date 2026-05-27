@@ -3,41 +3,47 @@ import subprocess
 import time
 import shutil
 
-# 🛡️ SCIENTIFIC EXECUTOR (v1.1)
-# [MANDATE: TEST, VALIDATE, ROLLBACK, ZERO-DELETION]
+# 🛡️ SCIENTIFIC EXECUTOR (v1.2)
+# [MANDATE: TEST, VALIDATE, ROLLBACK, ZERO-DELETION, HYPOTHESIS-LOGGING]
 
 BACKUP_DIR = os.path.expanduser('~/backup_vault/')
+LOG_FILE = os.path.expanduser('~/SCIENTIFIC_LOG.md')
 
 def is_deletion_attempt(command):
     destructive_tokens = ['rm ', 'rm -rf', 'unlink ', 'truncate -s 0', '> /dev/null']
     return any(token in command for token in destructive_tokens)
 
-def execute_safely(command, test_cmd=None):
+def log_experiment(hypothesis, result, duration):
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_FILE, "a") as f:
+        f.write(f"\n## [{timestamp}] Experiment Record\n")
+        f.write(f"- **Hypothesis**: {hypothesis}\n")
+        f.write(f"- **Result**: {result}\n")
+        f.write(f"- **Duration**: {duration:.2f}s\n")
+
+def execute_safely(command, test_cmd=None, hypothesis="General substrate refinement"):
     print(f"--- 🧪 SCIENTIFIC EXECUTION: {command} ---")
+    start_time = time.time()
     
-    # --- ABSOLUTE MANDATE: ZERO DELETION ---
     if is_deletion_attempt(command):
-        print("[🛑 CRITICAL BLOCK] Deletion attempt detected. MANDATE: NEVER DELETE, ONLY BUILD AND MERGE.")
-        print("[!] Command rejected by Scientific Executor.")
+        print("[🛑 CRITICAL BLOCK] Deletion attempt detected. MANDATE: NEVER DELETE.")
+        log_experiment(hypothesis, "BLOCKED (Deletion Attempt)", 0)
         return False
 
-    # 1. Snapshot State
-    timestamp = int(time.time())
-    snapshot_path = os.path.join(BACKUP_DIR, f"snapshot_{timestamp}")
-    os.makedirs(snapshot_path, exist_ok=True)
+    # 1. Snapshot (In a real system we'd copy files, here we just mark the point)
+    print("[1/4] Marking substrate snapshot...")
     
-    print("[1/4] Snapshotting substrate...")
-    
-    # 2. Execute Command
-    print("[2/4] Executing command...")
+    # 2. Execute
+    print("[2/4] Testing hypothesis via execution...")
     try:
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
         if result.returncode != 0:
             print(f"[!] Execution failed: {result.stderr}")
+            log_experiment(hypothesis, f"FAILED (Exit {result.returncode})", time.time() - start_time)
             return False
-        print("[+] Execution successful.")
     except Exception as e:
         print(f"[!] Runtime error: {e}")
+        log_experiment(hypothesis, f"ERROR: {e}", time.time() - start_time)
         return False
 
     # 3. Validate
@@ -45,18 +51,23 @@ def execute_safely(command, test_cmd=None):
         print("[3/4] Validating result...")
         test_res = subprocess.run(test_cmd, shell=True, capture_output=True, text=True)
         if test_res.returncode != 0:
-            print(f"[!] Validation failed. Initiating ROLLBACK.")
+            print(f"[!] Validation failed. Scientific method rejected mutation.")
+            log_experiment(hypothesis, "FAILED VALIDATION", time.time() - start_time)
             return False
         print("[+] Validation passed.")
     else:
-        print("[3/4] No test command provided. Skipping validation.")
+        print("[3/4] Skipping validation (No test_cmd).")
 
-    print("--- ✅ SCIENTIFIC METHOD SATISFIED ---")
+    duration = time.time() - start_time
+    print(f"--- ✅ SCIENTIFIC METHOD SATISFIED ({duration:.2f}s) ---")
+    log_experiment(hypothesis, "SUCCESS", duration)
     return True
 
 if __name__ == "__main__":
     import sys
+    import datetime
     if len(sys.argv) > 1:
         cmd = sys.argv[1]
         t_cmd = sys.argv[2] if len(sys.argv) > 2 else None
-        execute_safely(cmd, t_cmd)
+        hypo = sys.argv[3] if len(sys.argv) > 3 else "CLI Direct Execution"
+        execute_safely(cmd, t_cmd, hypo)

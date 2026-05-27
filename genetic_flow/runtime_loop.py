@@ -16,6 +16,10 @@ from genetic_flow.tracking_db import writer as w
 from genetic_flow.core_brain.binary_engine.decompiler import BinaryDecompilationEngine
 from rich.live import Live
 
+# Step 13: Import Markov-Algebraic Fitness Engine
+sys.path.append(os.path.expanduser("~/.matrix_ide/core"))
+from MARKOV_ALGEBRAIC_FITNESS import MarkovAlgebraicFitness
+
 import argparse
 
 def main_loop(max_gen=1000):
@@ -30,6 +34,7 @@ def main_loop(max_gen=1000):
     injector = sym.MutationInjector()
     router = r.LocalAgentRouter()
     decompiler = BinaryDecompilationEngine()
+    ma_fitness_engine = MarkovAlgebraicFitness()
     
     # Track binary entropy
     current_entropy = decompiler.decompile_and_score(current_code)
@@ -50,18 +55,36 @@ def main_loop(max_gen=1000):
             
             # 4. INJECT
             final_code = injector.apply_mutation(mutated_code, directive)
-            with open(target_path, "w") as f:
-                f.write(final_code)
+            
+            # Step 19: Scientific-Executor Validation for Genetic Mutations
+            hypothesis = f"Genetic Mutation [Gen {gen}]: Directive '{directive}' with goal '{goal[:50]}'"
+            
+            # Since SCIENTIFIC_EXECUTOR is a script, we'll invoke it to handle the file write 
+            # and validation. We'll use a temporary bash script to write the code.
+            write_cmd = f"cat << 'EOF' > {target_path}\n{final_code}\nEOF"
+            test_cmd = f"python3 -c \"from genetic_flow.core_brain import test_harness as qa; f, m, v = qa.evaluate(); exit(0 if f > 0 else 1)\""
+            
+            print(f"[*] Validating Generation {gen} Hypothesis...")
+            exec_cmd = f"python3 ~/SCIENTIFIC_EXECUTOR.py \"{write_cmd}\" \"{test_cmd}\" \"{hypothesis}\""
+            scientific_success = subprocess.run(exec_cmd, shell=True).returncode == 0
             
             # 5. EVALUATE + BINARY MATH
             start_eval = time.time()
-            fitness, median_lat, variance = qa.evaluate()
+            perf_fitness, median_lat, variance = qa.evaluate()
+            
+            # Step 13: Resolve Markov-Algebraic Fitness
+            fitness = ma_fitness_engine.compute_fitness(
+                final_code, 
+                performance_score=perf_fitness, 
+                current_hash=c_hash
+            )
+            
             eval_duration = time.time() - start_eval
             
             new_entropy = decompiler.decompile_and_score(final_code)
             
-            # 6. SELECTION PRESSURE (Latency + Entropy)
-            success = (median_lat < current_median) or (new_entropy < current_entropy)
+            # 6. SELECTION PRESSURE (Latency + Entropy + Scientific Success)
+            success = scientific_success and ((median_lat < current_median) or (new_entropy < current_entropy))
             
             # 7. BACKPROPAGATE
             backpropagator.backprop(rule_id, success)

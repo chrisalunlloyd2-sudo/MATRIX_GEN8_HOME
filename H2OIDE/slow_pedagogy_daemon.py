@@ -3,13 +3,15 @@ import time
 import datetime
 import subprocess
 import sys
+import sqlite3
 from training_lab_engine import TritonChooserLab
 
-# SLOW PEDAGOGY DAEMON (v5.0 - MULTI-KERNEL PERMUTATION)
-# Runs hourly, executes methodical permutations across Frontends/DBs/Kernels.
+# SLOW PEDAGOGY DAEMON (v5.1 - ENTROPY-LOCKED)
+# Runs hourly, prioritizes high-entropy events from ledger.db.
 
-SANDBOX_DIR = os.path.expanduser("~/H2OIDE/sandbox_repo")
+SANDBOX_DIR = os.path.expanduser("~/H2OIDE/training_sandbox")
 LOCK_FILE = os.path.expanduser("~/.pedagogy_daemon.lock")
+LEDGER_DB = os.path.expanduser("~/.matrix_ide/database/ledger.db")
 os.makedirs(SANDBOX_DIR, exist_ok=True)
 
 def throttle_cpu():
@@ -30,17 +32,39 @@ def check_lock():
     with open(LOCK_FILE, 'w') as f:
         f.write(str(os.getpid()))
 
+def get_high_entropy_task():
+    """Step 11: Poll ledger.db for the most confusing recent task."""
+    try:
+        conn = sqlite3.connect(LEDGER_DB)
+        cur = conn.cursor()
+        cur.execute("SELECT prompt FROM entropy_events ORDER BY entropy DESC LIMIT 1")
+        res = cur.fetchone()
+        if res:
+            # Delete after retrieval to "consume" the task
+            cur.execute("DELETE FROM entropy_events WHERE prompt = ?", (res[0],))
+            conn.commit()
+            conn.close()
+            return res[0]
+        conn.close()
+    except: pass
+    return None
+
 def execute_pedagogy_cycle(generation):
     timestamp_now = datetime.datetime.now()
     print(f"[{timestamp_now}] Waking for Multi-Kernel Gen {generation}...")
     
+    # Step 11: Check for Entropy-Locked Task
+    entropy_task = get_high_entropy_task()
+    if entropy_task:
+        print(f"[🧬 Entropy Lock] Prioritizing confused prompt: {entropy_task}")
+    
     # 1. INITIALIZE TRITON CHOOSER LAB
     lab = TritonChooserLab()
     
-    # 2. EXECUTE METHODICAL PERMUTATION
-    # This runs the A/B/C testing across 100+ potential combinations
-    print(f"[*] Running Methodical Permutation Test...")
-    report = lab.run_permutation_event(generation)
+    # 2. EXECUTE METHODICAL PERMUTATION (OR ENTROPY TASK)
+    print(f"[*] Running Permutation/Optimization Event...")
+    # Passing the entropy task as the 'override' intent if it exists
+    report = lab.run_permutation_event(generation, override_intent=entropy_task)
     
     throttle_cpu()
     

@@ -1,0 +1,3 @@
+# ROADMAP
+Initial manifestation: 2026-05-26T16:46:46.417226
+ZERO_TO_CE_500_STEPS.md
