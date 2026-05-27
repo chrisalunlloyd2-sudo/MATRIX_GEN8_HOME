@@ -67,3 +67,21 @@
 *   **Step 171-180 (Endpoint Configuration):** Writing 127.0.0.1:11434 to state files to unify all future agentic routing.
 *   **Step 181-190 (Thread Tuning):** Setting -t 2 (2 threads) to prevent CPU frequency pinning and thermal throttling on Gen 8 hardware.
 *   **Step 191-200 (Success Handshake):** Executing llama-server --version and logging to SINGULARITY_LOG.md.
+# 🗄️ ZERO-TO-CE: PHASE 3 EXHAUSTIVE MANIFEST (Steps 201-300)
+
+## 🗄️ PHASE 3: DATABASE & GUI BACKEND
+
+### Subsection 3.1: Persistent Ledger Init (Steps 201-230)
+*   **Step 201-210 (WAL Mode Hardening):** Force PRAGMA journal_mode=WAL; on all new databases. This ensures that UI reads do not block AI writes during active inference loops.
+*   **Step 211-220 (Schema Manifestation):** Initialization of todo.db (tasks table) and ledger.db (agent_logs table).
+*   **Step 221-230 (Integrity Checks):** Automated PRAGMA integrity_check; on every boot to detect eMMC corruption before it halts the agentic network.
+
+### Subsection 3.2: GUI Bridge Refinement (Steps 231-260)
+*   **Step 231-240 (Flask Substrate):** Setup of the lightweight Flask server on port 8081. Optimized with threaded=True to prevent UI hanging.
+*   **Step 241-250 (Inference Proxy):** Implementing the /api/chat route. This route acts as a proxy, translating user JSON intents into the native llama-server API calls.
+*   **Step 251-260 (SSE Streaming):** Enabling Server-Sent Events (SSE) so the AI tokens type onto the Windows CE screen in real-time, rather than waiting for the full response.
+
+### Subsection 3.3: Ingestion & Routing Logic (Steps 261-300)
+*   **Step 261-275 (Intent Mapping):** Hooking the remind me to and note: regex filters into the bridge to bypass the LLM for simple local tasks.
+*   **Step 276-290 (Database Explorer API):** Finalizing the /api/db/query endpoints to allow the user to visually edit SQLite tables from the CE interface.
+*   **Step 291-300 (Subsystem Handshake):** Verification that the Bridge can ping the Inference Engine on port 11434.

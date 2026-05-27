@@ -54,3 +54,19 @@
 3.  Memory Headroom: > 50MB free RAM reported by free -m during active inference.
 
 **Status:** Implementation payload written. Awaiting execution in Phase 3.
+
+## [A/B TEST HYPOTHESIS: Phase 3 SQLite WAL Performance]
+**Objective:** Determine the impact of Write-Ahead Logging (WAL) on UI responsiveness during concurrent AI training or logging writes on slow internal eMMC.
+
+**Variant A (Delete Mode):** PRAGMA journal_mode=DELETE;
+*   *Theory:* Standard mode. AI writes should lock the database, causing the Windows CE UI (Taskbar, Excel Viewer) to hang or jitter during busy cycles.
+
+**Variant B (WAL Mode):** PRAGMA journal_mode=WAL;
+*   *Theory:* Allows concurrent readers and writers. The UI should remain fluid (Explorer navigation) even while the AI is streaming logs to the same database.
+
+**Success Criteria:**
+1.  UI Frame Stability: No Application Not Responding (ANR) warnings in the Android WebView.
+2.  Write Throughput: > 50 records/sec during stress-test bursts.
+3.  Concurrency: Zero Database is locked errors during simultaneous Chat and Excel View operations.
+
+**Status:** Implementation payload written. Awaiting execution in Phase 4.
