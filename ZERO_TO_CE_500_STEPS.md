@@ -85,3 +85,20 @@
 *   **Step 261-275 (Intent Mapping):** Hooking the remind me to and note: regex filters into the bridge to bypass the LLM for simple local tasks.
 *   **Step 276-290 (Database Explorer API):** Finalizing the /api/db/query endpoints to allow the user to visually edit SQLite tables from the CE interface.
 *   **Step 291-300 (Subsystem Handshake):** Verification that the Bridge can ping the Inference Engine on port 11434.
+# 🖼️ ZERO-TO-CE: PHASE 4 EXHAUSTIVE MANIFEST (Steps 301-400)
+
+## 🖼️ PHASE 4: WINDOWS CE MANIFESTATION
+
+### Subsection 4.1: WebView Shell & Retro-UI (Steps 301-330)
+*   **Step 301-310 (View-Port Optimization):** Configuration of the Android WebView with specific scale and zoom locks to ensure the 640x480 retro-feel is maintained across different device resolutions.
+*   **Step 311-320 (CSS Palette Hardening):** Implementation of the 'Teal' #008080 background and #C0C0C0 'Classic Gray' window borders. Every pixel is designed to mirror the Windows CE 2.0 / 3.0 aesthetic.
+*   **Step 321-330 (Window Manager Logic):** JS implementation of the draggable window system. Uses absolute positioning and z-index cycling to allow the user to stack multiple AI tools visually.
+
+### Subsection 4.2: Real-time Omni-Chat UI (Steps 331-360)
+*   **Step 331-345 (SSE Token Receiver):** Implementation of an EventSource-based stream in the chat window. This allows the local LLM tokens to appear one-by-one, providing immediate feedback.
+*   **Step 346-360 (Markdown Rendering):** A lightweight JS parser to render AI-generated code blocks and lists inside the Classic terminal window without external library overhead.
+
+### Subsection 4.3: Visual Model & DB Management (Steps 361-400)
+*   **Step 361-375 (Model Switcher UI):** A visual grid displaying available .gguf models. Clicking a model triggers the /api/models/active POST request to swap the inference engine state.
+*   **Step 376-390 (Excel 95 Grid):** A dynamic HTML table that maps directly to SQLite rows. Allows visual 'on-the-fly' database editing.
+*   **Step 391-400 (The Start Menu):** A hierarchical JS menu system providing quick access to all agentic sub-components (Mail, Task Manager, Notes).

@@ -70,3 +70,19 @@
 3.  Concurrency: Zero Database is locked errors during simultaneous Chat and Excel View operations.
 
 **Status:** Implementation payload written. Awaiting execution in Phase 4.
+
+## [A/B TEST HYPOTHESIS: Phase 4 UI Rendering Latency]
+**Objective:** Compare the frame-rate and input latency of the Windows CE UI when using CSS 'Filter' effects vs standard Hex-color borders on a 32-bit Android WebView.
+
+**Variant A (Legacy Borders):** 2px outset/inset #FFF/#808080.
+*   *Theory:* Uses standard box-model rendering. Should have 0ms overhead and maintain 60FPS even on old Gen 8 ARMv7 chips.
+
+**Variant B (Advanced Filters):** CSS box-shadow and backdrop-filter to simulate depth.
+*   *Theory:* Looks more 'modern-retro', but might cause the WebView thread to drop frames during background AI inference.
+
+**Success Criteria:**
+1.  Input Latency: < 10ms from click to window-focus change.
+2.  Frame Stability: 60FPS during passive state.
+3.  Thermal Impact: < 2°C rise in battery temperature during UI manipulation.
+
+**Status:** Implementation payload written. Awaiting execution in Phase 5.
