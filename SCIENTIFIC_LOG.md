@@ -86,3 +86,19 @@
 3.  Thermal Impact: < 2°C rise in battery temperature during UI manipulation.
 
 **Status:** Implementation payload written. Awaiting execution in Phase 5.
+
+## [A/B TEST HYPOTHESIS: Phase 5 Agentic Entropy]
+**Objective:** Measure the drift in agentic decision accuracy when running in a visual concurrent environment (Windows CE) vs a headless terminal environment.
+
+**Variant A (Headless):** No GUI overhead. Pure CLI inference.
+*   *Theory:* Maximum tokens/sec and highest focus. Baseline for accuracy.
+
+**Variant B (Visual Omni):** Full GUI active + DB Explorer + Chat.
+*   *Theory:* Context may be more fragmented due to system interrupts (ps, sqlite locks). Hypothesis is that accuracy remains >90% but latency may increase by 15%.
+
+**Success Criteria:**
+1.  Entropy Score: < 1.0 (Information gain maintained).
+2.  System Uptime: > 24 hours of autonomous loop without crash.
+3.  Accuracy: Agent completes 5 complex file-system tasks with 100% success.
+
+**Status:** ALL PHASES COMPLETE. Finalizing System Handoff.
