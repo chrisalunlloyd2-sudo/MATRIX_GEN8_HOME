@@ -1,106 +1,61 @@
-# 🌌 MATRIX GEN8: THE SYSTEM BIBLE & MASTER ENGINE (v10.1)
-[timedat: 2026-05-25 07:45:00]
+# 🌌 MATRIX IDE: GEN 8 MASTER ENGINE
 
-## 🎯 OBJECTIVE: THE SINGULARITY MANIFESTATION
-The Matrix Gen 8 ecosystem is an autonomous, neural-symbolic developmental substrate designed for 32-bit Android environments. It utilizes local inference (H2O Danube 500M) and deterministic symbolic execution to achieve recursive self-improvement and cross-device agentic coordination.
+```
+   __  ___  ___  _____  ___  _____  __
+  /  |/  / / _ |/_  __/ / _ \/  _/ / /
+ / /|_/ / / __ | / /   / , _// /  / / 
+/_/  /_/ /_/ |_|/_/   /_/|_/___/ /_/  
+                                      
+```
 
-## 📦 RELEASES & PACKAGES
-We provide specialized headless wrappers and tools as standalone packages, seamlessly integrating into your agentic workflow. 
-Our release history tracks the evolution of our ecosystem from raw RAG generation to a mathematically pristine logic engine.
+## 📜 PROJECT IDENTITY
+*   **Version:** 10.1 (Master Engine)
+*   **Substrate:** 32-bit Android ARMv7 (<512MB RAM Fenced)
+*   **Objective:** Zero-to-CE Autonomous Bootstrap Installer & All-in-One AI GUI.
+*   **SOP:** [ZERO_TO_CE_SOP.md](ZERO_TO_CE_SOP.md) (LOCKED-IN)
 
-### 🌟 Latest Release: `v10.1-Master-Engine`
-**Highlights:**
-- `H2O IDE CLI`: Local/OpenRouter seamless fallback interface.
-- `Headless Project Suite`: Background JSON state-tracker acting as a headless "Continue-like" workspace.
-- `Markov Hashing`: Pure deterministic state management, injecting algebraic memory context into every prompt.
-- `Genetic Optimizer`: Auto-prunes prompts based on instruction density and thermal telemetry (`thermal_zone0`).
-
-### 🛠️ Included Packages
-| Package Name               | Type      | Description |
-|----------------------------|-----------|-------------|
-| **`H2OIDE`**               | CLI IDE   | The flagship Python IDE terminal, combining OpenRouter semantic detection with deterministic RAG layers. |
-| **`Headless State Suite`** | Substrate | JSON-based persistent project tracker (`STATE_TRACKER.json`) that forces context onto agents. |
-| **`AGY Master`**           | Binary    | Fast, headless Python proxy for zero-prose bash execution and GitHub git-hooks sync. |
-| **`Pedagogy DB`**          | Database  | Three-layered SQLite engine (Layer 1: Telemetry, Layer 2: Memory, Layer 3: Darwinistic Prompts). |
-| **`OpenRouter Manager`**   | Legacy    | Original API ingestion scripts (Gen 1-7), successfully merged into the H2O core engine. |
-
-## 🧬 CORE MANDATES (THE GOLDEN RULES)
-1. **THE USER IS ALWAYS RIGHT:** If the user reports a bug, a missing file, or a logical error, the system must believe the user and fix it immediately.
-2. **GENETIC MERGE ONLY:** Never delete existing logic. Only merge, refine, and grow. All code changes must preserve legacy stability while adding new capabilities.
-3. **NO EXTERNAL APIs:** All cognitive operations must utilize the local `llama-server` on port 8080. No Gemini or Google APIs are permitted.
-4. **FENCED I/O:** Adhere to the eMMC (State) vs. SD Card (Weights/Workspace) fencing for thermal and performance stability.
-
-## 🏗️ SYSTEM ARCHITECTURE & DATA FLOW
+## 🗺️ SYSTEM TOPOLOGY
 ```mermaid
 graph TD
-    A[User Intent] --> B{agy-go Filter}
-    B -- Validated --> C[llama-server:8080]
-    B -- Invalid --> D[Block & Log]
-    C --> E[danube_executor.py]
-    E --> F[Validation Engine]
-    F -- Success --> G[ledger.db]
-    F -- Failure --> H[Heal Protocol]
-    H --> C
-    G --> I[gh-sync: GitHub]
-    I --> J[Matrix Coordinator]
-    J --> K[Laptop Node]
+    A[APK Shell / Java] -->|Unpacks| B[Linux Substrate / Busybox]
+    B -->|Launches| C[Python Backend / Flask]
+    C -->|Orchestrates| D[Inference Engine / llama.cpp]
+    D -->|Serves| E[Windows CE GUI / WebView]
+    E -->|Interact| F[User / Omni-Chat]
+    F -->|Query| G[SQLite Ledger / RAG Foundation]
 ```
 
-## 📈 PERFORMANCE & THERMAL DYNAMICS
-```markdown
-+-------------------+-----------------------+-----------------------+
-| Metric            | Baseline (Gen 1)      | Optimized (Gen 8)     |
-+-------------------+-----------------------+-----------------------+
-| Inference Speed   | 2.1 tok/s             | 14.8 tok/s            |
-| RAM Usage         | 850MB (Crashed)       | 382MB (Stable)        |
-| Thermal Limit     | 55°C (Throttled)      | 41°C (Passive Cool)   |
-| Mastery Level     | 0                     | 17                    |
-+-------------------+-----------------------+-----------------------+
+## 🏗️ PROJECT STATUS: PHASE 1 COMPLETE
+| Phase | Milestone | Status | Performative |
+| :--- | :--- | :--- | :--- |
+| 1 | Substrate Provisioning | ✅ | Java PayloadExtractor + MainActivity Manifested |
+| 2 | Inference Engine | ⏳ | Awaiting Binomial Consent |
+| 3 | Database & GUI | ⚪ | Pending |
+| 4 | Win CE Manifestation | ⚪ | Pending |
+| 5 | Agentic Network | ⚪ | Pending |
+
+## 🧬 PERFORMATIVE MANDATES
+1.  **Never Delete:** All historical logic preserved in SUCCESS_VAULT.
+2.  **Scientific Method:** A/B tests logged in SCIENTIFIC_LOG.md.
+3.  **Binomial Consent:** Double-consent logic applied to all architectural shifts.
+4.  **Pedagogy Routine:** Slow offloading of mastery to Flash sub-agents.
+
+## 📂 FILE TREE (TOP-LEVEL)
+```
+./
+├── README.md (v10.1 Standard)
+├── ZERO_TO_CE_SOP.md (Locked-IN)
+├── ZERO_TO_CE_500_STEPS.md (Manifest)
+├── SCIENTIFIC_LOG.md (A/B Results)
+├── PocketMatrix/
+│   └── zero_to_ce/ (Phase 1 Codebase)
+├── SUCCESS_VAULT/ (Fitness-Gated Patterns)
+├── H2OIDE/ (Training Sandbox)
+├── .matrix_ide/ (Core State & Routing)
+└── .gemini/ (Global Preferences)
 ```
 
-## 🧬 EVOLUTIONARY TOPOLOGY (THE ASCII TREE)
-```
-/data/data/com.termux/files/home/
-├── bin/                       # Native binaries (aichat, agy, llama-cli)
-├── .matrix_ide/               # Fenced State & Database (Internal eMMC)
-│   ├── database/              # ledger.db (Success Vault), memory_foundation.db
-│   ├── logs/                  # agy_master.log (Cognitive History)
-│   └── models/                # Local GGUF Weights (danube3.gguf)
-├── H2OIDE/                    # The Master Engine (Gen 8)
-│   ├── daemon.py              # Background Task Processor
-│   ├── pedagogy_loop.py       # Level 1-100 Mastery Loop
-│   └── network_hook.py        # Agentic Network Bridge (Port 5000)
-├── matrix_dash/               # Autonomous Dashboard (Stream-Manifested)
-├── openrouter_manager/        # Legacy Integration Layer (Gen 1-7 Merged)
-├── VIPER_SCRIPT_LIBRARY/      # The Shared Capability Substrate
-├── Blueprint.md               # Technical Logic & Dataflow
-├── ROADMAP.md                 # 900-Step Singularity Path
-├── CHANGELOG.md               # Versioning & Milestones
-└── PROJECT_LOG.md             # Real-time Activity Ledger
-```
-
-## 📡 AGENTIC NETWORK COORDINATION
-The **Matrix Coordinator** node facilitates non-stop learning by:
-- **State Mirroring:** Syncing the `SUCCESS_VAULT` between Android and Laptop via `rsync` over SSH.
-- **Cognitive Load-Balancing:** Offloading heavy inference tasks to the Laptop while maintaining local autonomy for critical state transitions.
-- **Recursive Pedagogy:** Sharing successful code patterns (L1-L100) across all agents in the network.
-
-## 🔬 SCIENTIFIC DOCUMENTATION
-For a deep-dive into the architectural "why" and dual-platform setup instructions (Windows x Android), see:
-- [**SCIENTIFIC_SETUP_LOG.md**](./H2OIDE/SCIENTIFIC_SETUP_LOG.md)
-
-## 🛠️ SETUP & INITIALIZATION (SOP)
-### Android (Termux)
-1. Run `WAKE.sh` to initialize the substrate and check thermal health.
-2. Launch `llama-server` on port 8080 with `-t 4`.
-3. Start the `H2OIDE` daemon: `python3 H2OIDE/daemon.py &`.
-4. Enter the cockpit: `aichat`.
-
-### Windows/Laptop
-1. Clone the repo: `git clone https://github.com/chrisalunlloyd2-sudo/MATRIX_GEN8_HOME.git`
-2. Run `bootstrap_L1.sh` (Node.js/Python setup).
-3. Connect via the `network_hook.py` bridge.
-
----
-[STATUS: SYSTEM_BIBLE_MANIFESTED]
-[CREDITS: 100% AUTONOMOUS ALIGNMENT]
+## 🚀 GETTING STARTED
+1. Run `python3 ~/PocketMatrix/system/gui_bridge.py` to start the backend.
+2. Access `http://127.0.0.1:8081` for the Windows CE Experience.
+3. Use `build_final_apk.sh` for PWA manifestation.
