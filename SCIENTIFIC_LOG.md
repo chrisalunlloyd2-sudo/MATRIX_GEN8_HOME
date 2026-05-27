@@ -102,3 +102,19 @@
 3.  Accuracy: Agent completes 5 complex file-system tasks with 100% success.
 
 **Status:** ALL PHASES COMPLETE. Finalizing System Handoff.
+
+## [A/B TEST HYPOTHESIS: Phase 6 RAG Chunk Size]
+**Objective:** Determine the optimal chunk size for semantic retrieval on small (500M parameter) models with limited context windows (2048 tokens).
+
+**Variant A (Small Chunks):** 1024 characters (~256 tokens).
+*   *Theory:* High granularity. Allows more unique chunks in the context window, but may lose semantic continuity of larger functions.
+
+**Variant B (Large Chunks):** 4096 characters (~1024 tokens).
+*   *Theory:* Better continuity. However, only 1-2 chunks can fit in the context window before displacing the system prompt and conversation history.
+
+**Success Criteria:**
+1.  Retrieval Recall: AI correctly identifies the specific file and line for a given technical query.
+2.  Context Efficiency: Chunks do not exceed 25% of the total available context window.
+3.  Indexing Speed: > 10 files per second on 32-bit eMMC.
+
+**Status:** Phase 6.1 Indexer manifested. Awaiting benchmark results.

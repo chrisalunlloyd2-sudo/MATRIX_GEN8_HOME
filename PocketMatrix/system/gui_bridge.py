@@ -16,10 +16,90 @@ LEDGER_DB = os.path.join(HOME_DIR, ".matrix_ide/database/ledger.db")
 TODO_DB = os.path.join(HOME_DIR, ".matrix_ide/database/todo.db")
 NOTES_DIR = os.path.join(HOME_DIR, "VIPER_SCRIPT_LIBRARY/notes_ce")
 
+# --- MODELS / GGUF MANAGEMENT ---
+@app.route('/api/models')
+def list_models():
+    models = []
+    # Check SD card first as per architecture mandates, then check HOME
+    search_paths = ["/sdcard/MatrixVault/GGUF", os.path.join(HOME_DIR, "GGUF"), HOME_DIR]
+    for path in search_paths:
+        if os.path.exists(path):
+            for root, _, files in os.walk(path):
+                for f in files:
+                    if f.endswith('.gguf'):
+                        full_p = os.path.join(root, f)
+                        size_mb = os.path.getsize(full_p) / (1024 * 1024)
+                        models.append({"name": f, "path": full_p, "size_mb": round(size_mb, 2)})
+    return jsonify(models)
+
+@app.route('/api/models/active', methods=['GET', 'POST'])
+def active_model():
+    state_file = os.path.join(HOME_DIR, ".matrix_ide/state/active_model.txt")
+    if request.method == 'GET':
+        if os.path.exists(state_file):
+            with open(state_file, 'r') as f:
+                return jsonify({"active": f.read().strip()})
+        return jsonify({"active": "None selected"})
+    elif request.method == 'POST':
+        model_path = request.json.get('model_path')
+        os.makedirs(os.path.dirname(state_file), exist_ok=True)
+        with open(state_file, 'w') as f:
+            f.write(model_path)
+        return jsonify({"status": "SUCCESS", "active": model_path})
+
+# --- KNOWLEDGE / RAG EXPLORER ---
+@app.route('/api/knowledge')
+def list_knowledge():
+    db_path = os.path.expanduser("~/.matrix_ide/database/memory_foundation.db")
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("SELECT id, timestamp, payload, context_type FROM operational_memory ORDER BY timestamp DESC LIMIT 50")
+        rows = c.fetchall()
+        conn.close()
+        knowledge = [{"id": r[0], "time": r[1], "snippet": r[2][:200], "type": r[3]} for r in rows]
+        return jsonify(knowledge)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/knowledge/search', methods=['POST'])
+def search_knowledge():
+    query = request.json.get('query', '')
+    db_path = os.path.expanduser("~/.matrix_ide/database/memory_foundation.db")
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        # Simple LIKE search for now to support the 'Advanced RAG' feel without heavy deps
+        c.execute("SELECT id, timestamp, payload, context_type FROM operational_memory WHERE payload LIKE ? ORDER BY timestamp DESC LIMIT 20", ('%' + query + '%',))
+        rows = c.fetchall()
+        conn.close()
+        results = [{"id": r[0], "time": r[1], "payload": r[2], "type": r[3]} for r in rows]
+        return jsonify(results)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # --- UI ROUTES ---
 @app.route('/')
 def desktop():
     return render_template('desktop.html')
+
+@app.route('/manifest.json')
+def manifest():
+    return jsonify({
+        "name": "Matrix CE All-In-One",
+        "short_name": "MatrixCE",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#008080",
+        "theme_color": "#c0c0c0",
+        "icons": [
+            {
+                "src": "data:image/svg+xml;base64,<svg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'><rect width='192' height='192' fill='%23008080'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='80' font-family='sans-serif' fill='white'>M</text></svg>",
+                "sizes": "192x192",
+                "type": "image/svg+xml"
+            }
+        ]
+    })
 
 # --- OMNI DANUBE CHAT ROUTER ---
 @app.route('/api/chat', methods=['POST'])

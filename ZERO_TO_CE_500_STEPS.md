@@ -119,3 +119,19 @@
 *   **Step 461-475 (Pedagogy Lockdown):** Verification that all Phase 1-4 successes are stored in the SUCCESS_VAULT for future self-training.
 *   **Step 476-490 (Final Manifestation):** Bundling the scripts into the final installer path. Verification of the build_final_apk.sh logic.
 *   **Step 491-500 (Omni-Control Transition):** Transitioning to Ready state. The system is now a self-contained, autonomous, and visual agentic network.
+# 📚 ZERO-TO-CE: PHASE 6 EXHAUSTIVE MANIFEST (Steps 501-600)
+
+## 📚 PHASE 6: ADVANCED RAG INGESTION
+
+### Subsection 6.1: Local File Ingestion (Steps 501-530)
+*   **Step 501-510 (Recursive Traversal):** Logic to walk the HOME directory while excluding node_modules, .git, and binary artifacts to minimize DB bloat.
+*   **Step 511-520 (Semantic Chunking):** Breaking files into 2048-character chunks to ensure they fit within the 512-token context window of small local models.
+*   **Step 521-530 (Vector Storage):** Implementation of local_file_indexer.py. Stores payloads and deterministic embeddings in memory_foundation.db.
+
+### Subsection 6.2: Semantic Search Hardening (Steps 531-560)
+*   **Step 531-545 (Retrieval Tuning):** Refining the RAGController.search_context logic to prioritize recent file changes.
+*   **Step 546-560 (Context Injection):** Updating the LLM system prompt to automatically include relevant local snippets based on the user's query.
+
+### Subsection 6.3: Visual Knowledge Manager (Steps 561-600)
+*   **Step 561-580 (UI Integration):** Adding a 'Knowledge' window to the Windows CE interface to allow the user to see what files the AI has indexed.
+*   **Step 581-600 (Performative Audit):** Final stress test of the RAG pipeline. Ensuring <1s retrieval time on 32-bit hardware.
