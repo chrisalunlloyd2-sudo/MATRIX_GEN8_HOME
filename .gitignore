@@ -37,3 +37,4 @@ genetic_flow/models/
 .bash_history
 .bashrc
 oauth_creds.json
+daemon.log.old
