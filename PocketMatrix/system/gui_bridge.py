@@ -78,6 +78,27 @@ def search_knowledge():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/knowledge/stats')
+def knowledge_stats():
+    db_path = os.path.expanduser("~/.matrix_ide/database/memory_foundation.db")
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("SELECT COUNT(*) FROM operational_memory WHERE context_type = 'local_file_index'")
+        total_chunks = c.fetchone()[0]
+        c.execute("SELECT COUNT(DISTINCT SUBSTR(payload, 10, INSTR(payload, ' | ') - 10)) FROM operational_memory WHERE context_type = 'local_file_index'")
+        total_files = c.fetchone()[0]
+        db_size_mb = os.path.getsize(db_path) / (1024 * 1024)
+        conn.close()
+        return jsonify({
+            "total_files": total_files,
+            "total_chunks": total_chunks,
+            "db_size_mb": round(db_size_mb, 2),
+            "status": "Healthy"
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # --- UI ROUTES ---
 @app.route('/')
 def desktop():

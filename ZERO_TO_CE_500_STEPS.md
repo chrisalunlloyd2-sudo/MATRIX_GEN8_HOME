@@ -143,3 +143,14 @@
 *   **Step 531-540 (Recency Decay Logic):** Updating the RAG search SQL query to multiply cosine similarity by a time-decay factor. Recent file changes in the workspace get higher priority in the context window.
 *   **Step 541-550 (Source-Type Boosting):** Implementing logic to boost .md and .py files over .json or logs, ensuring the AI prioritizes instruction and logic over raw data.
 *   **Step 551-560 (Dynamic K-Top Retrieval):** Modifying the system to fetch the Top-3 recent context chunks AND the Top-2 highest semantic match chunks, creating a hybrid context window.
+# 🖼️ ZERO-TO-CE: PHASE 6.3 EXHAUSTIVE MANIFEST (Steps 561-600)
+
+## 🖼️ PHASE 6.3: VISUAL KNOWLEDGE MANAGER
+
+### Subsection 6.3: Visual RAG Analytics (Steps 561-580)
+*   **Step 561-570 (Knowledge Stats API):** Implementing /api/knowledge/stats to return total file counts, total semantic chunks, and database storage footprint.
+*   **Step 571-580 (Visual Dashboard):** Adding a Statistics tab to the Knowledge Explorer window. Displays a classic Windows-style summary of the AI's current Brain Size.
+
+### Subsection 6.4: Source Attribution & Citation (Steps 581-600)
+*   **Step 581-590 (Citation Logic):** Modifying the Chat UI to parse context metadata. The AI response will now include a Sources footer with clickable links.
+*   **Step 591-600 (Performative Closure):** Executing a global system test. Verifying that the AI can cite a specific line from the README.md while the Windows CE interface tracks the memory lookup.

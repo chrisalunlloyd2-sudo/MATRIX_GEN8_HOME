@@ -134,3 +134,19 @@
 3.  Retrieval Latency: SQL calculation overhead < 50ms.
 
 **Status:** Implementation in progress.
+
+## [A/B TEST HYPOTHESIS: Phase 6.3 Source Attribution UI]
+**Objective:** Measure the impact of visual citations on user trust and AI explainability on fenced 32-bit hardware.
+
+**Variant A (Silent RAG):** AI uses context but does not cite sources.
+*   *Theory:* Minimum character count. Faster token generation. User has no idea where the info came from.
+
+**Variant B (Visible Citations):** AI appends a "Sources Used: [File X, File Y]" footer.
+*   *Theory:* Increases explainability and trust. Minimal ( < 5%) overhead on token generation speed.
+
+**Success Criteria:**
+1.  Source Accuracy: 100% of cited files actually contain the information used.
+2.  UI Responsiveness: Citation links in the chat window correctly focus and open the Knowledge Explorer.
+3.  Memory Footprint: Metadata overhead in the SQLite query < 10KB per chat turn.
+
+**Status:** Implementation in progress.

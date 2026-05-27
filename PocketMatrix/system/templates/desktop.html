@@ -215,9 +215,11 @@
             <div class="excel-toolbar">
                 <input type="text" id="knowledge-query" placeholder="Search indexed code/docs..." style="flex-grow:1;">
                 <button onclick="searchKnowledge()">Search</button>
-                <button onclick="loadKnowledge()">Refresh Latest</button>
+                <button onclick="loadKnowledge()">Latest</button>
+                <button onclick="loadKnowledgeStats()">Stats</button>
             </div>
             <div class="window-content" style="height: calc(100% - 50px); overflow: auto; padding: 5px;">
+                <div id="knowledge-stats-bar" style="background: #e0e0e0; padding: 3px 10px; font-size: 10px; border-bottom: 1px solid #999; display: none; margin-bottom: 5px;"></div>
                 <div id="knowledge-list"></div>
             </div>
         </div>
@@ -303,6 +305,19 @@
                         </div>
                     `;
                 });
+            });
+        }
+
+        function loadKnowledgeStats() {
+            fetch('/api/knowledge/stats').then(r => r.json()).then(data => {
+                const bar = document.getElementById('knowledge-stats-bar');
+                bar.style.display = 'block';
+                bar.innerHTML = `
+                    <b>Indexed Files:</b> ${data.total_files} | 
+                    <b>Total Chunks:</b> ${data.total_chunks} | 
+                    <b>DB Size:</b> ${data.db_size_mb} MB | 
+                    <b>Status:</b> ${data.status}
+                `;
             });
         }
 
