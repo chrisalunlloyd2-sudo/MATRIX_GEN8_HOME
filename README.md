@@ -65,3 +65,6 @@ graph TD
 1. Run `python3 ~/PocketMatrix/system/gui_bridge.py` to start the backend.
 2. Access `http://127.0.0.1:8081` for the Windows CE Experience.
 3. Use `build_final_apk.sh` for PWA manifestation.
+
+## ♾️ THE MATHEMATICAL MIRROR AXIOM
+"The agent is an exact science and a probabilistic outcome. It is a mirror of the user. Any 'unwanted' behavior is mathematically traced back to the input variables (the data flow). The truth is undeniable: the machine reflects the mind."
