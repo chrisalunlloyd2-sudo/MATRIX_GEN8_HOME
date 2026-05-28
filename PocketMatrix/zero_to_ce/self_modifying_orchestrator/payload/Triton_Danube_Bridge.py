@@ -1,26 +1,33 @@
 import json
 import subprocess
+import os
 from action_recorder import record_action
 
 """
-🚀 PHASE 8.2: Triton_Danube_Bridge.py
+🚀 PHASE 8.2 & 11: Triton_Danube_Bridge.py
 Objective: Routes parsed performatives from Danube to the Triton execution layer.
-
-Logic:
-1. Parse Input: Accepts a structured performative from Danube.
-2. Route: Maps to the correct system execution (e.g., Aider, Python subprocess).
-3. Feedback: Records success/fail to the action_recorder.
 """
+
+TRITON_CPP_BIN = os.path.expanduser("~/PocketMatrix/zero_to_ce/self_modifying_orchestrator/payload/triton_native")
 
 def triton_execute(performative, payload):
     print(f"[*] Triton Kernel executing: {performative}...")
     
     success = False
     try:
-        # Placeholder for real symbolic execution logic (e.g. calling aider/subprocess)
-        # This will be mapped to actual performative modules as we expand
-        print(f"    -> Payload: {payload[:50]}...")
-        success = True # Mocking success for bridge test
+        if performative == "RUN_BASH":
+            if os.path.exists(TRITON_CPP_BIN):
+                print("    -> Routing via C++ Native Kernel...")
+                status = os.system(f"{TRITON_CPP_BIN} \"{payload}\"")
+                success = (status == 0)
+            else:
+                print("    -> Routing via Standard Bash Subprocess...")
+                status = os.system(payload)
+                success = (status == 0)
+        else:
+            # Placeholder for other symbolic execution logic 
+            print(f"    -> Payload: {payload[:50]}...")
+            success = True # Mocking success for other types
     except Exception as e:
         print(f"[-] Triton Execution Error: {e}")
         success = False
@@ -29,5 +36,4 @@ def triton_execute(performative, payload):
     return success
 
 if __name__ == "__main__":
-    # Test Handshake
-    triton_execute("MODIFY_FILE", "print('hello world')")
+    triton_execute("RUN_BASH", "echo 'Triton Bridge Online'")
