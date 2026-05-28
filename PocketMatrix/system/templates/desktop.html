@@ -15,15 +15,18 @@
         .window-header span.close-btn { cursor: pointer; background: #c0c0c0; color: #000; border: 1px outset #fff; padding: 0 2px; font-size: 10px; }
         .window-content { background: #fff; border: 2px inset #fff; overflow-y: auto; font-size: 12px; }
         
-        #pocket-cmd { top: 20px; left: 20px; width: 350px; }
-        #pocket-mail { top: 60px; left: 380px; width: 320px; height: 300px; }
-        #pocket-docs { top: 100px; left: 60px; width: 450px; height: 350px; }
-        #pocket-excel { top: 150px; left: 100px; width: 600px; height: 400px; }
-        #pocket-net { top: 200px; left: 200px; width: 350px; height: 250px; }
-        #pocket-todo { top: 40px; left: 300px; width: 300px; height: 350px; }
-        #pocket-notes { top: 80px; left: 150px; width: 400px; height: 300px; }
+        /* NetDB CE Specific Layout */
+        .shell-container { display: flex; height: 100%; width: 100%; border: 2px inset #fff; }
+        .tree-pane { width: 30%; background: #fff; border-right: 2px solid #c0c0c0; overflow-y: auto; padding: 5px; }
+        .list-pane { width: 70%; background: #fff; overflow-y: auto; padding: 5px; }
+        .tree-node { cursor: pointer; padding: 2px 0; font-size: 11px; }
+        .tree-node:hover { background: #000080; color: #fff; }
+        
+        #pocket-netdb { top: 30px; left: 30px; width: 800px; height: 500px; }
+        #pocket-cmd { top: 100px; left: 100px; width: 500px; height: 350px; z-index: 200; }
         
         /* Start Menu Styles */
+...
         #start-menu { 
             position: absolute; bottom: 30px; left: 0; width: 180px; background: #c0c0c0; border: 2px outset #fff; 
             display: none; z-index: 2000; box-shadow: 2px -2px 5px rgba(0,0,0,0.5);
@@ -55,13 +58,17 @@
         select, button, input, textarea { font-family: 'Tahoma', sans-serif; font-size: 11px; }
     </style>
 </head>
-<body>
-    <!-- Desktop Icons -->
-    <div id="desktop-icons">
-        <div class="d-icon" onclick="openWindow('pocket-cmd')">
-            <div class="d-icon-img h2o"></div>
-            <span>H2O Matrix<br>(Danube Chat)</span>
-        </div>
+<!-- Desktop Icons -->
+<div id="desktop-icons">
+    <div class="d-icon" onclick="openWindow('pocket-netdb')">
+        <div class="d-icon-img" style="background:#fff; border-color:#000;"></div>
+        <span>NetDB CE<br>(Database)</span>
+    </div>
+    <div class="d-icon" onclick="openWindow('pocket-cmd')">
+        <div class="d-icon-img h2o"></div>
+        <span>Agent Prompt</span>
+    </div>
+...
         <div class="d-icon" onclick="openWindow('pocket-docs')">
             <div class="d-icon-img" style="background:#e8d06a;"></div>
             <span>My Documents</span>
@@ -89,16 +96,38 @@
     </div>
 
     <div id="desktop">
-        <!-- Danube Chat / CMD -->
-        <div class="window" id="pocket-cmd">
-            <div class="window-header"><span>Danube Omni-Chat / CMD</span><span class="close-btn" onclick="document.getElementById('pocket-cmd').style.display='none'">X</span></div>
-            <div class="window-content" style="height: 250px; display: flex; flex-direction: column;">
-                <div id="cmd-out" style="flex-grow: 1; background: #000; color: #0f0; font-family: monospace; padding: 5px; overflow-y: auto;">
-                    H2O Matrix [Global Control]<br>Type a command or say "remind me to..." or "note: ..."<br>>
+        <!-- NetDB CE Shell -->
+        <div class="window" id="pocket-netdb">
+            <div class="window-header"><span>NetDB CE - Database Navigator</span><span class="close-btn" onclick="document.getElementById('pocket-netdb').style.display='none'">X</span></div>
+            <div class="excel-toolbar">
+                <button onclick="loadShellHierarchy()">Refresh Shell</button>
+                <span id="shell-status" style="font-size:10px; margin-left:10px;">Connected to Matrix Substrate</span>
+            </div>
+            <div class="window-content" style="height: calc(100% - 50px);">
+                <div class="shell-container">
+                    <div class="tree-pane" id="shell-tree">
+                        <div class="tree-node" onclick="loadDirectory('')">📂 Desktop</div>
+                        <div class="tree-node" onclick="loadDatabases()">└── 📂 Database Neighborhood</div>
+                        <div class="tree-node" onclick="loadRootDocs()">└── 📂 My Documents</div>
+                    </div>
+                    <div class="list-pane" id="shell-list">
+                        <!-- Hierarchical View goes here -->
+                    </div>
                 </div>
-                <input type="text" id="cmd-in" placeholder="Enter intent or command..." style="width: 100%; border: none; border-top: 1px solid #333; background: #000; color: #0f0; outline: none; padding: 5px; box-sizing: border-box; font-family: monospace;">
             </div>
         </div>
+
+        <!-- Danube Chat / CMD -->
+        <div class="window" id="pocket-cmd">
+            <div class="window-header"><span>Agent Command Prompt</span><span class="close-btn" onclick="document.getElementById('pocket-cmd').style.display='none'">X</span></div>
+            <div class="window-content" style="height: 300px; display: flex; flex-direction: column;">
+                <div id="cmd-out" style="flex-grow: 1; background: #000; color: #0f0; font-family: monospace; padding: 5px; overflow-y: auto; font-size: 11px;">
+                    MATRIX GEN 10 OMNI-ROUTER [ZLC MODE]<br>Awaiting directive...<br>>
+                </div>
+                <input type="text" id="cmd-in" placeholder="Enter command or intent..." style="width: 100%; border: none; border-top: 1px solid #333; background: #000; color: #0f0; outline: none; padding: 5px; box-sizing: border-box; font-family: monospace; font-size: 11px;">
+            </div>
+        </div>
+
 
         <!-- Pocket Mail -->
         <div class="window" id="pocket-mail">

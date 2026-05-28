@@ -126,32 +126,21 @@ def manifest():
 @app.route('/api/chat', methods=['POST'])
 def omni_chat():
     msg = request.json.get('message', '').strip()
-    msg_lower = msg.lower()
+    if not msg:
+        return jsonify({"output": ""})
 
-    # 1. Reminders / ToDo Router
-    if msg_lower.startswith("remind me to "):
-        task = msg[13:]
-        conn = sqlite3.connect(TODO_DB)
-        c = conn.cursor()
-        c.execute("INSERT INTO tasks (task, status, delivery_method) VALUES (?, 'pending', 'GUI')", (task,))
-        conn.commit()
-        conn.close()
-        return jsonify({"output": f"Danube: Added '{task}' to your ToDo list."})
+    # Execute via Master Router (Phase 11/14/15 logic)
+    router_path = os.path.join(HOME_DIR, "PocketMatrix/zero_to_ce/self_modifying_orchestrator/payload/master_router.py")
+    try:
+        # Capture stdout for terminal feel
+        result = subprocess.run(["python3", router_path, msg], capture_output=True, text=True, timeout=30)
+        out = result.stdout.strip()
+        if not out:
+            out = "[!] Command processed by Substrate."
+        return jsonify({"output": out})
+    except Exception as e:
+        return jsonify({"output": f"[-] Error: {str(e)}"}), 500
 
-    # 2. Notes Router
-    if msg_lower.startswith("note: "):
-        note_content = msg[6:]
-        note_name = f"note_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
-        with open(os.path.join(NOTES_DIR, note_name), 'w') as f:
-            f.write(note_content)
-        return jsonify({"output": f"Danube: Note saved to VIPER_SCRIPT_LIBRARY/notes_ce/{note_name}."})
-
-    # 3. Default Command / Agentic Translation
-    result = subprocess.run(["agy", "-p", msg], capture_output=True, text=True)
-    out = result.stdout.strip()
-    if not out:
-        out = "Danube: I have processed your intent."
-    return jsonify({"output": f"Substrate: {out}"})
 
 
 # --- EXPLORER & DATABASES ---
