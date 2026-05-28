@@ -1,6 +1,7 @@
 import sys
 import os
 import time
+import json
 
 sys.path.append(os.path.expanduser('~/PocketMatrix/zero_to_ce/self_modifying_orchestrator/payload'))
 try:
@@ -10,7 +11,7 @@ except ImportError:
     print("[-] Missing router dependencies.")
     sys.exit(1)
 
-# 📦 PAYLOAD: MACRO INTENT PARSER (Phase 14)
+# 📦 PAYLOAD: MACRO INTENT PARSER (Phase 14 & 15)
 # Maps high-velocity shorthand input to complex action sequences.
 MACRO_DICTIONARY = {
     "sync": "[ACTION: RUN_BASH] git add . && git commit -m '[AUTO] ZLC Macro Sync' && git push origin main",
@@ -24,6 +25,19 @@ MACRO_DICTIONARY = {
     "gui": "[ACTION: RUN_BASH] python3 ~/PocketMatrix/system/gui_bridge.py &",
     "kill": "[ACTION: RUN_BASH] pkill -f python3"
 }
+
+def load_learned_macros():
+    """Phase 15: Autonomously loads learned shorthand templates."""
+    macro_file = os.path.expanduser("~/.matrix_ide/state/learned_macros.json")
+    if os.path.exists(macro_file):
+        try:
+            with open(macro_file, 'r') as f:
+                learned = json.load(f)
+                MACRO_DICTIONARY.update(learned)
+        except Exception as e:
+            print(f"[-] Error loading learned macros: {e}")
+
+load_learned_macros()
 
 def parse_intents(prompt):
     """Splits multi-intent prompts (e.g. '1 then 2') into discrete sequences."""
