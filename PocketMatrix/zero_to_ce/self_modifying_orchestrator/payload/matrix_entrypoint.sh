@@ -14,19 +14,5 @@ python3 ~/PocketMatrix/zero_to_ce/self_modifying_orchestrator/payload/mmap_cache
 
 echo "[+] Substrate Daemons Active. GUI at http://127.0.0.1:8081"
 
-# 3. Route Execution
-if [ "$#" -eq 0 ]; then
-    # Interactive Loop (Danube Director)
-    python3 ~/openrouter_manager/src/danube_director.py
-else
-    # 0-Shot Pipeline (Shannon Router -> Sequencer)
-    echo "[*] Routing Directive via Hash-Shannon Engine..."
-    python3 -c "
-import sys
-import os
-sys.path.append(os.path.expanduser('~/PocketMatrix/zero_to_ce/self_modifying_orchestrator/payload'))
-from task_distiller import distill
-distill(' '.join(sys.argv[1:]))
-" "$@"
-    python3 ~/PocketMatrix/zero_to_ce/self_modifying_orchestrator/payload/action_sequencer.py
-fi
+# 3. Omni-Router Execution
+python3 ~/PocketMatrix/zero_to_ce/self_modifying_orchestrator/payload/master_router.py "$@"
