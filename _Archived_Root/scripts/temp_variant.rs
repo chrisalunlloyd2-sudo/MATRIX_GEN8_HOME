@@ -1,0 +1,1 @@
+pub fn compile_mask_7(pattern: &str) { /* Implementation for Think step-by-step. 1. Define the mask table. 2. Iterate through pattern characters. 3. Apply bit-shift and OR. 4. Return u64 mask. */ }

@@ -1,0 +1,15 @@
+{
+  "name": "openrouter_manager",
+  "version": "1.0.0",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "enzyme": "^3.11.0"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
