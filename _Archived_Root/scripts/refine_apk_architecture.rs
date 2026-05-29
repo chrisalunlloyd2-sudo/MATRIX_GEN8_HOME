@@ -1,5 +1,3 @@
-[FILE: refine_apk_architecture.rs]
-```rust
 use tauri::{
     build_utils, Manager, Runtime,
 };
@@ -47,6 +45,3 @@ async fn connect_to_database() -> String {
 [CMD]
 ```bash
 cargo build
-```
-
-[STEER: SYPHON]

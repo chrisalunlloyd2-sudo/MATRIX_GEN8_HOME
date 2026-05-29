@@ -18,10 +18,7 @@ public class MainActivity extends Activity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         
-        // Ensure links open inside WebView, not external browser
         webView.setWebViewClient(new WebViewClient());
-        
-        // Point to the local PocketMatrix GUI bridge
         webView.loadUrl("http://127.0.0.1:8081");
         
         setContentView(webView);

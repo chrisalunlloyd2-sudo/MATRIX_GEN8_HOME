@@ -126,24 +126,32 @@ def manifest():
 @app.route('/api/chat', methods=['POST'])
 def omni_chat():
     msg = request.json.get('message', '').strip()
-    if not msg:
-        return jsonify({"output": ""})
+    msg_lower = msg.lower()
 
-    # Execute via Triton Broker
-    broker_path = os.path.join(HOME_DIR, "triton_broker.py")
-    try:
-        # We start the script and pass the message via stdin
-        result = subprocess.run(["python3", broker_path], input=msg, capture_output=True, text=True, timeout=60)
-        out = result.stdout.strip()
-        # Clean up the output to remove the initialization string for the GUI
-        out = out.replace("=== Triton Headless Orchestrator Initialized ===", "").strip()
-        
-        if not out:
-            out = "[!] Command processed by Triton Substrate."
-        return jsonify({"output": out})
-    except Exception as e:
-        return jsonify({"output": f"[-] Error: {str(e)}"}), 500
+    # 1. Reminders / ToDo Router
+    if msg_lower.startswith("remind me to "):
+        task = msg[13:]
+        conn = sqlite3.connect(TODO_DB)
+        c = conn.cursor()
+        c.execute("INSERT INTO tasks (task, status, delivery_method) VALUES (?, 'pending', 'GUI')", (task,))
+        conn.commit()
+        conn.close()
+        return jsonify({"output": f"Danube: Added '{task}' to your ToDo list."})
 
+    # 2. Notes Router
+    if msg_lower.startswith("note: "):
+        note_content = msg[6:]
+        note_name = f"note_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+        with open(os.path.join(NOTES_DIR, note_name), 'w') as f:
+            f.write(note_content)
+        return jsonify({"output": f"Danube: Note saved to VIPER_SCRIPT_LIBRARY/notes_ce/{note_name}."})
+
+    # 3. Default Command / Agentic Translation
+    result = subprocess.run(["agy", "-p", msg], capture_output=True, text=True)
+    out = result.stdout.strip()
+    if not out:
+        out = "Danube: I have processed your intent."
+    return jsonify({"output": f"Substrate: {out}"})
 
 
 # --- EXPLORER & DATABASES ---

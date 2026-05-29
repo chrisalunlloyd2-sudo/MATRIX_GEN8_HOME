@@ -225,3 +225,50 @@ By wrapping highly complex neural-symbolic loops, cross-device network protocols
 - `[PERFORMATIVE: DARWIN]` - Neural-symbolic fitness scoring and selection.
 - `[PERFORMATIVE: INGEST]` - Webcrawl processing and Ask Logic digestion.
 - `[PERFORMATIVE: HANDOFF]` - Encrypted agentic task migration to peer nodes.
+# MatrixH2OCE GUI Integration Roadmap
+
+This roadmap outlines the steps to integrate the newly functional `triton_broker.py` (Danube/Triton dual-agent system) into the PocketMatrix GUI, finalizing the "Windows CE" style interface with global database views.
+
+## Step 1: Bridge the AI Chat
+- **Action:** Modify `/api/chat` in `~/PocketMatrix/system/gui_bridge.py`.
+- **Goal:** Replace the legacy `master_router.py` call with a direct communication channel to our new `triton_broker.py`. This ensures the PocketMatrix chat app uses the fast, token-streaming Danube/Triton logic.
+
+## Step 2: Implement Global DB Views in the Frontend
+- **Action:** Update the PocketMatrix frontend (`desktop.html` or associated JS).
+- **Goal:** The backend currently supports `/api/databases` and `/api/db/query`. We need to build/refine the "Database Explorer" window in the GUI so it can fetch the global list of SQLite databases, load their tables, and display rows interactively.
+
+## Step 3: Synchronize Headless Tasks with the UI
+- **Action:** Integrate Triton's execution loop with the `/api/tasks` and `/api/todo` endpoints.
+- **Goal:** When Triton initiates a headless code task, it should register as a live process in the GUI's Task Manager, allowing the user to monitor its execution and self-healing retries visually.
+
+## Step 4: Finalize the Windows CE Frontend
+- **Action:** Review `desktop.html` and static assets.
+- **Goal:** Ensure all applications (OmniChat, DB Viewer, File Explorer, Mail) open cleanly in draggable windows, replicating the classic OS feel, and that all API endpoints are correctly wired.
+
+## Step 5: End-to-End Validation
+- **Action:** Run `gui_bridge.py` on port 8081.
+- **Goal:** Access the GUI, open the Chat to verify Danube responds, trigger a code task to verify Triton headless execution, and open the DB Viewer to inspect the system logs.
+
+
+## 🚀 UPDATE: Triton/Danube Dual-Agent Integration & GUI Synchronization (v11.5)
+
+### Architectural Overview
+The system has been fundamentally re-architected to fulfill the 50-step, memory-isolated, ultra-lightweight architecture blueprint designed for 32-bit Android (Termux) environments using local GGUF models.
+
+**The core orchestrator is no longer a background daemon but an active, dual-agent broker:**
+1.  **Danube (Conversational Interface):** Handles all natural language interactions. It operates with warmth and precision. When a code-oriented task is identified, it generates a strict XML `<trigger>` tag to hand off the intent.
+2.  **Triton (Headless Orchestrator):** Operates at zero-temperature. It intercepts task triggers, formulates exact terminal commands, and executes them headlessly in a dedicated sandbox (`~/workspace`). 
+3.  **Self-Healing Loop:** Triton includes a 3-pass self-correction mechanism. If a command returns a non-zero exit code, the raw stderr log is fed back to the model to mutate and fix the command automatically.
+4.  **Local LLM Binding:** The entire system has been stripped of external API dependencies (where applicable) and is hard-bound to a locally compiled `llama-server` (ggml-org/llama.cpp) running on port `8080` with the `danube3.gguf` model.
+
+### PocketMatrix GUI Integration
+The Windows CE-styled graphical interface (`PocketMatrix`) has been finalized and securely connected to the new broker:
+*   **Omni-Chat Bridge:** The `/api/chat` endpoint inside `gui_bridge.py` has been explicitly rewritten. It now bypasses legacy routing and pipes all conversational input via `stdin` directly into `triton_broker.py`.
+*   **Task Manager Synchronization:** Triton logs its execution states (planning, running, repairing, completed, failed) directly into the `todo.db` SQLite ledger. The PocketMatrix Task Manager and ToDo Sync windows dynamically fetch this data, providing a real-time, visual tracking dashboard of background agent activity.
+*   **Global Database Views (NetDB CE):** The `desktop.html` frontend has been verified to actively scan and list all global SQLite databases across the device, allowing for direct table querying and interactive viewing in the 'Excel 95' component.
+
+### Pedagogy & Streaming Enhancements
+*   **Token Streaming:** To mitigate processing latency on 500M models operating on ARM architecture, an `agent_streaming.py` prototype was developed and validated. This ensures immediate character-by-character visual feedback in the terminal.
+*   **Genetic Prompting Preparation:** The system is primed for genetic orchestration. Future iterations will utilize the `todo.db` success/failure logs to mutate the `Triton` and `Danube` system prompts automatically, finding the most efficient topological instructions for specific codebases.
+
+*No legacy architecture, logic, or notes were deleted during this transition. All historic nodes are preserved as per the project mandate.*
