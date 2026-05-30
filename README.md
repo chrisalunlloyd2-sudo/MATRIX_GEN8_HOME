@@ -1,84 +1,82 @@
 # 🌌 PocketMatrix OS (H2O Matrix CE)
 
 ## 📜 The Mission
-The PocketMatrix OS is a fully manifested, 900-step architectural Singularity. It transforms a standard 32-bit Android environment into a distributed, AI-driven Windows CE-styled agentic network. 
+The PocketMatrix OS is a fully manifested, 700-step architectural Singularity. It transforms a standard 32-bit Android environment into a distributed, AI-driven Windows CE-styled agentic network. 
 
 **The Core Mission is Gamification & Simplification.** 
 By wrapping highly complex neural-symbolic loops, cross-device network protocols, and agentic orchestration inside a nostalgic, point-and-click Windows CE desktop, the cognitive load required to operate the system is drastically reduced. It provides a visual, interactive workspace where learning (pedagogy) and execution (agentic routing) happen naturally. The user is empowered to orchestrate disparate databases, APIs, and models from a single, unified command center that feels like playing an OS simulation game.
 
+**Status:** [PHASE 7 COMPLETE] Multi-Node Neural Sync Active.
+
+> **⚠️ 32-Bit Constraint Mandate:** The runtime environment is strictly bound to a local llama-server instance using danube3.gguf (or equivalent). No external API calls are permitted within the core execution loops to preserve local system memory and ensure true autonomy.
+
 ## ✨ Feature Definitions & Rationale
 
-**1. PocketMatrix GUI (Windows CE Interface)**
-* **Definition:** A web-based, high-fidelity replica of the classic Windows CE desktop environment, complete with a taskbar, Start Menu, and draggable windows.
-* **Why we need it:** It replaces cryptic terminal sessions with a gamified, centralized hub. This lowers cognitive overhead, allowing seamless visual interaction with multiple AI tools, databases, and network agents simultaneously.
+| Component | Interface | Underlying Substrate Trigger |
+|---|---|---|
+| **PocketMatrix GUI** | Windows CE Desktop | Flask web server bridging HTML/CSS to local Python backend |
+| **Danube Omni-Chat** | Pocket CMD | `system/gui_bridge.py` via HTTP POST, routing to Triton Broker |
+| **Excel 95** | NetDB CE | Direct ROWID SQLite updates executed 'on blur' |
+| **Pocket ToDo** | Task List | `gkeepapi` background synchronization to Google Keep |
+| **Pocket Mail** | Mail Client | SMTP bridge routing KQML messages via external App Passwords |
+| **Notes CE** | Markdown Editor | Direct file I/O to `VIPER_SCRIPT_LIBRARY` |
+| **Global Explorer** | My Documents | Recursive local filesystem crawler prioritizing project folders |
+| **Task Manager** | Kernel View | Active `ps` telemetry parsing identifying matrix processes |
+| **Internet Explorer** | Webcrawl UI | `IngestionEngine` scraping and formatting for Ask Logic |
+| **Fault Injector** | System Settings | Intentional crash simulations for pedagogical debugging |
+| **Telemetry Parser** | Log Viewer | Regex-based decoding of kernel hex dumps to plain-text |
+| **CeGCC & WCECL** | Compiler Layer | Native compilation of ARM binaries bridging legacy Win32 |
 
-**2. Danube Omni-Chat (Pocket CMD)**
-* **Definition:** The central nervous system interface. A chat window that routes natural language (like "note: ..." or "remind me to ...") to specific applications, or falls back to the local H2O Danube model to translate intent into raw, executable bash/Win32 commands.
-* **Why we need it:** Eliminates the need to memorize complex CLI syntax. You state the intent; the semantic router handles the execution.
+## 🚀 Quick-Start Execution
 
-**3. Excel 95 (Database Viewer & CRUD Editor)**
-* **Definition:** A spreadsheet-style window that allows live viewing and editing (Create, Read, Update, Delete) of any SQLite database across the entire network. Utilizes physical ROWIDs for precision saves triggered instantly 'on blur'.
-* **Why we need it:** It provides absolute, visual power over internal matrices, vectors, and state data without requiring the user to write a single line of SQL.
+To launch the environment manually (if not using the Standalone APK's Ghost Boot):
 
-**4. Pocket ToDo (Google Keep Hypersync)**
-* **Definition:** A cross-device reminder system that securely syncs local tasks to an actual Google Keep account via the `gkeepapi`.
-* **Why we need it:** Ensures that agentic intents, reminders, and daily task lists flow out of the local OS sandbox and directly onto the user's physical mobile phone widget.
+```bash
+# Step 1: Initialize the local llama.cpp background substrate
+llama-server -m models/danube3.gguf -c 2048 --port 11434 &
 
-**5. Pocket Mail (Live Gmail SMTP Bridge)**
-* **Definition:** An email client embedded in the CE desktop that routes KQML messages and system logs directly to real-world inboxes via an encrypted Gmail SMTP bridge.
-* **Why we need it:** Enables the Matrix to communicate autonomously with external human actors, sending automated reports, alerts, and state summaries.
+# Step 2: Spin up the dual-agent Python Bridge
+PYTHONPATH=. python3 PocketMatrix/system/gui_bridge.py &
 
-**6. Notes CE (VIPER Link)**
-* **Definition:** A dedicated markdown text editor that reads and writes directly to the `VIPER_SCRIPT_LIBRARY`.
-* **Why we need it:** Facilitates real-time, on-device documentation. The user can rapidly update the system's "cognitive behavioral core" and pedagogical notes directly from the GUI.
+# Step 3: Connect via the local WebView (or standard browser)
+# Navigate to http://127.0.0.1:8081
+```
 
-**7. Global Explorer (My Documents)**
-* **Definition:** A gamified file explorer that recursively hunts down and groups all projects, kernels, and databases across the entire network into easily clickable desktop icons.
-* **Why we need it:** Provides a unified, structured view of the entire agentic network, ensuring no database or project file is ever "lost" in the deep terminal filesystem.
+## 🧠 Architectural Logic Flow
 
-**8. Task Manager (Kernel View)**
-* **Definition:** A live process monitor attached directly to the underlying OS (`ps` telemetry).
-* **Why we need it:** Allows immediate visual confirmation that local LLMs (`llama`), orchestration loops (`agy`), and Python server bridges are functioning properly and haven't hung.
+The dual-agent handoff between the semantic conversational interface and the headless executor operates as follows:
 
-**9. Internet Explorer (Webcrawl Ingestion)**
-* **Definition:** A specialized knowledge scraper that digests documentation URLs, strips HTML, and forces the Danube AI to translate the raw text into structured "Ask Logic" rules.
-* **Why we need it:** Automates the ingestion of external data. The AI teaches itself by reading FAQs and autonomously forming its own algorithmic instructions.
-
-**10. Dynamic Fault Injector**
-* **Definition:** A pedagogical sandbox tool that deliberately simulates severe OS crashes (e.g., Thread Deadlocks, Memory Corruption) within the CE environment.
-* **Why we need it:** Gamified learning. By intentionally breaking the system, it forces the user to debug C/C++ in real-time, heavily assisted by the Danube AI tutor.
-
-**11. Telemetry Parser**
-* **Definition:** A memory-listening hook that pipes raw, cryptic Windows CE hex dumps and scheduler logs directly into the semantic model via regex filtering.
-* **Why we need it:** Translates legacy OS crashes into plain-text English. The user learns OS internals rapidly without needing to manually decode hex addresses.
-
-**12. Headless Accessibility Bridge**
-* **Definition:** A zero-screen translation layer that converts natural language directly into low-level Win32 C/C++ API calls and executes them via serial/SSH.
-* **Why we need it:** Allows complete automation and control over headless embedded devices or legacy servers without requiring any physical graphical interface.
-
-**13. CeGCC & WCECL Integrations**
-* **Definition:** The inclusion of an open-source cross-compiler (`cegcc`) and Windows CE compatibility layer (`wcecl`).
-* **Why we need it:** Enables native compilation of ARM binaries directly on the Matrix substrate, breaking reliance on proprietary, legacy Microsoft toolchains.
+```text
+[ USER INPUT (Pocket CMD) ]
+         │
+         ▼
+[ Flask Bridge (gui_bridge.py) ]
+         │
+         ▼
+[ Triton Broker (Intent Router) ]
+         │
+    ┌────┴────┐
+    │         │
+ [ CODE ]  [ CHAT ]
+    │         │
+    ▼         ▼
+[  agy  ]  [ llama ] (Danube3)
+    │         │
+    └────┬────┘
+         │
+         ▼
+[ SYSTEM EXECUTION & UI UPDATE ]
+```
 
 ## 📋 TOPOLOGICAL FILE TREE
+
 ```text
 ├── PocketMatrix/
     ├── documents/
         ├── PROJECT_H2O/
-            ├── ledger.db
-            ├── main.db
-            ├── evolution.db
-            ├── continue_config.json
         ├── PROJECT_GENETIC_FLOW/
-            ├── topology.json
         ├── PROJECT_SINGULARITY/
-            ├── main.db
-            ├── ledger.db
-            ├── evolution.db
         ├── PROJECT_POCKET_MATRIX/
-            ├── main.db
-            ├── ledger.db
-            ├── evolution.db
     ├── system/
         ├── gui_bridge.py
         ├── headless_bridge.py
@@ -88,132 +86,24 @@ By wrapping highly complex neural-symbolic loops, cross-device network protocols
         ├── google_bridge.py
         ├── ingestion_engine.py
         ├── chat_harvester.py
-        ├── positive_ping.py
-        ├── quarantine_filter.py
-        ├── datacenter_sync.sh
         ├── templates/
             ├── desktop.html
         ├── static/
             ├── icons/
-        ├── backup/
-            ├── gui_bridge_LEGACY.py
-            ├── desktop_LEGACY.html
-    ├── apps/
-    ├── core/
-        ├── build_manifest.json
-        ├── wcecl/
-            ├── CODE_OF_CONDUCT.md
-            ├── CONTRIBUTING.md
-            ├── LICENSE
-            ├── README.md
-            ├── WinCeCompatLayer.sln
-            ├── logo.png
-            ├── COREDLL/
-                ├── COREDLL.vcxproj
-                ├── COREDLL.vcxproj.filters
-                ├── Exports.def
-                ├── commctrl_wcecl.cpp
-                ├── dbgapi_wcecl.cpp
-                ├── dllmain.cpp
-                ├── excpt_wcecl.cpp
-                ├── imm_wcecl.cpp
-                ├── mmsystem_wcecl.cpp
-                ├── other.cpp
-                ├── shellapi_wcecl.cpp
-                ├── stdafx.cpp
-                ├── stdafx.h
-                ├── stdio_wcecl.cpp
-                ├── stdio_wcecl.h
-                ├── stringapiset_wcecl.cpp
-                ├── strsafe_wcecl.cpp
-                ├── targetver.h
-                ├── wcecl_dialogs.cpp
-                ├── wcecl_memtools.cpp
-                ├── winbase_wcecl.cpp
-                ├── windows_wcecl.cpp
-                ├── wingdi_wcecl.cpp
-                ├── winnls_wcecl.cpp
-                ├── winreg_wcecl.cpp
-                ├── winuser_wcecl.cpp
-                ├── winuser_wcecl.h
-            ├── CoredllTest/
-                ├── CoredllTest.cpp
-                ├── CoredllTest.vcxproj
-                ├── CoredllTest.vcxproj.filters
-                ├── pch.cpp
-                ├── pch.h
-            ├── HeaderToFunction/
-                ├── HeaderSearch.cs
-                ├── HeaderToFunction.csproj
-                ├── MainWindow.Designer.cs
-                ├── MainWindow.cs
-                ├── MainWindow.resx
-                ├── Program.cs
-                ├── SearchCfgDlg.Designer.cs
-                ├── SearchCfgDlg.cs
-                ├── SearchCfgDlg.resx
-                ├── SearchDlg.Designer.cs
-                ├── SearchDlg.cs
-                ├── SearchDlg.resx
-                ├── SearchProcessDlg.Designer.cs
-                ├── SearchProcessDlg.cs
-                ├── SearchProcessDlg.resx
-                ├── Properties/
-                    ├── AssemblyInfo.cs
-                    ├── Resources.Designer.cs
-                    ├── Resources.resx
-                    ├── Settings.Designer.cs
-                    ├── Settings.settings
-            ├── SubsystemTool/
-                ├── SubsystemTool.cpp
-                ├── SubsystemTool.vcxproj
-                ├── SubsystemTool.vcxproj.filters
-                ├── pch.cpp
-                ├── pch.h
-        ├── cegcc/
-            ├── README.md
-    ├── build_apk/
-        ├── AndroidManifest.xml
-        ├── compiled_res.zip
-        ├── src/
-            ├── com/
-                ├── matrix/
-                    ├── ce/
-                        ├── MainActivity.java
-        ├── res/
-            ├── values/
-                ├── strings.xml
-            ├── layout/
-        ├── obj/
-            ├── com/
-                ├── matrix/
-                    ├── ce/
-                        ├── MainActivity.class
-        ├── bin/
-            ├── PocketMatrix.unsigned.apk
-            ├── classes.dex
-            ├── debug.keystore
-            ├── PocketMatrix.src.apk
-            ├── PocketMatrix.apk
-            ├── PocketMatrix.stable.zip
     ├── build_final/
         ├── AndroidManifest.xml
-        ├── res.zip
-        ├── src/
-            ├── com/
-                ├── matrix/
-                    ├── ce/
-                        ├── MainActivity.java
-        ├── res/
-            ├── values/
-                ├── strings.xml
-            ├── drawable/
-        ├── obj/
-            ├── com/
-                ├── matrix/
-                    ├── ce/
-... (Truncated for readability)
+        ├── src/com/matrix/ce/MainActivity.java
+        ├── bin/
+            ├── classes.dex
+            ├── PocketMatrix.apk
+        ├── assets/
+            ├── payload.zip (Ghost Boot Injection)
+... (Build directories truncated for clarity)
 ```
+
+## ⚙️ Hardware Profile & Sequential Pacing
+
+**Hardware Alignment Note:** This system is purpose-built to lean into sequential reading styles and mechanical/throttled constraints typical of 32-bit Android (Termux) architectures. By forcing the AI models and the OS bridge to operate within strict memory and thermal bounds (e.g., 500MB RAM ceilings), the software *benefits* from a deliberate, sequential pacing. This prevents thread thrashing, ensures battery longevity, and creates a highly stable, deterministic environment where AGI orchestration operates predictably without out-pacing the host hardware's I/O limits.
 
 ## ⚡ CORE PERFORMATIVES
 - `[PERFORMATIVE: INITIALIZE]` - Project manifestation and repository creation.

@@ -358,5 +358,37 @@ def read_file():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/file/write', methods=['POST'])
+def write_file_api():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    try:
+        os.makedirs(os.path.dirname(target_path), exist_ok=True)
+        with open(target_path, 'w', encoding='utf-8') as f:
+            f.write(req.get('content', ''))
+        return jsonify({"status": "SUCCESS"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/help')
+def get_help():
+    help_path = os.path.join(HOME_DIR, "THE_SYSTEM_BIBLE.md")
+    if not os.path.exists(help_path):
+        help_path = os.path.join(HOME_DIR, "README.md")
+    try:
+        with open(help_path, 'r', encoding='utf-8') as f:
+            return jsonify({"content": f.read()})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/run_command', methods=['POST'])
+def run_command():
+    cmd = request.json.get('command', '')
+    try:
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=10)
+        return jsonify({"output": result.stdout + result.stderr})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(port=8081, host='0.0.0.0')

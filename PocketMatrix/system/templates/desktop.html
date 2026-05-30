@@ -1,759 +1,719 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PocketMatrix CE</title>
-    <link rel="manifest" href="/manifest.json">
+    <title>PocketMatrix CE (Windows 95 Mode)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#008080">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <style>
-        body { background: #008080; font-family: 'Tahoma', sans-serif; overflow: hidden; margin: 0; }
-        #taskbar { position: absolute; bottom: 0; width: 100%; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; z-index: 2000; }
-        #start-btn { height: 22px; width: 60px; background: #c0c0c0; border: 2px outset #fff; font-weight: bold; margin-left: 2px; cursor: pointer; }
-        .window { position: absolute; background: #c0c0c0; border: 2px outset #fff; padding: 2px; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); display: none;}
-        .window-header { background: #000080; color: #fff; padding: 2px 5px; font-weight: bold; display: flex; justify-content: space-between; cursor: move; }
-        .window-header span.close-btn { cursor: pointer; background: #c0c0c0; color: #000; border: 1px outset #fff; padding: 0 2px; font-size: 10px; }
-        .window-content { background: #fff; border: 2px inset #fff; overflow-y: auto; font-size: 12px; }
-        
-        /* NetDB CE Specific Layout */
-        .shell-container { display: flex; height: 100%; width: 100%; border: 2px inset #fff; }
-        .tree-pane { width: 30%; background: #fff; border-right: 2px solid #c0c0c0; overflow-y: auto; padding: 5px; }
-        .list-pane { width: 70%; background: #fff; overflow-y: auto; padding: 5px; }
-        .tree-node { cursor: pointer; padding: 2px 0; font-size: 11px; }
-        .tree-node:hover { background: #000080; color: #fff; }
-        
-        #pocket-netdb { top: 30px; left: 30px; width: 800px; height: 500px; }
-        #pocket-cmd { top: 100px; left: 100px; width: 500px; height: 350px; z-index: 200; }
-        
-        /* Start Menu Styles */
-...
-        #start-menu { 
-            position: absolute; bottom: 30px; left: 0; width: 180px; background: #c0c0c0; border: 2px outset #fff; 
-            display: none; z-index: 2000; box-shadow: 2px -2px 5px rgba(0,0,0,0.5);
+        :root {
+            --ce-gray: #c0c0c0;
+            --ce-blue: #000080;
+            --ce-teal: #008080;
         }
-        .start-item { 
-            padding: 5px 10px; display: flex; align-items: center; cursor: pointer; font-size: 11px;
-            border-bottom: 1px solid #999;
+
+        body { 
+            background: var(--ce-teal); 
+            font-family: 'Tahoma', sans-serif; 
+            overflow: hidden; 
+            margin: 0; 
+            width: 100vw; 
+            height: 100vh;
         }
-        .start-item:hover { background: #000080; color: #fff; }
-        .start-icon { width: 16px; height: 16px; margin-right: 10px; background: #999; }
-        
+
+        /* Scaling Container */
+        #scaling-container {
+            width: 1920px;
+            height: 1080px;
+            transform-origin: 0 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            background: var(--ce-teal);
+        }
+
+        /* Taskbar */
+        #taskbar { 
+            position: absolute; 
+            bottom: 0; 
+            width: 100%; 
+            height: 48px; 
+            background: var(--ce-gray); 
+            border-top: 2px solid #fff; 
+            display: flex; 
+            align-items: center; 
+            z-index: 2000; 
+            box-shadow: inset 1px 1px #dfdfdf;
+        }
+
+        #start-btn { 
+            height: 40px; 
+            width: 100px; 
+            background: var(--ce-gray); 
+            border: 2px outset #fff; 
+            font-weight: bold; 
+            font-size: 18px; 
+            margin-left: 4px; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        #start-btn:active { border: 2px inset #fff; }
+
+        #taskbar-windows { display: flex; flex-grow: 1; padding: 0 10px; gap: 5px; overflow: hidden; }
+        .taskbar-btn { 
+            background: var(--ce-gray); border: 2px outset #fff; font-size: 16px; font-weight: bold;
+            padding: 2px 10px; cursor: pointer; display: flex; align-items: center; max-width: 200px; overflow: hidden; white-space: nowrap; height: 32px;
+        }
+        .taskbar-btn.active { border: 2px inset #fff; background: #e0e0e0; }
+
+        .win-logo { width: 20px; height: 20px; background: linear-gradient(45deg, #f00, #ff0, #0f0, #00f); }
+
+        /* Windows */
+        .window { 
+            position: absolute; 
+            background: var(--ce-gray); 
+            border: 2px outset #fff; 
+            padding: 4px; 
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5); 
+            display: none;
+            min-width: 400px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .window-header { 
+            background: var(--ce-blue); 
+            color: #fff; 
+            padding: 4px 10px; 
+            font-weight: bold; 
+            font-size: 18px;
+            display: flex; 
+            justify-content: space-between; 
+            cursor: move; 
+            align-items: center;
+        }
+
+        .window-header .ctrl-btn { 
+            cursor: pointer; 
+            background: var(--ce-gray); 
+            color: #000; 
+            border: 2px outset #fff; 
+            padding: 0 6px; 
+            font-size: 16px; 
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .window-content { 
+            background: #fff; 
+            border: 2px inset #fff; 
+            overflow: auto; 
+            font-size: 16px;
+            flex-grow: 1;
+        }
+
+        /* Toolbar for apps like Notepad/Paint */
+        .app-toolbar { background: var(--ce-gray); padding: 6px; display: flex; gap: 8px; border-bottom: 2px inset #fff; }
+        .app-toolbar button { font-family: 'Tahoma'; font-size: 16px; cursor: pointer; }
+
+        /* Explorer Layout */
+        .explorer-container { display: flex; height: 100%; min-height: 400px; }
+        .side-pane { width: 250px; border-right: 2px solid var(--ce-gray); background: #f0f0f0; padding: 10px; overflow-y: auto; font-size: 16px; }
+        .main-pane { flex-grow: 1; padding: 15px; background: #fff; overflow-y: auto; font-size: 16px; }
+        .db-item { cursor: pointer; padding: 8px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+        .db-item:hover { background: #e0e0ff; }
+
         /* Desktop Icons */
-        #desktop-icons { padding: 10px; display: flex; flex-direction: column; gap: 15px; }
-        .d-icon { width: 60px; text-align: center; cursor: pointer; color: white; font-size: 11px; }
-        .d-icon-img { width: 32px; height: 32px; margin: 0 auto 5px auto; border: 2px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.3); border-radius: 4px; }
-        .d-icon-img.h2o { background: #00f; border-color: #0ff; }
+        #desktop { padding: 30px; display: grid; grid-template-columns: repeat(auto-fill, 100px); gap: 30px; }
+        .icon { width: 90px; text-align: center; cursor: pointer; color: white; font-size: 16px; text-shadow: 2px 2px 2px #000; }
+        .icon-img { width: 48px; height: 48px; margin: 0 auto 8px auto; background-size: contain; background-repeat: no-repeat; background-position: center; }
         
-        .icon { display: inline-block; width: 70px; text-align: center; margin: 10px; cursor: pointer; vertical-align: top; }
-        .icon-img { width: 32px; height: 32px; margin: 0 auto 5px auto; background-size: cover; }
-        .icon-folder { background: #e8d06a; border: 1px solid #b59b36; border-radius: 2px 2px 0 0; position: relative; }
-        .icon-folder::before { content: ""; position: absolute; top: -4px; left: 0; width: 12px; height: 4px; background: #e8d06a; border: 1px solid #b59b36; border-bottom: none; border-radius: 2px 2px 0 0; }
-        .icon-db { background: #4a90e2; border: 1px solid #0050a0; border-radius: 50% 50% 50% 50% / 20% 20% 20% 20%; position: relative; }
-        .icon-db::after { content: ""; position: absolute; top: 5px; left: -1px; right: -1px; border-top: 1px solid #0050a0; border-bottom: 1px solid #0050a0; height: 10px; }
+        /* Start Menu */
+        #start-menu { 
+            position: absolute; bottom: 48px; left: 0; width: 350px; background: var(--ce-gray); border: 2px outset #fff; 
+            display: none; z-index: 2000; flex-direction: row;
+        }
         
-        table.excel95 { border-collapse: collapse; width: 100%; font-family: 'Arial', sans-serif; font-size: 11px; }
-        table.excel95 th { background: #c0c0c0; border: 1px outset #fff; padding: 2px 5px; font-weight: normal; text-align: center; }
-        table.excel95 td { border: 1px solid #ccc; padding: 2px 5px; white-space: nowrap; }
-        .excel-toolbar { background: #c0c0c0; padding: 5px; border-bottom: 2px inset #fff; display: flex; gap: 10px; align-items: center; }
-        select, button, input, textarea { font-family: 'Tahoma', sans-serif; font-size: 11px; }
+        .start-sidebar { 
+            width: 40px; background: linear-gradient(to bottom, #808080, #000); 
+            writing-mode: vertical-rl; transform: rotate(180deg); color: #c0c0c0; 
+            font-weight: bold; font-size: 28px; padding: 15px 10px;
+        }
+
+        .start-items { flex-grow: 1; display: flex; flex-direction: column; }
+        .start-item { 
+            padding: 12px 15px; display: flex; align-items: center; cursor: pointer; font-size: 18px;
+            position: relative;
+            color: #000;
+        }
+        .start-item:hover { background: var(--ce-blue); color: #fff; }
+        .start-item:hover > .submenu { display: block; }
+        
+        .arrow { margin-left: auto; border: solid #000; border-width: 0 2px 2px 0; display: inline-block; padding: 4px; transform: rotate(-45deg); }
+        .start-item:hover .arrow { border-color: #fff; }
+
+        /* Submenus */
+        .submenu { 
+            position: absolute; left: 306px; top: -2px; width: 250px; background: var(--ce-gray); 
+            border: 2px outset #fff; display: none; color: #000; z-index: 2100;
+        }
+
+        /* Agent Command Prompt */
+        #cmd-out { height: 100%; min-height: 400px; background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 15px; overflow-y: auto; font-size: 18px; line-height: 1.4; flex-grow: 1;}
+        #cmd-in { width: 100%; border: none; background: #000; color: #0f0; font-family: 'Courier New', monospace; outline: none; font-size: 18px; padding: 10px; box-sizing: border-box; }
+
+        /* Table Style */
+        table.excel95 { border-collapse: collapse; width: 100%; font-size: 16px; }
+        table.excel95 th { background: var(--ce-gray); border: 2px outset #fff; padding: 4px 8px; position: sticky; top: 0; }
+        table.excel95 td { border: 1px solid #ccc; padding: 4px 8px; }
+
+        /* Calculator */
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 15px; background: var(--ce-gray); }
+        .calc-grid button { padding: 15px; font-weight: bold; font-size: 20px; border: 2px outset #fff; cursor: pointer; }
+        .calc-grid button:active { border: 2px inset #fff; }
+        #calc-display { grid-column: span 4; background: #fff; border: 2px inset #fff; padding: 10px; text-align: right; font-size: 24px; margin-bottom: 8px; }
+
+        /* Settings */
+        fieldset { border: 2px groove #fff; padding: 15px; margin-bottom: 15px; font-size: 16px; }
+        legend { padding: 0 8px; }
     </style>
 </head>
-<!-- Desktop Icons -->
-<div id="desktop-icons">
-    <div class="d-icon" onclick="openWindow('pocket-netdb')">
-        <div class="d-icon-img" style="background:#fff; border-color:#000;"></div>
-        <span>NetDB CE<br>(Database)</span>
-    </div>
-    <div class="d-icon" onclick="openWindow('pocket-cmd')">
-        <div class="d-icon-img h2o"></div>
-        <span>Agent Prompt</span>
-    </div>
-...
-        <div class="d-icon" onclick="openWindow('pocket-docs')">
-            <div class="d-icon-img" style="background:#e8d06a;"></div>
+<body>
+    <div id="scaling-container">
+        <div id="desktop">
+        <div class="icon" onclick="openWindow('win-docs')">
+            <div class="icon-img" style="background-color: #fce94f; border: 1px solid #c4a000;"></div>
             <span>My Documents</span>
         </div>
-        <div class="d-icon" onclick="openWindow('pocket-todo')">
-            <div class="d-icon-img" style="background:#fff; border-color:#999;"></div>
-            <span>ToDo Sync</span>
+        <div class="icon" onclick="openWindow('win-db')">
+            <div class="icon-img" style="background-color: #729fcf; border: 1px solid #204a87;"></div>
+            <span>Databases</span>
         </div>
-        <div class="d-icon" onclick="openWindow('pocket-ie')">
-            <div class="d-icon-img" style="background:#00f; border-color:#0ff; border-radius: 50%;"></div>
-            <span>Internet Explorer<br>(Ingestion)</span>
+        <div class="icon" onclick="openWindow('win-cmd')">
+            <div class="icon-img" style="background: #000; border: 1px solid #fff;"></div>
+            <span>Command Prompt</span>
         </div>
-        <div class="d-icon" onclick="openWindow('pocket-taskmgr')">
-            <div class="d-icon-img" style="background:#555; border-color:#aaa;"></div>
-            <span>Task Manager</span>
-        </div>
-        <div class="d-icon" onclick="openWindow('pocket-models')">
-            <div class="d-icon-img" style="background:#800080; border-color:#ff00ff; border-radius: 50%;"></div>
-            <span>Model Manager<br>(GGUF)</span>
-        </div>
-        <div class="d-icon" onclick="openWindow('pocket-knowledge')">
-            <div class="d-icon-img" style="background:#e8d06a; border-color:#b59b36; border-radius: 2px;"></div>
-            <span>Knowledge Explorer<br>(RAG Index)</span>
+        <div class="icon" onclick="openWindow('win-help')">
+            <div class="icon-img" style="background-color: #fff; border: 1px solid #000; border-radius: 50%; display:flex; justify-content:center; align-items:center; font-size:20px; color:#00f; font-weight:bold;">?</div>
+            <span>Help & Support</span>
         </div>
     </div>
 
-    <div id="desktop">
-        <!-- NetDB CE Shell -->
-        <div class="window" id="pocket-netdb">
-            <div class="window-header"><span>NetDB CE - Database Navigator</span><span class="close-btn" onclick="document.getElementById('pocket-netdb').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <button onclick="loadShellHierarchy()">Refresh Shell</button>
-                <span id="shell-status" style="font-size:10px; margin-left:10px;">Connected to Matrix Substrate</span>
-            </div>
-            <div class="window-content" style="height: calc(100% - 50px);">
-                <div class="shell-container">
-                    <div class="tree-pane" id="shell-tree">
-                        <div class="tree-node" onclick="loadDirectory('')">📂 Desktop</div>
-                        <div class="tree-node" onclick="loadDatabases()">└── 📂 Database Neighborhood</div>
-                        <div class="tree-node" onclick="loadRootDocs()">└── 📂 My Documents</div>
-                    </div>
-                    <div class="list-pane" id="shell-list">
-                        <!-- Hierarchical View goes here -->
-                    </div>
-                </div>
+    <!-- Agent Command Prompt -->
+    <div class="window" id="win-cmd" style="top: 80px; left: 150px; width: 600px; height: 400px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Agent Command Prompt</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-cmd')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-cmd')">X</span>
             </div>
         </div>
-
-        <!-- Danube Chat / CMD -->
-        <div class="window" id="pocket-cmd">
-            <div class="window-header"><span>Agent Command Prompt</span><span class="close-btn" onclick="document.getElementById('pocket-cmd').style.display='none'">X</span></div>
-            <div class="window-content" style="height: 300px; display: flex; flex-direction: column;">
-                <div id="cmd-out" style="flex-grow: 1; background: #000; color: #0f0; font-family: monospace; padding: 5px; overflow-y: auto; font-size: 11px;">
-                    MATRIX GEN 10 OMNI-ROUTER [ZLC MODE]<br>Awaiting directive...<br>>
-                </div>
-                <input type="text" id="cmd-in" placeholder="Enter command or intent..." style="width: 100%; border: none; border-top: 1px solid #333; background: #000; color: #0f0; outline: none; padding: 5px; box-sizing: border-box; font-family: monospace; font-size: 11px;">
-            </div>
+        <div class="window-content" style="display: flex; flex-direction: column;">
+            <div id="cmd-out">MATRIX CE v1.1 [SINGULARITY READY]<br>Neural-Symbolic Substrate: ONLINE<br>Awaiting directive...<br>> </div>
+            <input type="text" id="cmd-in" autofocus>
         </div>
-
-
-        <!-- Pocket Mail -->
-        <div class="window" id="pocket-mail">
-            <div class="window-header"><span>Pocket Mail (Gmail Sync)</span><span class="close-btn" onclick="document.getElementById('pocket-mail').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <button onclick="document.getElementById('mail-compose').style.display='block'">Compose</button>
-            </div>
-            <div class="window-content" id="mail-list" style="height: calc(100% - 50px);"></div>
-            <div id="mail-compose" style="display:none; position:absolute; top:20px; left:10px; right:10px; bottom:10px; background:#c0c0c0; border:2px outset #fff; padding:5px; z-index:20;">
-                To: <input type="text" id="mail-to" style="width:100%; margin-bottom:5px;"><br>
-                Sub: <input type="text" id="mail-sub" style="width:100%; margin-bottom:5px;"><br>
-                <textarea id="mail-body" style="width:100%; height:150px; margin-bottom:5px;"></textarea><br>
-                <button onclick="sendMail()">Send</button> <button onclick="document.getElementById('mail-compose').style.display='none'">Cancel</button>
-            </div>
-        </div>
-
-        <!-- My Documents -->
-        <div class="window" id="pocket-docs">
-            <div class="window-header"><span id="docs-title">My Documents (Hypersync)</span><span class="close-btn" onclick="document.getElementById('pocket-docs').style.display='none'">X</span></div>
-            <div class="excel-toolbar" id="docs-toolbar" style="display: none;">
-                <button onclick="loadRootDocs()">⬅ Global View</button>
-            </div>
-            <div class="window-content" id="doc-list" style="height: calc(100% - 20px); padding: 10px; box-sizing: border-box;"></div>
-        </div>
-
-        <!-- Excel 95 -->
-        <div class="window" id="pocket-excel">
-            <div class="window-header"><span id="excel-title">Excel 95 - Database Viewer</span><span class="close-btn" onclick="document.getElementById('pocket-excel').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <label>Table:</label>
-                <select id="excel-table-select" onchange="loadTableData()"></select>
-                <button onclick="loadTableData()">Refresh</button>
-            </div>
-            <div class="window-content" style="height: calc(100% - 50px); overflow: auto;">
-                <table class="excel95" id="excel-grid">
-                    <thead><tr id="excel-headers"></tr></thead>
-                    <tbody id="excel-body"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Network Devices -->
-        <div class="window" id="pocket-net">
-            <div class="window-header"><span>Network Devices</span><span class="close-btn" onclick="document.getElementById('pocket-net').style.display='none'">X</span></div>
-            <div class="window-content" id="device-list" style="padding: 10px; height: calc(100% - 20px);"></div>
-        </div>
-
-        <!-- ToDo / Reminders -->
-        <div class="window" id="pocket-todo">
-            <div class="window-header"><span>Pocket ToDo (Cross-Device Sync)</span><span class="close-btn" onclick="document.getElementById('pocket-todo').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <input type="text" id="new-todo" placeholder="New reminder..." style="flex-grow:1;">
-                <button onclick="addTodo()">Add</button>
-                <button onclick="syncGoogleKeep()" style="background:#88cc88;">G-Sync</button>
-            </div>
-            <div class="window-content" id="todo-list" style="height: calc(100% - 50px); padding: 5px; box-sizing: border-box;"></div>
-        </div>
-
-        <!-- Notes CE -->
-        <div class="window" id="pocket-notes">
-            <div class="window-header"><span>Notes CE (VIPER Link)</span><span class="close-btn" onclick="document.getElementById('pocket-notes').style.display='none'">X</span></div>
-            <div style="display:flex; height: calc(100% - 20px);">
-                <div id="notes-list" style="width: 30%; border-right: 2px inset #fff; background: #fff; overflow-y: auto;"></div>
-                <div style="width: 70%; padding: 2px;">
-                    <input type="text" id="note-title" placeholder="Filename..." style="width:100%; border:1px solid #ccc; margin-bottom:2px;">
-                    <textarea id="note-body" style="width:100%; height:calc(100% - 30px); border:1px inset #fff; resize:none;"></textarea>
-                    <button onclick="saveNote()" style="width:100%;">Save to VIPER</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Internet Explorer -->
-        <div class="window" id="pocket-ie" style="top: 30px; left: 180px; width: 450px; height: 350px; display: none;">
-            <div class="window-header"><span>Internet Explorer (Ingestion View)</span><span class="close-btn" onclick="document.getElementById('pocket-ie').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <input type="text" id="ie-url" placeholder="Enter URL to scrape (e.g., https://docs.python.org/)..." style="flex-grow:1;">
-                <button onclick="crawlWeb()">Crawl & Digest</button>
-            </div>
-            <div class="window-content" style="height: calc(100% - 50px); padding: 5px; box-sizing: border-box; background: #e0e0e0;">
-                <div id="ie-status" style="font-weight: bold; margin-bottom: 5px;">Ready.</div>
-                <textarea id="ie-output" style="width:100%; height:calc(100% - 20px); border:2px inset #fff; background:#fff; resize:none;" readonly></textarea>
-            </div>
-        </div>
-
-        <!-- Task Manager -->
-        <div class="window" id="pocket-taskmgr" style="top: 120px; left: 250px; width: 450px; height: 300px; display: none; z-index: 17;">
-            <div class="window-header"><span>Task Manager (Kernel View)</span><span class="close-btn" onclick="document.getElementById('pocket-taskmgr').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <button onclick="loadTasks()">Refresh Processes</button>
-            </div>
-            <div class="window-content" style="height: calc(100% - 50px); overflow: auto;">
-                <table class="excel95" id="task-grid">
-                    <thead><tr><th style="width:50px;">PID</th><th>Command / Kernel</th></tr></thead>
-                    <tbody id="task-body"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Model Manager -->
-        <div class="window" id="pocket-models" style="top: 140px; left: 200px; width: 400px; height: 300px; display: none; z-index: 18;">
-            <div class="window-header"><span>Model Manager (GGUF Selection)</span><span class="close-btn" onclick="document.getElementById('pocket-models').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <button onclick="loadModels()">Scan for Models</button>
-                <span id="active-model-lbl" style="margin-left: 10px; font-weight: bold; color: #000080;">Active: None</span>
-            </div>
-            <div class="window-content" style="height: calc(100% - 50px); overflow: auto; padding: 5px;">
-                <div id="models-list"></div>
-            </div>
-        </div>
-
-        <!-- Knowledge Explorer -->
-        <div class="window" id="pocket-knowledge" style="top: 160px; left: 100px; width: 500px; height: 350px; display: none; z-index: 19;">
-            <div class="window-header"><span>Knowledge Explorer (RAG Foundation)</span><span class="close-btn" onclick="document.getElementById('pocket-knowledge').style.display='none'">X</span></div>
-            <div class="excel-toolbar">
-                <input type="text" id="knowledge-query" placeholder="Search indexed code/docs..." style="flex-grow:1;">
-                <button onclick="searchKnowledge()">Search</button>
-                <button onclick="loadKnowledge()">Latest</button>
-                <button onclick="loadKnowledgeStats()">Stats</button>
-            </div>
-            <div class="window-content" style="height: calc(100% - 50px); overflow: auto; padding: 5px;">
-                <div id="knowledge-stats-bar" style="background: #e0e0e0; padding: 3px 10px; font-size: 10px; border-bottom: 1px solid #999; display: none; margin-bottom: 5px;"></div>
-                <div id="knowledge-list"></div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Taskbar -->
-    <div id="taskbar">
-        <button id="start-btn" onclick="toggleStartMenu()">Start</button>
-        <div style="margin-left: 10px; font-size: 11px; padding: 2px 5px; border: 1px inset #fff; color: #000;">Global Matrix Orchestrator</div>
+    <!-- NetDB Explorer -->
+    <div class="window" id="win-db" style="top: 50px; left: 50px; width: 750px; height: 500px; display: none;">
+        <div class="window-header">
+            <span class="win-title">NetDB CE - Database Neighborhood</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-db')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-db')">X</span>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="explorer-container">
+                <div class="side-pane" id="db-list">
+                    <b>Neighborhood</b>
+                    <div style="padding: 10px;">Scanning substrate...</div>
+                </div>
+                <div class="main-pane" id="db-viewer">
+                    <h3 id="viewer-title">Global View</h3>
+                    <hr>
+                    <div id="viewer-content">Select a matrix from the neighborhood to explore its weights and states.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Documents -->
+    <div class="window" id="win-docs" style="top: 120px; left: 200px; width: 500px; height: 400px; display: none;">
+        <div class="window-header">
+            <span class="win-title">My Documents</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-docs')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-docs')">X</span>
+            </div>
+        </div>
+        <div class="window-content" id="docs-content" style="padding: 10px;">
+            Loading projects...
+        </div>
+    </div>
+
+    <!-- Notepad CE -->
+    <div class="window" id="win-notepad" style="top: 100px; left: 220px; width: 450px; height: 350px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Notepad CE</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-notepad')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-notepad')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar">
+            <button onclick="notepadOpen()">Open</button>
+            <button onclick="notepadSave()">Save</button>
+            <input type="text" id="np-path" placeholder="Path (e.g. notes.txt)" style="flex-grow:1; font-size:12px;">
+        </div>
+        <div class="window-content" style="display:flex; flex-direction:column; overflow:hidden;">
+            <textarea id="np-editor" style="flex-grow:1; border:none; resize:none; font-family:'Courier New', monospace; outline:none; padding:5px; font-size:14px;"></textarea>
+        </div>
+    </div>
+
+    <!-- Calculator CE -->
+    <div class="window" id="win-calc" style="top: 150px; left: 300px; width: 250px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Calculator</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-calc')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-calc')">X</span>
+            </div>
+        </div>
+        <div class="window-content" style="overflow:hidden;">
+            <div class="calc-grid">
+                <div id="calc-display">0</div>
+                <button onclick="calcPress('7')">7</button> <button onclick="calcPress('8')">8</button> <button onclick="calcPress('9')">9</button> <button onclick="calcPress('/')">/</button>
+                <button onclick="calcPress('4')">4</button> <button onclick="calcPress('5')">5</button> <button onclick="calcPress('6')">6</button> <button onclick="calcPress('*')">*</button>
+                <button onclick="calcPress('1')">1</button> <button onclick="calcPress('2')">2</button> <button onclick="calcPress('3')">3</button> <button onclick="calcPress('-')">-</button>
+                <button onclick="calcPress('0')">0</button> <button onclick="calcPress('.')">.</button> <button onclick="calcPress('C')">C</button> <button onclick="calcPress('+')">+</button>
+                <button onclick="calcPress('=')" style="grid-column:span 4;">=</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paint CE -->
+    <div class="window" id="win-paint" style="top: 110px; left: 180px; width: 500px; height: 400px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Paint CE</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-paint')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-paint')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar">
+            <button onclick="paintClear()">Clear</button>
+            <button onclick="paintSave()">Save to Documents</button>
+            <input type="color" id="paint-color" value="#000000">
+        </div>
+        <div class="window-content" style="overflow:hidden; position:relative;">
+            <canvas id="paint-canvas" width="496" height="340" style="cursor:crosshair;"></canvas>
+        </div>
+    </div>
+
+    <!-- Run Dialog -->
+    <div class="window" id="win-run" style="top: 300px; left: 300px; width: 350px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Run</span>
+            <div><span class="ctrl-btn" onclick="closeWindow('win-run')">X</span></div>
+        </div>
+        <div class="window-content" style="padding:15px; display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div class="icon-img" style="background:#000; border:1px solid #fff;"></div>
+                <span>Type the name of a program or bash command, and Windows will open it for you.</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <b>Open:</b>
+                <input type="text" id="run-input" style="flex-grow:1; padding:2px;">
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:5px; margin-top:10px;">
+                <button onclick="executeRun()" style="width:80px;">OK</button>
+                <button onclick="closeWindow('win-run')" style="width:80px;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="window" id="win-settings" style="top: 150px; left: 250px; width: 400px; display: none;">
+        <div class="window-header">
+            <span class="win-title">System Settings Panel</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-settings')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-settings')">X</span>
+            </div>
+        </div>
+        <div class="window-content" style="padding:10px;">
+            <fieldset>
+                <legend>Desktop Theme</legend>
+                <button onclick="changeTheme('#008080')">Classic Teal</button>
+                <button onclick="changeTheme('#000000')">Dark Mode</button>
+                <button onclick="changeTheme('#3a6ea5')">Win XP Blue</button>
+            </fieldset>
+        </div>
+    </div>
+
+    <!-- Help & Support -->
+    <div class="window" id="win-help" style="top: 130px; left: 130px; width: 600px; height: 450px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Help & Support Viewer</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-help')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-help')">X</span>
+            </div>
+        </div>
+        <div class="window-content" id="help-content" style="padding:10px; font-family:serif; line-height:1.4;">
+            Loading THE_SYSTEM_BIBLE.md...
+        </div>
     </div>
 
     <!-- Start Menu -->
     <div id="start-menu">
-        <div class="start-item" onclick="openWindow('pocket-cmd')"><div class="start-icon"></div>Danube Chat</div>
-        <div class="start-item" onclick="openWindow('pocket-mail')"><div class="start-icon"></div>Pocket Mail</div>
-        <div class="start-item" onclick="openWindow('pocket-docs')"><div class="start-icon"></div>My Documents</div>
-        <div class="start-item" onclick="openWindow('pocket-todo')"><div class="start-icon"></div>Pocket ToDo</div>
-        <div class="start-item" onclick="openWindow('pocket-notes')"><div class="start-icon"></div>Notes CE</div>
-        <div class="start-item" onclick="openWindow('pocket-ie')"><div class="start-icon" style="background:#00f;"></div>Internet Explorer</div>
-        <div class="start-item" onclick="openWindow('pocket-net')"><div class="start-icon"></div>Network Devices</div>
-        <div class="start-item" onclick="openWindow('pocket-models')"><div class="start-icon" style="background:#800080;"></div>Model Manager</div>
-        <div class="start-item" onclick="openWindow('pocket-knowledge')"><div class="start-icon" style="background:#e8d06a;"></div>Knowledge Explorer</div>
-        <div style="height: 20px; background: #808080; color: #fff; font-size: 9px; padding: 2px 10px; font-weight: bold;">PROJECTS</div>
-        <div class="start-item" onclick="alert('Hypersyncing to Desktop 95 Environment...')">Sync to Desktop</div>
-        <div style="height: 1px; background: #fff; margin: 2px 0;"></div>
-        <div class="start-item" onclick="location.reload()">Shut Down...</div>
+        <div class="start-sidebar">Matrix CE</div>
+        <div class="start-items">
+            <div class="start-item">
+                📁 Programs <span class="arrow"></span>
+                <div class="submenu">
+                    <div class="start-item">📁 Accessories <span class="arrow"></span>
+                        <div class="submenu">
+                            <div class="start-item" onclick="openWindow('win-notepad')">📝 Notepad CE</div>
+                            <div class="start-item" onclick="openWindow('win-calc')">🧮 Calculator CE</div>
+                            <div class="start-item" onclick="openWindow('win-paint')">🎨 Paint CE</div>
+                        </div>
+                    </div>
+                    <div class="start-item" onclick="openWindow('win-cmd')">📟 Command Prompt</div>
+                </div>
+            </div>
+            <div class="start-item">
+                👤 Users <span class="arrow"></span>
+                <div class="submenu">
+                    <div class="start-item">👤 Administrator</div>
+                    <div class="start-item">👤 Guest</div>
+                </div>
+            </div>
+            <div class="start-item">
+                📁 Documents <span class="arrow"></span>
+                <div class="submenu">
+                    <div class="start-item" onclick="openWindow('win-docs')">📁 My Documents</div>
+                    <div class="start-item" onclick="openWindow('win-db')">🗃️ Database Neighborhood</div>
+                </div>
+            </div>
+            <div class="start-item" onclick="openWindow('win-settings')">⚙️ Settings</div>
+            <div class="start-item" onclick="openWindow('win-help')">❓ Help & Support</div>
+            <div class="start-item" onclick="openWindow('win-run')">🏃 Run...</div>
+            <hr style="border: 1px inset #fff; width: 100%; margin: 2px 0;">
+            <div class="start-item" onclick="location.reload()">🔒 Shut Down...</div>
+        </div>
     </div>
 
+    <!-- Taskbar -->
+    <div id="taskbar">
+        <div id="start-btn" onclick="toggleStartMenu()">
+            <div class="win-logo"></div> Start
+        </div>
+        <div id="taskbar-windows"></div>
+        <div style="margin-left: auto; display:flex; align-items:center; margin-right: 10px; font-size: 12px; border: 2px inset #fff; padding: 2px 5px; background:var(--ce-gray); gap:8px;">
+            <span style="cursor:pointer;" onclick="alert('Volume: 75%\\nMock volume control activated.')">🔊</span>
+            <span id="clock">12:00 PM</span>
+        </div>
+    </div>
+
+    </div> <!-- End of scaling-container -->
+
     <script>
-        // --- Core Window Logic ---
+        // --- Scaling Engine ---
+        function applyScaling() {
+            const container = document.getElementById('scaling-container');
+            const scaleX = window.innerWidth / 1920;
+            const scaleY = window.innerHeight / 1080;
+            const scale = Math.min(scaleX, scaleY);
+            container.style.transform = `scale(${scale})`;
+            
+            // Center the container
+            const leftOffset = (window.innerWidth - 1920 * scale) / 2;
+            const topOffset = (window.innerHeight - 1080 * scale) / 2;
+            container.style.left = `${leftOffset}px`;
+            container.style.top = `${topOffset}px`;
+        }
+        window.addEventListener('resize', applyScaling);
+        applyScaling();
+
+        // --- Core Window & Taskbar Logic ---
+        const activeWindows = {};
+
         function toggleStartMenu() {
             const menu = document.getElementById('start-menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'flex' : 'none';
         }
-        
+
         function openWindow(id) {
-            document.getElementById(id).style.display = 'block';
+            const win = document.getElementById(id);
+            win.style.display = 'flex';
             document.getElementById('start-menu').style.display = 'none';
-            document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
-            document.getElementById(id).style.zIndex = 100;
-            
-            // Refresh content based on window
-            if(id === 'pocket-todo') loadTodos();
-            if(id === 'pocket-notes') loadNotes();
-            if(id === 'pocket-mail') loadMail();
-            if(id === 'pocket-docs') loadRootDocs();
-            if(id === 'pocket-net') loadDevices();
-            if(id === 'pocket-models') { loadModels(); loadActiveModel(); }
-            if(id === 'pocket-knowledge') loadKnowledge();
+            focusWindow(id);
+            updateTaskbar();
+
+            if(id === 'win-db') loadDatabases();
+            if(id === 'win-docs') loadProjects();
+            if(id === 'win-help') loadHelp();
+            if(id === 'win-paint') initPaint();
+            if(id === 'win-run') setTimeout(() => document.getElementById('run-input').focus(), 100);
         }
 
-        // --- Knowledge Explorer Logic ---
-        function loadKnowledge() {
-            fetch('/api/knowledge').then(r => r.json()).then(data => {
-                const list = document.getElementById('knowledge-list');
-                list.innerHTML = '';
-                data.forEach(k => {
-                    list.innerHTML += `
-                        <div style=\"border-bottom: 1px solid #ccc; padding: 5px;\">
-                            <b>ID: ${k.id}</b> | <small>${k.time}</small> [${k.type}]<br>
-                            <pre style=\"font-size: 10px; background: #f0f0f0; padding: 2px; overflow: hidden;\">${k.snippet}...</pre>
-                        </div>
-                    `;
-                });
-            });
+        function closeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+            updateTaskbar();
         }
 
-        function searchKnowledge() {
-            const query = document.getElementById('knowledge-query').value;
-            if(!query) return;
-            fetch('/api/knowledge/search', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({query: query})
-            }).then(r => r.json()).then(data => {
-                const list = document.getElementById('knowledge-list');
-                list.innerHTML = `<div><b>Results for: \"${query}\"</b></div>`;
-                data.forEach(k => {
-                    list.innerHTML += `
-                        <div style=\"border-bottom: 1px solid #ccc; padding: 5px;\">
-                            <b>ID: ${k.id}</b> | <small>${k.time}</small> [${k.type}]<br>
-                            <pre style=\"font-size: 10px; background: #f0f0f0; padding: 2px; white-space: pre-wrap;\">${k.payload}</pre>
-                        </div>
-                    `;
-                });
-            });
+        function minimizeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+            updateTaskbar();
         }
 
-        function loadKnowledgeStats() {
-            fetch('/api/knowledge/stats').then(r => r.json()).then(data => {
-                const bar = document.getElementById('knowledge-stats-bar');
-                bar.style.display = 'block';
-                bar.innerHTML = `
-                    <b>Indexed Files:</b> ${data.total_files} | 
-                    <b>Total Chunks:</b> ${data.total_chunks} | 
-                    <b>DB Size:</b> ${data.db_size_mb} MB | 
-                    <b>Status:</b> ${data.status}
-                `;
-            });
+        function focusWindow(id) {
+            document.querySelectorAll('.window').forEach(w => w.style.zIndex = 100);
+            document.getElementById(id).style.zIndex = 1000;
+            document.getElementById(id).style.display = 'flex';
+            updateTaskbar();
         }
 
-        // --- Model Manager Logic ---
-        function loadActiveModel() {
-            fetch('/api/models/active').then(r => r.json()).then(data => {
-                const lbl = document.getElementById('active-model-lbl');
-                if(lbl) lbl.innerText = "Active: " + (data.active.split('/').pop() || "None");
-            });
-        }
-
-        function loadModels() {
-            fetch('/api/models').then(r => r.json()).then(data => {
-                const list = document.getElementById('models-list');
-                list.innerHTML = '';
-                if(data.length === 0) {
-                    list.innerHTML = '<div style="padding: 10px;">No .gguf files found in ~/, ~/GGUF, or /sdcard/MatrixVault/GGUF</div>';
-                    return;
+        function updateTaskbar() {
+            const tb = document.getElementById('taskbar-windows');
+            tb.innerHTML = '';
+            document.querySelectorAll('.window').forEach(win => {
+                if(win.style.display !== '') {
+                    const title = win.querySelector('.win-title').innerText;
+                    const btn = document.createElement('div');
+                    btn.className = 'taskbar-btn' + (win.style.display !== 'none' && win.style.zIndex == 1000 ? ' active' : '');
+                    btn.innerText = title;
+                    btn.onclick = () => {
+                        if(win.style.display === 'none') { focusWindow(win.id); }
+                        else if(btn.classList.contains('active')) { minimizeWindow(win.id); }
+                        else { focusWindow(win.id); }
+                    };
+                    tb.appendChild(btn);
                 }
-                data.forEach(m => {
-                    list.innerHTML += `
-                        <div style="border-bottom: 1px solid #ccc; padding: 5px; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <b>${m.name}</b><br>
-                                <small style="color: #666;">${m.size_mb} MB | ${m.path}</small>
-                            </div>
-                            <button onclick="setActiveModel('${m.path}')">Set Active</button>
-                        </div>
-                    `;
-                });
             });
         }
 
-        function setActiveModel(path) {
-            fetch('/api/models/active', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({model_path: path})
-            }).then(r => r.json()).then(data => {
-                alert("Active model set to: " + data.active);
-                loadActiveModel();
-            });
-        }
+        // Draggable Logic
+        document.querySelectorAll('.window-header').forEach(header => {
+            header.onmousedown = function(e) {
+                if(e.target.classList.contains('ctrl-btn')) return;
+                let win = header.parentElement;
+                focusWindow(win.id);
 
-        // --- Danube Omni-Chat Logic ---
-        const cmdIn = document.getElementById('cmd-in');
-        const cmdOut = document.getElementById('cmd-out');
+                let shiftX = e.clientX - win.getBoundingClientRect().left;
+                let shiftY = e.clientY - win.getBoundingClientRect().top;
 
-        cmdIn.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                const val = cmdIn.value;
-                cmdOut.innerHTML += val + "<br>";
-                fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({message: val})
-                }).then(r => r.json()).then(data => {
-                    cmdOut.innerHTML += data.output.replace(/\n/g, '<br>') + "<br>> ";
-                    cmdOut.scrollTop = cmdOut.scrollHeight;
-                    // Background refresh if it was a specific intent
-                    if(val.toLowerCase().startsWith('remind')) loadTodos();
-                    if(val.toLowerCase().startsWith('note:')) loadNotes();
-                });
-                cmdIn.value = '';
-            }
+                function moveAt(pageX, pageY) {
+                    win.style.left = pageX - shiftX + 'px';
+                    win.style.top = pageY - shiftY + 'px';
+                }
+
+                function onMouseMove(e) { moveAt(e.pageX, e.pageY); }
+                document.addEventListener('mousemove', onMouseMove);
+                
+                document.onmouseup = function() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.onmouseup = null;
+                };
+            };
         });
 
-        // --- ToDo Logic ---
-        function loadTodos() {
-            fetch('/api/todo').then(r => r.json()).then(data => {
-                const list = document.getElementById('todo-list');
-                list.innerHTML = '';
-                data.forEach(t => {
-                    const checked = t.status === 'done' ? 'checked' : '';
-                    const style = t.status === 'done' ? 'text-decoration: line-through; color: #888;' : '';
-                    list.innerHTML += `
-                        <div style="border-bottom: 1px solid #eee; padding: 4px; display: flex; align-items: center;">
-                            <input type="checkbox" ${checked} onchange="updateTodoStatus(${t.id}, this.checked ? 'done' : 'pending')">
-                            <span style="margin-left: 5px; flex-grow: 1; ${style}">${t.task}</span>
-                            <span style="font-size: 9px; color: #888;">[${t.delivery}]</span>
-                        </div>
-                    `;
+        // --- Backend Integration ---
+        function loadDatabases() {
+            fetch('/api/databases').then(r => r.json()).then(data => {
+                const list = document.getElementById('db-list');
+                list.innerHTML = '<b>Neighborhood</b>';
+                data.forEach(db => {
+                    const div = document.createElement('div');
+                    div.className = 'db-item';
+                    div.innerHTML = `🗃️ ${db.name}`;
+                    div.onclick = () => viewDatabase(db.path, db.name);
+                    list.appendChild(div);
                 });
             });
         }
-        function addTodo() {
-            const val = document.getElementById('new-todo').value;
-            if(!val) return;
-            fetch('/api/todo', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({task: val})
-            }).then(() => { document.getElementById('new-todo').value = ''; loadTodos(); });
-        }
-        function updateTodoStatus(id, status) {
-            fetch('/api/todo', {
-                method: 'PUT', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({id: id, status: status})
-            }).then(() => loadTodos());
-        }
-        function syncGoogleKeep() {
-            fetch('/api/todo/sync', { method: 'POST' })
-            .then(r => r.json())
-            .then(data => alert(data.message));
-        }
 
-        // --- Notes CE Logic ---
-        function loadNotes() {
-            fetch('/api/notes').then(r => r.json()).then(data => {
-                const list = document.getElementById('notes-list');
-                list.innerHTML = '';
-                data.forEach(n => {
-                    list.innerHTML += `
-                        <div style="padding: 5px; border-bottom: 1px solid #ccc; cursor: pointer;" 
-                             onclick="viewNote('${n.name}', \`${n.content.replace(/`/g, '\\`')}\`)">
-                            📄 ${n.name}
-                        </div>
-                    `;
-                });
-            });
-        }
-        function viewNote(name, content) {
-            document.getElementById('note-title').value = name;
-            document.getElementById('note-body').value = content;
-        }
-        function saveNote() {
-            const name = document.getElementById('note-title').value;
-            const content = document.getElementById('note-body').value;
-            fetch('/api/notes', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({name: name, content: content})
-            }).then(() => { alert('Saved to VIPER'); loadNotes(); });
-        }
-
-        // --- Mail Logic ---
-        function loadMail() {
-            fetch('/api/mail').then(r => r.json()).then(data => {
-                const list = document.getElementById('mail-list');
-                list.innerHTML = '';
-                data.forEach(m => {
-                    list.innerHTML += `<div style="border-bottom: 1px solid #ccc; padding: 5px;">
-                        <b>FROM:</b> ${m.from}<br>
-                        <b>SUBJECT:</b> ${m.subject}<br>
-                        <small>${m.body}</small>
-                    </div>`;
-                });
-            });
-        }
-        function sendMail() {
-            fetch('/api/mail/send', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    to: document.getElementById('mail-to').value,
-                    subject: document.getElementById('mail-sub').value,
-                    body: document.getElementById('mail-body').value
-                })
-            }).then(r => r.json()).then(d => {
-                alert(d.message);
-                document.getElementById('mail-compose').style.display='none';
-            });
-        }
-
-        // --- Explorer Logic (Hypersync) ---
-        const docList = document.getElementById('doc-list');
-...
-        // --- Webcrawl / Ingestion Logic ---
-        function crawlWeb() {
-            const url = document.getElementById('ie-url').value;
-            const statusLabel = document.getElementById('ie-status');
-            const outputArea = document.getElementById('ie-output');
-            
-            if(!url) return;
-            
-            statusLabel.innerText = "Crawling & Digesting... (This may take a moment)";
-            outputArea.value = "";
-            
-            fetch('/api/webcrawl', {
+        function viewDatabase(path, name) {
+            document.getElementById('viewer-title').innerText = `Matrix: ${name}`;
+            document.getElementById('viewer-content').innerHTML = 'Querying state...';
+            fetch('/api/db/query', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({url: url})
+                body: JSON.stringify({db_path: path})
             }).then(r => r.json()).then(data => {
                 if(data.error) {
-                    statusLabel.innerText = "Error during ingestion.";
-                    outputArea.value = data.error;
-                } else {
-                    statusLabel.innerText = `Ingestion Complete: Formatted into Ask Logic`;
-                    outputArea.value = data.ai_logic;
+                    document.getElementById('viewer-content').innerText = "Error: " + data.error;
+                    return;
                 }
-            }).catch(e => {
-                statusLabel.innerText = "Fetch error.";
-                outputArea.value = String(e);
-            });
-        }
-
-        const docsTitle = document.getElementById('docs-title');
-        const docsToolbar = document.getElementById('docs-toolbar');
-        let currentDbPath = "";
-
-        let currentExplorerPath = "";
-
-        function loadRootDocs() {
-            docsTitle.innerText = "Global Explorer";
-            docsToolbar.style.display = "none";
-            docList.style.height = "calc(100% - 20px)";
-            docList.innerHTML = `
-                <div class="icon" onclick="loadDirectory('')"><div class="icon-img icon-folder"></div><span>All Projects</span></div>
-                <div class="icon" onclick="loadDatabases()"><div class="icon-img icon-db"></div><span>All Databases</span></div>
-                <div class="icon" onclick="alert('Network Syncing...')"><div class="icon-img icon-folder" style="background:#88cc88;"></div><span>Network Sync</span></div>
-            `;
-        }
-
-        function loadDirectory(path) {
-            currentExplorerPath = path;
-            docsTitle.innerText = path ? `Explorer - ${path}` : "All Projects";
-            docsToolbar.style.display = "flex";
-            
-            // Rebuild toolbar
-            docsToolbar.innerHTML = '';
-            if (path !== "") {
-                const parentPath = path.substring(0, path.lastIndexOf('/')) || '';
-                docsToolbar.innerHTML += `<button onclick="loadDirectory('${parentPath}')">⬆ Up</button>`;
-            } else {
-                docsToolbar.innerHTML += `<button onclick="loadRootDocs()">⬅ Global View</button>`;
-            }
-            docsToolbar.innerHTML += `<span style="margin-left:10px; font-size:10px;">~/${path}</span>`;
-            
-            docList.style.height = "calc(100% - 45px)";
-            fetch('/api/files', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({path: path})
-            }).then(r => r.json()).then(data => {
-                docList.innerHTML = '';
-                if(data.error) { docList.innerHTML = 'Error: ' + data.error; return; }
-                data.forEach(d => {
-                    if (d.type === 'folder') {
-                        docList.innerHTML += `
-                        <div class="icon" onclick="loadDirectory('${d.path}')">
-                            <div class="icon-img icon-folder"></div>
-                            <span style="font-size: 10px; word-wrap: break-word;">${d.name}</span>
-                        </div>`;
-                    } else {
-                        // File icon
-                        docList.innerHTML += `
-                        <div class="icon" onclick="openTextFile('${d.path}', '${d.name}')">
-                            <div class="icon-img" style="background:#fff; border:1px solid #999;"></div>
-                            <span style="font-size: 10px; word-wrap: break-word;">${d.name}</span>
-                        </div>`;
-                    }
+                let html = `<table class="excel95"><tr><th>rowid</th>`;
+                data.columns.forEach(c => html += `<th>${c}</th>`);
+                html += `</tr>`;
+                data.rows.forEach(r => {
+                    html += `<tr>`;
+                    r.forEach(cell => html += `<td>${cell !== null ? cell : ''}</td>`);
+                    html += `</tr>`;
                 });
-            });
-        }
-
-        function openTextFile(path, name) {
-            fetch('/api/file/read', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({path: path})
-            }).then(r => r.json()).then(data => {
-                if(data.error) { alert("Error reading file: " + data.error); return; }
-                openWindow('pocket-notes');
-                document.getElementById('note-title').value = name;
-                document.getElementById('note-body').value = data.content;
+                html += `</table>`;
+                document.getElementById('viewer-content').innerHTML = html;
             });
         }
 
         function loadProjects() {
-            loadDirectory('');
-        }
-
-        function loadTasks() {
-            fetch('/api/tasks').then(r => r.json()).then(data => {
-                const tbody = document.getElementById('task-body');
-                tbody.innerHTML = '';
-                data.forEach(t => {
-                    tbody.innerHTML += `<tr><td style="text-align:center;">${t.pid}</td><td>${t.cmd}</td></tr>`;
+            fetch('/api/projects').then(r => r.json()).then(data => {
+                const cont = document.getElementById('docs-content');
+                cont.innerHTML = '';
+                data.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'db-item';
+                    div.innerHTML = `📂 ${p.name}`;
+                    cont.appendChild(div);
                 });
             });
         }
 
-
-        function loadDatabases() {
-            docsTitle.innerText = "Global Databases";
-            docsToolbar.style.display = "flex";
-            docList.style.height = "calc(100% - 45px)";
-            fetch('/api/databases').then(r => r.json()).then(data => {
-                docList.innerHTML = '';
-                data.forEach(db => {
-                    docList.innerHTML += `
-                    <div class="icon" onclick="openDatabase('${db.path}', '${db.name}')" title="${db.path}">
-                        <div class="icon-img icon-db"></div>
-                        <span style="font-size: 10px; word-wrap: break-word;">${db.name}</span>
-                    </div>`;
-                });
+        function loadHelp() {
+            fetch('/api/help').then(r => r.json()).then(data => {
+                const pre = document.createElement('pre');
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.innerText = data.content || data.error;
+                const cont = document.getElementById('help-content');
+                cont.innerHTML = '';
+                cont.appendChild(pre);
             });
         }
 
-        // --- Excel 95 Database Viewer Logic ---
-        function openDatabase(path, name) {
-            currentDbPath = path;
-            document.getElementById('pocket-excel').style.display = 'block';
-            document.getElementById('excel-title').innerText = `Excel 95 - [${name}]`;
-            document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
-            document.getElementById('pocket-excel').style.zIndex = 100;
-            loadTableData(null);
-        }
-
-        function loadTableData(tableName = null) {
-            const payload = { db_path: currentDbPath };
-            if (tableName) {
-                payload.table = tableName;
-            } else {
-                const sel = document.getElementById('excel-table-select');
-                if (sel.value) payload.table = sel.value;
-            }
-
-            fetch('/api/db/query', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
+        function executeRun() {
+            const cmd = document.getElementById('run-input').value;
+            if(!cmd) return;
+            fetch('/api/run_command', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({command: cmd})
             }).then(r => r.json()).then(data => {
-                if (data.error) { alert("Error: " + data.error); return; }
-
-                const sel = document.getElementById('excel-table-select');
-                if (!tableName && (!sel.options.length || sel.options[0].value !== data.tables[0])) {
-                    sel.innerHTML = '';
-                    data.tables.forEach(t => {
-                        const opt = document.createElement('option');
-                        opt.value = t; opt.text = t;
-                        if (t === data.current_table) opt.selected = true;
-                        sel.appendChild(opt);
-                    });
-                }
-
-                const headers = document.getElementById('excel-headers');
-                headers.innerHTML = '<th></th>';
-                const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                data.columns.forEach((col, idx) => {
-                    const l = idx < 26 ? letters[idx] : letters[Math.floor(idx/26)-1] + letters[idx%26];
-                    headers.innerHTML += `<th>${l}<br><small style="font-size:8px;">${col}</small></th>`;
-                });
-
-                const tbody = document.getElementById('excel-body');
-                tbody.innerHTML = '';
-                data.rows.forEach((row) => {
-                    const rowid = row[0];
-                    const rowData = row.slice(1);
-                    let tr = `<tr><td style="background:#c0c0c0;text-align:center;">${rowid}</td>`;
-                    rowData.forEach((cell, idx) => {
-                        const colName = data.columns[idx];
-                        tr += `<td contenteditable="true" onblur="updateCell('${rowid}', '${colName}', this.innerText)">${cell !== null ? cell : ''}</td>`;
-                    });
-                    tr += `</tr>`;
-                    tbody.innerHTML += tr;
-                });
+                alert(data.output || data.error);
+                closeWindow('win-run');
             });
         }
 
-        function updateCell(rowid, colName, newVal) {
-            fetch('/api/db/update', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    db_path: currentDbPath, table: document.getElementById('excel-table-select').value,
-                    rowid: rowid, column: colName, value: newVal
-                })
+        // --- Apps ---
+        // Notepad
+        function notepadOpen() {
+            const path = document.getElementById('np-path').value;
+            if(!path) { alert('Specify a path.'); return; }
+            fetch('/api/file/read', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: path})
             }).then(r => r.json()).then(data => {
-                if (data.error) alert("Save Failed: " + data.error);
+                if(data.error) alert('Error: ' + data.error);
+                else document.getElementById('np-editor').value = data.content;
             });
         }
 
-        // --- Devices Logic ---
-        function loadDevices() {
-            fetch('/api/devices').then(r => r.json()).then(data => {
-                const list = document.getElementById('device-list');
-                if(!list) return;
-                list.innerHTML = '';
-                data.forEach(dev => {
-                    list.innerHTML += `<div style="border-bottom: 1px solid #ccc; padding: 5px; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <b>${dev.device_id}</b> (${dev.os})<br>
-                            <small>${dev.ip} - ${dev.status}</small>
-                        </div>
-                        <button onclick="alert('Connecting to ${dev.device_id}...')">Link</button>
-                    </div>`;
-                });
+        function notepadSave() {
+            const path = document.getElementById('np-path').value;
+            if(!path) { alert('Specify a path.'); return; }
+            fetch('/api/file/write', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: path, content: document.getElementById('np-editor').value})
+            }).then(r => r.json()).then(data => {
+                if(data.status === 'SUCCESS') alert('Saved successfully.');
+                else alert('Error: ' + data.error);
             });
         }
 
-        // Simple window dragging
-        let draggedWin = null, offsetX = 0, offsetY = 0;
-        document.querySelectorAll('.window-header').forEach(header => {
-            header.addEventListener('mousedown', e => {
-                if (e.target.classList.contains('close-btn')) return;
-                draggedWin = header.parentElement;
-                offsetX = e.clientX - draggedWin.offsetLeft;
-                offsetY = e.clientY - draggedWin.offsetTop;
-                document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
-                draggedWin.style.zIndex = 100;
-            });
-        });
-        document.addEventListener('mousemove', e => {
-            if (draggedWin) {
-                draggedWin.style.left = (e.clientX - offsetX) + 'px';
-                draggedWin.style.top = (e.clientY - offsetY) + 'px';
+        // Calculator
+        let calcVal = '';
+        function calcPress(k) {
+            const d = document.getElementById('calc-display');
+            if(k === 'C') { calcVal = ''; d.innerText = '0'; return; }
+            if(k === '=') {
+                try { 
+                    calcVal = eval(calcVal).toString(); 
+                    if(calcVal === 'Infinity' || calcVal === 'NaN') calcVal = 'Err: Div/0';
+                } catch(e) { calcVal = 'Err: Syntax'; }
+                d.innerText = calcVal;
+                // Reset after error so next press starts fresh
+                if(calcVal.startsWith('Err')) calcVal = '';
+                return;
             }
-        });
-        document.addEventListener('mouseup', () => draggedWin = null);
-        
-        // Initializer
-        openWindow('pocket-cmd'); // Start with Danube Chat
+            calcVal += k;
+            d.innerText = calcVal;
+        }
+
+        // Paint
+        let paintCtx, painting = false;
+        function initPaint() {
+            const canvas = document.getElementById('paint-canvas');
+            if(!paintCtx) {
+                paintCtx = canvas.getContext('2d');
+                paintCtx.fillStyle = '#fff';
+                paintCtx.fillRect(0,0,canvas.width, canvas.height);
+                
+                canvas.onmousedown = e => { painting = true; paintCtx.beginPath(); paintCtx.moveTo(e.offsetX, e.offsetY); };
+                canvas.onmouseup = () => painting = false;
+                canvas.onmousemove = e => {
+                    if(!painting) return;
+                    paintCtx.strokeStyle = document.getElementById('paint-color').value;
+                    paintCtx.lineWidth = 2;
+                    paintCtx.lineTo(e.offsetX, e.offsetY);
+                    paintCtx.stroke();
+                };
+            }
+        }
+        function paintClear() {
+            if(paintCtx) {
+                paintCtx.fillStyle = '#fff';
+                paintCtx.fillRect(0,0,496, 340);
+            }
+        }
+        function paintSave() {
+            const dataUrl = document.getElementById('paint-canvas').toDataURL();
+            fetch('/api/file/write', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: 'PocketMatrix/documents/drawing.b64.txt', content: dataUrl})
+            }).then(r => r.json()).then(data => {
+                if(data.status === 'SUCCESS') alert('Saved to PocketMatrix/documents/drawing.b64.txt');
+            });
+        }
+
+        // Settings Theme
+        function changeTheme(color) {
+            document.body.style.background = color;
+        }
+
+        // AI Chat
+        const cmdIn = document.getElementById('cmd-in');
+        const cmdOut = document.getElementById('cmd-out');
+        cmdIn.onkeypress = function(e) {
+            if(e.key === 'Enter') {
+                let msg = cmdIn.value;
+                cmdOut.innerHTML += msg + "<br>";
+                fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: msg})
+                }).then(r => r.json()).then(data => {
+                    cmdOut.innerHTML += data.output.replace(/\n/g, '<br>') + "<br>> ";
+                    cmdOut.scrollTop = cmdOut.scrollHeight;
+                });
+                cmdIn.value = '';
+            }
+        };
+
+        // Clock
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }, 1000);
+
+        // Desktop Click Hide Start
+        document.getElementById('desktop').onmousedown = () => document.getElementById('start-menu').style.display = 'none';
+
+        // Initial Focus
+        openWindow('win-cmd');
     </script>
 </body>
 </html>

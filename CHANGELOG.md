@@ -8,6 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.0] - 2026-05-29
+### Added
+- Manifested the 'Standalone All-In-One APK' containing the 300MB Neural Core (llama-server + Danube3).
+- Implemented 'Ghost Boot' protocol for zero-input autonomy, utilizing Java ProcessBuilder.
+- Upgraded the Windows CE aesthetic with 4x logical scaling (1920x1080) for high-fidelity readability.
+- Re-architected `compile_final_apk.sh` using ecj, dx, zipalign, and apksigner to resolve signature/alignment issues.
+- Added Phase 10 functionality placeholders: Notepad CE, Calculator CE, Paint CE.
+
+### Changed
+- Refactored `desktop.html` to eliminate legacy UI code and fully embrace the Windows 95/CE aesthetic.
+- Updated `README.md` with High-Fidelity Markdown Guidelines, Architecture Logic Flows, and Hardware Profiles.
+
 ### Added
 - Initial project setup with dual-node architecture (Director and Executor)
 - Integration with SQLite layer logic and ChromaDB/FAISS Retrieval-Augmented Generation schemas
@@ -59,5 +72,13 @@ The Windows CE-styled graphical interface (`PocketMatrix`) has been finalized an
 ### Pedagogy & Streaming Enhancements
 *   **Token Streaming:** To mitigate processing latency on 500M models operating on ARM architecture, an `agent_streaming.py` prototype was developed and validated. This ensures immediate character-by-character visual feedback in the terminal.
 *   **Genetic Prompting Preparation:** The system is primed for genetic orchestration. Future iterations will utilize the `todo.db` success/failure logs to mutate the `Triton` and `Danube` system prompts automatically, finding the most efficient topological instructions for specific codebases.
+
+## [PHASE 7] - MULTI-NODE NEURAL SYNC (v12.0) - 2026-05-29
+### Added
+- **Multi-Node Networking:** Implemented secure RSA key exchange and UDP node discovery.
+- **Cognitive Load-Balancing:** Created OS fingerprinting and inference offload routing to Laptop nodes.
+- **State Synchronization:** Visual rsync-based sync for SUCCESS_VAULT and RAG indices.
+- **Logic Arbitration:** Markov-logic based conflict resolution for project state versioning.
+- **Final Manifestation:** Unified Phase 7 orchestration script with Singularity logging.
 
 *No legacy architecture, logic, or notes were deleted during this transition. All historic nodes are preserved as per the project mandate.*

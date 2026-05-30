@@ -38,3 +38,9 @@ genetic_flow/models/
 .bashrc
 oauth_creds.json
 daemon.log.old
+
+PocketMatrix/build_final/assets/
+models/*.gguf
+backup_vault/*.tar.gz
+*.apk
+*.zip
