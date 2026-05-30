@@ -18,10 +18,10 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 ### Subsection 10.2: Advanced File Explorer (Steps 911-920)
 *   **Step 911 (Icon View vs Details View):** Add toggle switches in `My Documents` to switch between large icons and a detailed list view (size, date modified).
 *   **Step 912 (Drag-and-Drop Mockup):** Implement visual drag-and-drop mechanics for icons on the desktop.
-*   **Step 913 (File Deletion (Recycle Bin)):** Introduce a Recycle Bin on the desktop. Files deleted in `My Documents` are moved here first.
-*   **Step 914 (File Property Dialogs):** Right-click (or long-press) on a file to view its properties (simulated permissions, size, type).
-*   **Step 915 (Folder Creation):** Add a 'New Folder' button in the Explorer toolbar.
-*   **Step 916 (Text File Creation):** Add a 'New Text Document' context action.
+*   **[DONE] Step 913 (File Deletion (Recycle Bin)):** Introduce a Recycle Bin on the desktop. Files deleted in `My Documents` are moved here first.
+*   **[DONE] Step 914 (File Property Dialogs):** Right-click (or long-press) on a file to view its properties (simulated permissions, size, type).
+*   **[DONE] Step 915 (Folder Creation):** Add a 'New Folder' button in the Explorer toolbar.
+*   **[DONE] Step 916 (Text File Creation):** Add a 'New Text Document' context action.
 *   **Step 917 (File Renaming):** Implement inline renaming for files and folders.
 *   **Step 918 (Image Viewer):** A lightweight built-in viewer for `.png` and `.jpg` files found in the filesystem.
 *   **Step 919 (Archive Extractor UI):** A GUI tool to extract `.zip` files by interfacing with the system `unzip` command.

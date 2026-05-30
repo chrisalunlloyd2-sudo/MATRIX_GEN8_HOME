@@ -4,6 +4,9 @@ import subprocess
 import sqlite3
 import glob
 import datetime
+import shutil
+import base64
+import time
 import PocketMatrix.system.google_bridge as google_bridge
 from PocketMatrix.system.ingestion_engine import IngestionEngine
 
@@ -15,6 +18,8 @@ DOCUMENTS_DIR = os.path.join(HOME_DIR, "PocketMatrix/documents")
 LEDGER_DB = os.path.join(HOME_DIR, ".matrix_ide/database/ledger.db")
 TODO_DB = os.path.join(HOME_DIR, ".matrix_ide/database/todo.db")
 NOTES_DIR = os.path.join(HOME_DIR, "VIPER_SCRIPT_LIBRARY/notes_ce")
+RECYCLE_BIN_DIR = os.path.join(HOME_DIR, "PocketMatrix/RecycleBin")
+os.makedirs(RECYCLE_BIN_DIR, exist_ok=True)
 
 # --- MODELS / GGUF MANAGEMENT ---
 @app.route('/api/models')
@@ -377,6 +382,29 @@ def write_image_api():
             return jsonify({"status": "SUCCESS"})
         else:
             return jsonify({"error": "Invalid image data format"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/file/delete', methods=['POST'])
+def delete_file():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    try:
+        if os.path.exists(target_path):
+            basename = os.path.basename(target_path)
+            shutil.move(target_path, os.path.join(RECYCLE_BIN_DIR, f"{int(time.time())}_{basename}"))
+            return jsonify({"status": "SUCCESS"})
+        return jsonify({"error": "File not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/file/mkdir', methods=['POST'])
+def mkdir_api():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    try:
+        os.makedirs(target_path, exist_ok=True)
+        return jsonify({"status": "SUCCESS"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

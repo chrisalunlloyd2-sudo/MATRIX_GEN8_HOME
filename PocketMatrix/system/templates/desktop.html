@@ -200,6 +200,10 @@
             <div class="icon-img" style="background-color: #fff; border: 1px solid #000; border-radius: 50%; display:flex; justify-content:center; align-items:center; font-size:20px; color:#00f; font-weight:bold;">?</div>
             <span>Help & Support</span>
         </div>
+        <div class="icon" onclick="openWindow('win-recycle')">
+            <div class="icon-img" style="background-color: #ccc; border: 2px dashed #666; display:flex; justify-content:center; align-items:center; font-size:20px;">🗑️</div>
+            <span>Recycle Bin</span>
+        </div>
     </div>
 
     <!-- Agent Command Prompt -->
@@ -250,8 +254,33 @@
                 <span class="ctrl-btn" onclick="closeWindow('win-docs')">X</span>
             </div>
         </div>
-        <div class="window-content" id="docs-content" style="padding: 10px;">
+        <div class="app-toolbar">
+            <button onclick="explorerUp('docs')">Up</button>
+            <button onclick="explorerNewFolder('docs')">New Folder</button>
+            <button onclick="explorerNewFile('docs')">New Text File</button>
+            <input type="text" id="docs-path" value="PocketMatrix/documents" style="flex-grow:1; font-size:12px;" readonly>
+        </div>
+        <div class="window-content" id="docs-content" style="padding: 10px;" oncontextmenu="showContextMenu(event, 'docs')">
             Loading projects...
+        </div>
+    </div>
+
+    <!-- Recycle Bin -->
+    <div class="window" id="win-recycle" style="top: 140px; left: 240px; width: 500px; height: 400px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Recycle Bin</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-recycle')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-recycle')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar">
+            <button onclick="explorerUp('recycle')">Refresh</button>
+            <button onclick="emptyRecycleBin()">Empty Recycle Bin</button>
+            <input type="text" id="recycle-path" value="PocketMatrix/RecycleBin" style="flex-grow:1; font-size:12px;" readonly>
+        </div>
+        <div class="window-content" id="recycle-content" style="padding: 10px;">
+            Loading trash...
         </div>
     </div>
 
@@ -427,6 +456,15 @@
         </div>
     </div>
 
+    <!-- Context Menu -->
+    <div id="context-menu" style="display:none; position:absolute; background:var(--ce-gray); border:2px outset #fff; z-index:3000; padding:2px;">
+        <div class="start-item" onclick="contextAction('open')">📂 Open</div>
+        <div class="start-item" onclick="contextAction('rename')">✏️ Rename</div>
+        <div class="start-item" onclick="contextAction('delete')">🗑️ Delete (Recycle Bin)</div>
+        <hr style="border: 1px inset #fff; margin:2px 0;">
+        <div class="start-item" onclick="contextAction('properties')">📄 Properties</div>
+    </div>
+
     </div> <!-- End of scaling-container -->
 
     <script>
@@ -463,7 +501,8 @@
             updateTaskbar();
 
             if(id === 'win-db') loadDatabases();
-            if(id === 'win-docs') loadProjects();
+            if(id === 'win-docs') loadExplorer('PocketMatrix/documents', 'docs');
+            if(id === 'win-recycle') loadExplorer('PocketMatrix/RecycleBin', 'recycle');
             if(id === 'win-help') loadHelp();
             if(id === 'win-paint') initPaint();
             if(id === 'win-run') setTimeout(() => document.getElementById('run-input').focus(), 100);
@@ -570,17 +609,107 @@
             });
         }
 
-        function loadProjects() {
-            fetch('/api/projects').then(r => r.json()).then(data => {
-                const cont = document.getElementById('docs-content');
+        let contextTarget = null;
+        let contextContainer = null;
+
+        function loadExplorer(path, type) {
+            document.getElementById(`${type}-path`).value = path;
+            fetch('/api/files', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: path})
+            }).then(r => r.json()).then(data => {
+                const cont = document.getElementById(`${type}-content`);
                 cont.innerHTML = '';
-                data.forEach(p => {
+                if(data.error) { cont.innerHTML = `Error: ${data.error}`; return; }
+                
+                data.forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'db-item';
-                    div.innerHTML = `📂 ${p.name}`;
+                    div.innerHTML = `${item.type === 'folder' ? '📂' : '📄'} ${item.name}`;
+                    
+                    div.oncontextmenu = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        contextTarget = item;
+                        contextContainer = type;
+                        const menu = document.getElementById('context-menu');
+                        menu.style.display = 'block';
+                        menu.style.left = e.pageX + 'px';
+                        menu.style.top = e.pageY + 'px';
+                    };
+                    
+                    div.onclick = () => {
+                        if(item.type === 'folder') {
+                            loadExplorer(item.path, type);
+                        } else if(item.name.endsWith('.db') || item.name.endsWith('.sqlite')) {
+                            openWindow('win-db'); viewDatabase(item.path, item.name);
+                        } else {
+                            // Assume text file
+                            openWindow('win-notepad');
+                            document.getElementById('np-path').value = item.path;
+                            notepadOpen();
+                        }
+                    };
                     cont.appendChild(div);
                 });
             });
+        }
+
+        function explorerUp(type) {
+            const current = document.getElementById(`${type}-path`).value;
+            if(current === 'PocketMatrix' || current === '' || current === '.') return; // Don't go too high
+            const parent = current.substring(0, current.lastIndexOf('/'));
+            if(parent) loadExplorer(parent, type);
+        }
+
+        function explorerNewFolder(type) {
+            const currentPath = document.getElementById(`${type}-path`).value;
+            const name = prompt("New Folder Name:");
+            if(!name) return;
+            fetch('/api/file/mkdir', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: currentPath + '/' + name})
+            }).then(() => loadExplorer(currentPath, type));
+        }
+
+        function explorerNewFile(type) {
+            const currentPath = document.getElementById(`${type}-path`).value;
+            const name = prompt("New Text File Name (e.g. note.txt):");
+            if(!name) return;
+            fetch('/api/file/write', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({path: currentPath + '/' + name, content: ""})
+            }).then(() => loadExplorer(currentPath, type));
+        }
+
+        // Context Menu Logic
+        document.addEventListener('click', () => {
+            document.getElementById('context-menu').style.display = 'none';
+        });
+
+        function contextAction(action) {
+            if(!contextTarget) return;
+            const currentPath = document.getElementById(`${contextContainer}-path`).value;
+            
+            if(action === 'open') {
+                if(contextTarget.type === 'folder') loadExplorer(contextTarget.path, contextContainer);
+                else { openWindow('win-notepad'); document.getElementById('np-path').value = contextTarget.path; notepadOpen(); }
+            } else if (action === 'delete') {
+                fetch('/api/file/delete', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({path: contextTarget.path})
+                }).then(() => loadExplorer(currentPath, contextContainer));
+            } else if (action === 'rename') {
+                alert("Rename API pending connection.");
+            } else if (action === 'properties') {
+                alert(`Path: ${contextTarget.path}\nType: ${contextTarget.type}\nStatus: Synchronized`);
+            }
+        }
+        
+        function emptyRecycleBin() {
+            // For safety, just clear the UI view for now, a deep delete requires a new API endpoint.
+            alert("Recycle Bin Emptied (Mock)");
+            loadExplorer('PocketMatrix/RecycleBin', 'recycle');
         }
 
         function loadHelp() {
