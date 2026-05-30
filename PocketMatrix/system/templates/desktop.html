@@ -351,6 +351,9 @@
                 <button onclick="changeTheme('#008080')">Classic Teal</button>
                 <button onclick="changeTheme('#000000')">Dark Mode</button>
                 <button onclick="changeTheme('#3a6ea5')">Win XP Blue</button>
+                <hr style="margin:10px 0; border:1px inset #fff;">
+                <input type="text" id="bg-url" placeholder="Background Image URL..." style="width:100%; box-sizing:border-box; margin-bottom:5px; padding:2px;">
+                <button onclick="changeBgImage()">Set Background Image</button>
             </fieldset>
         </div>
     </div>
@@ -414,8 +417,12 @@
             <div class="win-logo"></div> Start
         </div>
         <div id="taskbar-windows"></div>
-        <div style="margin-left: auto; display:flex; align-items:center; margin-right: 10px; font-size: 12px; border: 2px inset #fff; padding: 2px 5px; background:var(--ce-gray); gap:8px;">
-            <span style="cursor:pointer;" onclick="alert('Volume: 75%\\nMock volume control activated.')">🔊</span>
+        <div style="margin-left: auto; display:flex; align-items:center; margin-right: 10px; font-size: 12px; border: 2px inset #fff; padding: 2px 5px; background:var(--ce-gray); gap:8px; position:relative;">
+            <span style="cursor:pointer;" onclick="toggleVolume()">🔊
+                <div id="vol-popup" style="display:none; position:absolute; bottom:35px; right:40px; background:var(--ce-gray); border:2px outset #fff; padding:10px; width:30px; height:100px; z-index:2500;">
+                    <input type="range" id="vol-slider" min="0" max="100" value="75" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; width:20px; height:90px;" onchange="updateVolume(this.value)">
+                </div>
+            </span>
             <span id="clock">12:00 PM</span>
         </div>
     </div>
@@ -683,16 +690,38 @@
             });
         }
 
-        // Settings Theme
+        // Settings Theme & Background
         function changeTheme(color) {
             document.body.style.background = color;
             localStorage.setItem('matrix_theme', color);
+            localStorage.removeItem('matrix_bg_img');
+        }
+
+        function changeBgImage() {
+            const url = document.getElementById('bg-url').value;
+            if(url) {
+                document.body.style.background = `url(${url}) center/cover no-repeat`;
+                localStorage.setItem('matrix_bg_img', url);
+                localStorage.removeItem('matrix_theme');
+            }
         }
 
         // Initialize Theme from Storage
         const savedTheme = localStorage.getItem('matrix_theme');
-        if (savedTheme) {
+        const savedBg = localStorage.getItem('matrix_bg_img');
+        if (savedBg) {
+            document.body.style.background = `url(${savedBg}) center/cover no-repeat`;
+        } else if (savedTheme) {
             changeTheme(savedTheme);
+        }
+
+        // Volume Mock
+        function toggleVolume() {
+            const p = document.getElementById('vol-popup');
+            p.style.display = (p.style.display === 'none' || p.style.display === '') ? 'block' : 'none';
+        }
+        function updateVolume(val) {
+            console.log(`Volume set to ${val}%`);
         }
 
         // AI Chat

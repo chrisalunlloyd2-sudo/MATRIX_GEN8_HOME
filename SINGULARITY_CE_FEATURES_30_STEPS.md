@@ -8,12 +8,12 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 *   **[DONE] Step 902 (Calculator CE):** Build a functional calculator utility for quick math operations within the GUI.
 *   **[DONE] Step 903 (Paint/Canvas Tool):** Implement a simple drawing canvas accessory to save actual PNG images to the `My Documents` folder.
 *   **[DONE] Step 904 (System Settings Panel):** Create a Control Panel window to manage GUI themes (e.g., switch between Win95, Win98, and CE color palettes) with persistent localStorage.
-*   **Step 905 (Volume & Sound Mocks):** Add interactive (but mock) volume sliders to the taskbar to enhance the OS feel.
-*   **Step 906 (Taskbar Clock Sync):** Ensure the taskbar clock syncs perfectly with the local device timezone via Python's `datetime`.
-*   **Step 907 (Start Menu Refinement):** Add 'Run...' functionality to the Start Menu to execute raw bash commands from a tiny dialog.
-*   **Step 908 (Help & Support Viewer):** Implement a Help window that reads directly from `THE_SYSTEM_BIBLE.md`.
-*   **Step 909 (Desktop Background Customization):** Allow changing the #008080 teal background to a custom image or pattern.
-*   **Step 910 (Window Minimization):** Implement minimize-to-taskbar logic for all active windows.
+*   **[DONE] Step 905 (Volume & Sound Mocks):** Add interactive (but mock) volume sliders to the taskbar to enhance the OS feel.
+*   **[DONE] Step 906 (Taskbar Clock Sync):** Ensure the taskbar clock syncs perfectly with the local device timezone via JS interval logic.
+*   **[DONE] Step 907 (Start Menu Refinement):** Add 'Run...' functionality to the Start Menu to execute raw bash commands from a tiny dialog.
+*   **[DONE] Step 908 (Help & Support Viewer):** Implement a Help window that reads directly from `THE_SYSTEM_BIBLE.md`.
+*   **[DONE] Step 909 (Desktop Background Customization):** Allow changing the #008080 teal background to a custom image or pattern via URL.
+*   **[DONE] Step 910 (Window Minimization):** Implement minimize-to-taskbar logic for all active windows.
 
 ### Subsection 10.2: Advanced File Explorer (Steps 911-920)
 *   **Step 911 (Icon View vs Details View):** Add toggle switches in `My Documents` to switch between large icons and a detailed list view (size, date modified).
