@@ -4,10 +4,10 @@
 Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation, the next 30 steps focus on deepening the Windows CE aesthetic and integrating functional OS-level features into the gamified UI. 
 
 ### Subsection 10.1: OS Accessories & Utilities (Steps 901-910)
-*   **Step 901 (Notepad CE Integration):** Fully implement the `Notepad` accessory to read/write `.txt` and `.md` files directly to the local filesystem using the Python bridge.
-*   **Step 902 (Calculator CE):** Build a functional calculator utility for quick math operations within the GUI.
-*   **Step 903 (Paint/Canvas Tool):** Implement a simple drawing canvas accessory to test base64 image saving to the `My Documents` folder.
-*   **Step 904 (System Settings Panel):** Create a Control Panel window to manage GUI themes (e.g., switch between Win95, Win98, and CE color palettes).
+*   **[DONE] Step 901 (Notepad CE Integration):** Fully implement the `Notepad` accessory to read/write `.txt` and `.md` files directly to the local filesystem using the Python bridge.
+*   **[DONE] Step 902 (Calculator CE):** Build a functional calculator utility for quick math operations within the GUI.
+*   **[DONE] Step 903 (Paint/Canvas Tool):** Implement a simple drawing canvas accessory to save actual PNG images to the `My Documents` folder.
+*   **[DONE] Step 904 (System Settings Panel):** Create a Control Panel window to manage GUI themes (e.g., switch between Win95, Win98, and CE color palettes) with persistent localStorage.
 *   **Step 905 (Volume & Sound Mocks):** Add interactive (but mock) volume sliders to the taskbar to enhance the OS feel.
 *   **Step 906 (Taskbar Clock Sync):** Ensure the taskbar clock syncs perfectly with the local device timezone via Python's `datetime`.
 *   **Step 907 (Start Menu Refinement):** Add 'Run...' functionality to the Start Menu to execute raw bash commands from a tiny dialog.
