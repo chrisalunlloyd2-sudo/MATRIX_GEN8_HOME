@@ -258,6 +258,7 @@
             <button onclick="explorerUp('docs')">Up</button>
             <button onclick="explorerNewFolder('docs')">New Folder</button>
             <button onclick="explorerNewFile('docs')">New Text File</button>
+            <button onclick="mapNetworkDrive()">Map Drive</button>
             <input type="text" id="docs-path" value="PocketMatrix/documents" style="flex-grow:1; font-size:12px;" readonly>
         </div>
         <div class="window-content" id="docs-content" style="padding: 10px;" oncontextmenu="showContextMenu(event, 'docs')">
@@ -474,6 +475,7 @@
     <div id="context-menu" style="display:none; position:absolute; background:var(--ce-gray); border:2px outset #fff; z-index:3000; padding:2px;">
         <div class="start-item" onclick="contextAction('open')">📂 Open</div>
         <div class="start-item" onclick="contextAction('rename')">✏️ Rename</div>
+        <div class="start-item" onclick="contextAction('extract')" id="ctx-extract" style="display:none;">📦 Extract Here</div>
         <div class="start-item" onclick="contextAction('delete')">🗑️ Delete (Recycle Bin)</div>
         <hr style="border: 1px inset #fff; margin:2px 0;">
         <div class="start-item" onclick="contextAction('properties')">📄 Properties</div>
@@ -628,15 +630,33 @@
 
         function loadExplorer(path, type) {
             document.getElementById(`${type}-path`).value = path;
-            fetch('/api/files', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({path: path})
-            }).then(r => r.json()).then(data => {
+            
+            // First fetch network drives if at the root of My Documents
+            const fetchDrives = (path === 'PocketMatrix/documents') ? fetch('/api/network/drives').then(r => r.json()).catch(() => []) : Promise.resolve([]);
+            
+            Promise.all([
+                fetch('/api/files', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({path: path}) }).then(r => r.json()),
+                fetchDrives
+            ]).then(([fileData, drivesData]) => {
                 const cont = document.getElementById(`${type}-content`);
                 cont.innerHTML = '';
-                if(data.error) { cont.innerHTML = `Error: ${data.error}`; return; }
+                if(fileData.error) { cont.innerHTML = `Error: ${fileData.error}`; return; }
                 
-                data.forEach(item => {
+                // Render Drives First
+                if (drivesData.length > 0) {
+                    drivesData.forEach(drive => {
+                        const div = document.createElement('div');
+                        div.className = 'db-item';
+                        div.innerHTML = `🌐 ${drive.name} (${drive.path})`;
+                        div.onclick = () => alert("Network drive connection simulating...\nAccess to external IP blocked by sandbox rules.");
+                        cont.appendChild(div);
+                    });
+                    const hr = document.createElement('hr');
+                    cont.appendChild(hr);
+                }
+
+                // Render Files/Folders
+                fileData.forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'db-item';
                     div.innerHTML = `${item.type === 'folder' ? '📂' : '📄'} ${item.name}`;
@@ -646,7 +666,15 @@
                         e.stopPropagation();
                         contextTarget = item;
                         contextContainer = type;
+                        
                         const menu = document.getElementById('context-menu');
+                        // Toggle Extract Option
+                        if (item.name.toLowerCase().endsWith('.zip')) {
+                            document.getElementById('ctx-extract').style.display = 'block';
+                        } else {
+                            document.getElementById('ctx-extract').style.display = 'none';
+                        }
+                        
                         menu.style.display = 'block';
                         menu.style.left = e.pageX + 'px';
                         menu.style.top = e.pageY + 'px';
@@ -657,8 +685,21 @@
                             loadExplorer(item.path, type);
                         } else if(item.name.endsWith('.db') || item.name.endsWith('.sqlite')) {
                             openWindow('win-db'); viewDatabase(item.path, item.name);
+                        } else if(item.name.toLowerCase().endsWith('.png') || item.name.toLowerCase().endsWith('.jpg')) {
+                            openWindow('win-image-viewer');
+                            document.getElementById('image-viewer-title').innerText = `Image Viewer - ${item.name}`;
+                            document.getElementById('iv-display').src = '';
+                            fetch('/api/file/read_image', {
+                                method: 'POST', headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({path: item.path})
+                            }).then(r => r.json()).then(data => {
+                                if(data.error) alert(data.error);
+                                else document.getElementById('iv-display').src = data.content;
+                            });
+                        } else if(item.name.toLowerCase().endsWith('.zip')) {
+                            // Don't auto open zip, prompt
+                            alert("Right-click and select 'Extract Here' to unzip this archive.");
                         } else {
-                            // Assume text file
                             openWindow('win-notepad');
                             document.getElementById('np-path').value = item.path;
                             notepadOpen();
@@ -696,6 +737,25 @@
             }).then(() => loadExplorer(currentPath, type));
         }
 
+        function mapNetworkDrive() {
+            const name = prompt("Enter a friendly name for the Network Drive (e.g., 'NAS Server'):");
+            if(!name) return;
+            const ipPath = prompt("Enter the IP or Network Path (e.g., '//192.168.1.100/share'):");
+            if(!ipPath) return;
+            
+            fetch('/api/network/map', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: name, path: ipPath})
+            }).then(r => r.json()).then(data => {
+                if(data.error) alert(data.error);
+                else {
+                    alert("Network drive mapped successfully.");
+                    // Refresh root to show drive
+                    loadExplorer('PocketMatrix/documents', 'docs');
+                }
+            });
+        }
+
         // Context Menu Logic
         document.addEventListener('click', () => {
             document.getElementById('context-menu').style.display = 'none';
@@ -720,6 +780,8 @@
                         if(data.error) alert(data.error);
                         else document.getElementById('iv-display').src = data.content;
                     });
+                } else if (contextTarget.name.toLowerCase().endsWith('.zip')) {
+                    alert("Right-click and select 'Extract Here' to unzip this archive.");
                 } else { 
                     // Fallback to Notepad
                     openWindow('win-notepad'); 
@@ -742,6 +804,19 @@
                         else loadExplorer(currentPath, contextContainer);
                     });
                 }
+            } else if (action === 'extract') {
+                document.body.style.cursor = 'wait';
+                fetch('/api/file/unzip', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({path: contextTarget.path})
+                }).then(r => r.json()).then(data => {
+                    document.body.style.cursor = 'default';
+                    if(data.error) alert(data.error);
+                    else {
+                        alert("Archive extracted successfully.");
+                        loadExplorer(currentPath, contextContainer);
+                    }
+                });
             } else if (action === 'properties') {
                 alert(`Path: ${contextTarget.path}\nType: ${contextTarget.type}\nStatus: Synchronized`);
             }

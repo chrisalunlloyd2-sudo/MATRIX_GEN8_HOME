@@ -24,8 +24,8 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 *   **[DONE] Step 916 (Text File Creation):** Add a 'New Text Document' context action.
 *   **[DONE] Step 917 (File Renaming):** Implement inline renaming for files and folders.
 *   **[DONE] Step 918 (Image Viewer):** A lightweight built-in viewer for `.png` and `.jpg` files found in the filesystem.
-*   **Step 919 (Archive Extractor UI):** A GUI tool to extract `.zip` files by interfacing with the system `unzip` command.
-*   **Step 920 (Network Drive Mapping):** A UI to map external IP addresses as 'Network Drives' in the Explorer.
+*   **[DONE] Step 919 (Archive Extractor UI):** A GUI tool to extract `.zip` files by interfacing with the system `unzip` command.
+*   **[DONE] Step 920 (Network Drive Mapping):** A UI to map external IP addresses as 'Network Drives' in the Explorer.
 
 ### Subsection 10.3: Deep Agentic Hooks (Steps 921-930)
 *   **Step 921 (Agentic Task Scheduler):** A GUI wrapper for `cron` or a custom Python loop to schedule AI tasks at specific times.

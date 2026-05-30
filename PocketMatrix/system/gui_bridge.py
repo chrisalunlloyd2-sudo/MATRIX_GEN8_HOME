@@ -400,6 +400,61 @@ def write_image_api():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+import zipfile
+import json
+
+MAPPED_DRIVES_FILE = os.path.join(HOME_DIR, ".matrix_ide/state/mapped_drives.json")
+
+@app.route('/api/file/unzip', methods=['POST'])
+def unzip_file():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    if not target_path.endswith('.zip') or not os.path.exists(target_path):
+        return jsonify({"error": "Invalid zip file"}), 400
+    try:
+        extract_dir = target_path[:-4] # Remove .zip for folder name
+        os.makedirs(extract_dir, exist_ok=True)
+        with zipfile.ZipFile(target_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_dir)
+        return jsonify({"status": "SUCCESS"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/network/drives', methods=['GET'])
+def list_network_drives():
+    if not os.path.exists(MAPPED_DRIVES_FILE):
+        return jsonify([])
+    try:
+        with open(MAPPED_DRIVES_FILE, 'r') as f:
+            drives = json.load(f)
+        return jsonify(drives)
+    except:
+        return jsonify([])
+
+@app.route('/api/network/map', methods=['POST'])
+def map_network_drive():
+    req = request.json
+    drive_name = req.get('name')
+    drive_path = req.get('path')
+    if not drive_name or not drive_path:
+        return jsonify({"error": "Name and Path required"}), 400
+    
+    drives = []
+    if os.path.exists(MAPPED_DRIVES_FILE):
+        try:
+            with open(MAPPED_DRIVES_FILE, 'r') as f:
+                drives = json.load(f)
+        except:
+            pass
+    
+    drives.append({"name": drive_name, "path": drive_path, "type": "network"})
+    
+    os.makedirs(os.path.dirname(MAPPED_DRIVES_FILE), exist_ok=True)
+    with open(MAPPED_DRIVES_FILE, 'w') as f:
+        json.dump(drives, f)
+        
+    return jsonify({"status": "SUCCESS"})
+
 @app.route('/api/file/delete', methods=['POST'])
 def delete_file():
     req = request.json
