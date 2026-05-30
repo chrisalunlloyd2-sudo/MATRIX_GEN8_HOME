@@ -30,8 +30,8 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 ### Subsection 10.3: Deep Agentic Hooks (Steps 921-930)
 *   **[DONE] Step 921 (Agentic Task Scheduler):** A GUI wrapper for `cron` or a custom Python loop to schedule AI tasks at specific times.
 *   **[DONE] Step 922 (System Monitor Graphs):** Upgrade the `Task Manager` to show live CPU/RAM usage graphs using standard web canvas.
-*   **Step 923 (Terminal Emulator Window):** A raw terminal window (distinct from the Agent Prompt) for direct bash access, styled like MS-DOS.
-*   **Step 924 (AI 'Clippy' Assistant):** An optional, toggleable floating assistant that provides context-aware hints based on the active window.
+*   **[DONE] Step 923 (Terminal Emulator Window):** A raw terminal window (distinct from the Agent Prompt) for direct bash access, styled like MS-DOS.
+*   **[DONE] Step 924 (AI 'Clippy' Assistant):** An optional, toggleable floating assistant that provides context-aware hints based on the active window.
 *   **Step 925 (Multi-Agent Chat Rooms):** A window where multiple specialized agents (e.g., Coder, Writer, Critic) can be seen conversing to solve a complex task.
 *   **Step 926 (Git GUI Client):** A visual Git client within the CE environment for staging, committing, and pushing.
 *   **Step 927 (Database Schema Visualizer):** Upgrade NetDB CE to visually map relationships between tables in a selected SQLite database.

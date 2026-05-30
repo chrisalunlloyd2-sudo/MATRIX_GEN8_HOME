@@ -212,9 +212,38 @@
             <div class="icon-img" style="background-color: #ccc; border: 2px dashed #666; display:flex; justify-content:center; align-items:center; font-size:20px;">🗑️</div>
             <span>Recycle Bin</span>
         </div>
+        <div class="icon" onclick="openWindow('win-terminal')">
+            <div class="icon-img" style="background: #333; border: 2px outset #fff; display:flex; justify-content:center; align-items:center; font-size:20px;">C:\</div>
+            <span>Terminal (MS-DOS)</span>
+        </div>
+    </div>
+    <!-- Terminal Emulator -->
+    <div class="window" id="win-terminal" style="top: 100px; left: 180px; width: 600px; height: 400px; display: none;">
+        <div class="window-header">
+            <span class="win-title">MS-DOS Prompt</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-terminal')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-terminal')">X</span>
+            </div>
+        </div>
+        <div class="window-content" style="display: flex; flex-direction: column; background: #000;">
+            <div id="term-out" style="flex-grow: 1; background: #000; color: #ccc; font-family: 'Courier New', monospace; padding: 10px; overflow-y: auto; font-size: 16px; line-height: 1.2;">
+                Microsoft(R) Windows DOS<br>(C)Copyright Microsoft Corp 1990-1999.<br><br>C:\&gt; 
+            </div>
+            <input type="text" id="term-in" style="width: 100%; border: none; background: #000; color: #ccc; font-family: 'Courier New', monospace; outline: none; font-size: 16px; padding: 10px; box-sizing: border-box;" placeholder="Type raw bash commands here...">
+        </div>
     </div>
 
-    <!-- Agent Command Prompt -->
+    <!-- AI Clippy Assistant -->
+    <div id="clippy-container" style="display: none; position: absolute; bottom: 80px; right: 20px; z-index: 4000; display: flex; align-items: flex-end; gap: 10px; cursor: pointer;" onclick="toggleClippyHint()">
+        <div id="clippy-speech" style="display: none; background: #ffffe1; border: 2px solid #000; padding: 15px; border-radius: 10px; max-width: 250px; font-family: 'Comic Sans MS', sans-serif; font-size: 16px; box-shadow: 4px 4px 5px rgba(0,0,0,0.3); position: relative;">
+            <span id="clippy-text">It looks like you're writing a letter. Would you like help?</span>
+            <div style="position: absolute; bottom: -10px; right: 20px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #000;"></div>
+            <div style="position: absolute; bottom: -7px; right: 22px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #ffffe1;"></div>
+        </div>
+        <div id="clippy-icon" style="font-size: 40px; background: #fff; border-radius: 50%; border: 2px solid #000; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; box-shadow: 2px 2px 5px rgba(0,0,0,0.5);">📎</div>
+    </div>
+
     <div class="window" id="win-cmd" style="top: 80px; left: 150px; width: 600px; height: 400px; display: none;">
         <div class="window-header">
             <span class="win-title">Agent Command Prompt</span>
@@ -487,6 +516,7 @@
                         </div>
                     </div>
                     <div class="start-item" onclick="openWindow('win-cmd')">📟 Command Prompt</div>
+                    <div class="start-item" onclick="openWindow('win-terminal')">💻 MS-DOS Prompt</div>
                 </div>
             </div>
             <div class="start-item">
@@ -496,6 +526,7 @@
                     <div class="start-item">👤 Guest</div>
                 </div>
             </div>
+            <div class="start-item" onclick="toggleClippy()">📎 Toggle AI Assistant</div>
             <div class="start-item">
                 📁 Documents <span class="arrow"></span>
                 <div class="submenu">
@@ -580,6 +611,7 @@
             if(id === 'win-scheduler') loadScheduler();
             if(id === 'win-taskmgr') { if(!monitorInterval) startSystemMonitor(); }
             if(id === 'win-run') setTimeout(() => document.getElementById('run-input').focus(), 100);
+            if(id === 'win-terminal') setTimeout(() => document.getElementById('term-in').focus(), 100);
         }
 
         function closeWindow(id) {
@@ -969,6 +1001,62 @@
                 alert(data.output || data.error);
                 closeWindow('win-run');
             });
+        }
+
+        // Terminal Emulator (MS-DOS)
+        const termIn = document.getElementById('term-in');
+        const termOut = document.getElementById('term-out');
+        termIn.onkeypress = function(e) {
+            if(e.key === 'Enter') {
+                let cmd = termIn.value;
+                termOut.innerHTML += cmd + "<br>";
+                fetch('/api/run_command', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command: cmd})
+                }).then(r => r.json()).then(data => {
+                    let output = (data.output || data.error || "").replace(/\n/g, '<br>');
+                    termOut.innerHTML += output + "<br><br>C:\\&gt; ";
+                    termOut.scrollTop = termOut.scrollHeight;
+                });
+                termIn.value = '';
+            }
+        };
+
+        // Clippy Assistant
+        function toggleClippy() {
+            const clippy = document.getElementById('clippy-container');
+            clippy.style.display = (clippy.style.display === 'none' || clippy.style.display === '') ? 'flex' : 'none';
+        }
+
+        function toggleClippyHint() {
+            const speech = document.getElementById('clippy-speech');
+            const text = document.getElementById('clippy-text');
+            
+            // Context aware hint based on topmost window
+            let topWin = null;
+            let maxZ = 0;
+            document.querySelectorAll('.window').forEach(w => {
+                if(w.style.display !== 'none' && parseInt(w.style.zIndex) > maxZ) {
+                    maxZ = parseInt(w.style.zIndex);
+                    topWin = w.id;
+                }
+            });
+
+            if (topWin === 'win-cmd') {
+                text.innerText = "I see you're using the Agent Prompt! Try typing a semantic intent like 'Scan for bugs' and the AI will route it.";
+            } else if (topWin === 'win-db') {
+                text.innerText = "In the Database Neighborhood, any edits you make in the grid are instantly saved using SQLite ROWIDs.";
+            } else if (topWin === 'win-notepad') {
+                text.innerText = "Need to jot something down? You can type a path like 'notes.txt' and hit Save to write directly to the host filesystem.";
+            } else if (topWin === 'win-paint') {
+                text.innerText = "Wow, what a masterpiece! Click 'Save' to export your canvas as a real .png file.";
+            } else if (topWin === 'win-terminal') {
+                text.innerText = "Ah, the MS-DOS prompt. Here you can run raw bash commands directly against the 32-bit Android substrate.";
+            } else {
+                text.innerText = "I'm Clippy, your Matrix CE assistant! I provide hints based on the active window you are using.";
+            }
+            
+            speech.style.display = (speech.style.display === 'none' || speech.style.display === '') ? 'block' : 'none';
         }
 
         // --- Apps ---
