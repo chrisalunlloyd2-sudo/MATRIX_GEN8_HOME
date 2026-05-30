@@ -672,17 +672,27 @@
         }
         function paintSave() {
             const dataUrl = document.getElementById('paint-canvas').toDataURL();
-            fetch('/api/file/write', {
+            const timestamp = new Date().getTime();
+            const filename = `PocketMatrix/documents/drawing_${timestamp}.png`;
+            fetch('/api/file/write_image', {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({path: 'PocketMatrix/documents/drawing.b64.txt', content: dataUrl})
+                body: JSON.stringify({path: filename, content: dataUrl})
             }).then(r => r.json()).then(data => {
-                if(data.status === 'SUCCESS') alert('Saved to PocketMatrix/documents/drawing.b64.txt');
+                if(data.status === 'SUCCESS') alert(`Saved drawing to ${filename}`);
+                else alert('Error: ' + data.error);
             });
         }
 
         // Settings Theme
         function changeTheme(color) {
             document.body.style.background = color;
+            localStorage.setItem('matrix_theme', color);
+        }
+
+        // Initialize Theme from Storage
+        const savedTheme = localStorage.getItem('matrix_theme');
+        if (savedTheme) {
+            changeTheme(savedTheme);
         }
 
         // AI Chat

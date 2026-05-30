@@ -358,6 +358,28 @@ def read_file():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+import base64
+
+@app.route('/api/file/write_image', methods=['POST'])
+def write_image_api():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    data_url = req.get('content', '')
+    
+    try:
+        # data_url looks like: "data:image/png;base64,iVBORw0KGgo..."
+        if ',' in data_url:
+            header, encoded = data_url.split(',', 1)
+            data = base64.b64decode(encoded)
+            os.makedirs(os.path.dirname(target_path), exist_ok=True)
+            with open(target_path, 'wb') as f:
+                f.write(data)
+            return jsonify({"status": "SUCCESS"})
+        else:
+            return jsonify({"error": "Invalid image data format"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/file/write', methods=['POST'])
 def write_file_api():
     req = request.json
