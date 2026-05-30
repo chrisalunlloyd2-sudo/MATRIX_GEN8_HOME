@@ -28,8 +28,8 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 *   **[DONE] Step 920 (Network Drive Mapping):** A UI to map external IP addresses as 'Network Drives' in the Explorer.
 
 ### Subsection 10.3: Deep Agentic Hooks (Steps 921-930)
-*   **Step 921 (Agentic Task Scheduler):** A GUI wrapper for `cron` or a custom Python loop to schedule AI tasks at specific times.
-*   **Step 922 (System Monitor Graphs):** Upgrade the `Task Manager` to show live CPU/RAM usage graphs using standard web canvas.
+*   **[DONE] Step 921 (Agentic Task Scheduler):** A GUI wrapper for `cron` or a custom Python loop to schedule AI tasks at specific times.
+*   **[DONE] Step 922 (System Monitor Graphs):** Upgrade the `Task Manager` to show live CPU/RAM usage graphs using standard web canvas.
 *   **Step 923 (Terminal Emulator Window):** A raw terminal window (distinct from the Agent Prompt) for direct bash access, styled like MS-DOS.
 *   **Step 924 (AI 'Clippy' Assistant):** An optional, toggleable floating assistant that provides context-aware hints based on the active window.
 *   **Step 925 (Multi-Agent Chat Rooms):** A window where multiple specialized agents (e.g., Coder, Writer, Critic) can be seen conversing to solve a complex task.

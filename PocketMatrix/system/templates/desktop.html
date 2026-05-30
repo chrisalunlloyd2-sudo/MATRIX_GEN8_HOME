@@ -196,6 +196,14 @@
             <div class="icon-img" style="background: #000; border: 1px solid #fff;"></div>
             <span>Command Prompt</span>
         </div>
+        <div class="icon" onclick="openWindow('win-taskmgr')">
+            <div class="icon-img" style="background-color: #555; border: 1px solid #aaa; display:flex; justify-content:center; align-items:center; font-size:20px;">📈</div>
+            <span>System Monitor</span>
+        </div>
+        <div class="icon" onclick="openWindow('win-scheduler')">
+            <div class="icon-img" style="background-color: #ccc; border: 1px solid #000; display:flex; justify-content:center; align-items:center; font-size:20px;">⏰</div>
+            <span>Task Scheduler</span>
+        </div>
         <div class="icon" onclick="openWindow('win-help')">
             <div class="icon-img" style="background-color: #fff; border: 1px solid #000; border-radius: 50%; display:flex; justify-content:center; align-items:center; font-size:20px; color:#00f; font-weight:bold;">?</div>
             <span>Help & Support</span>
@@ -416,6 +424,54 @@
         </div>
     </div>
 
+    <!-- Agentic Task Scheduler -->
+    <div class="window" id="win-scheduler" style="top: 200px; left: 200px; width: 600px; height: 400px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Agentic Task Scheduler</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-scheduler')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-scheduler')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar">
+            <input type="text" id="sched-cron" placeholder="Cron (e.g. * * * * *)" style="width:120px;">
+            <input type="text" id="sched-cmd" placeholder="Command / AI Intent" style="flex-grow:1;">
+            <button onclick="addScheduledTask()">Add Task</button>
+            <button onclick="loadScheduler()">Refresh</button>
+        </div>
+        <div class="window-content" style="padding: 10px; overflow-y: auto;">
+            <table class="excel95">
+                <thead><tr><th style="width:150px;">Schedule</th><th>Task/Command</th><th style="width:100px;">Status</th></tr></thead>
+                <tbody id="sched-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- System Monitor Graphs -->
+    <div class="window" id="win-taskmgr" style="top: 180px; left: 180px; width: 500px; height: 350px; display: none;">
+        <div class="window-header">
+            <span class="win-title">System Monitor (Task Manager)</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-taskmgr')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-taskmgr')">X</span>
+            </div>
+        </div>
+        <div class="window-content" style="padding: 15px; display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <strong>CPU Usage History</strong> <span id="cpu-lbl">0%</span>
+                </div>
+                <canvas id="cpu-graph" width="460" height="100" style="background:#000; border:2px inset #fff;"></canvas>
+            </div>
+            <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <strong>RAM Usage History</strong> <span id="ram-lbl">0%</span>
+                </div>
+                <canvas id="ram-graph" width="460" height="100" style="background:#000; border:2px inset #fff;"></canvas>
+            </div>
+        </div>
+    </div>
+
     <!-- Start Menu -->
     <div id="start-menu">
         <div class="start-sidebar">Matrix CE</div>
@@ -521,12 +577,15 @@
             if(id === 'win-recycle') loadExplorer('PocketMatrix/RecycleBin', 'recycle');
             if(id === 'win-help') loadHelp();
             if(id === 'win-paint') initPaint();
+            if(id === 'win-scheduler') loadScheduler();
+            if(id === 'win-taskmgr') { if(!monitorInterval) startSystemMonitor(); }
             if(id === 'win-run') setTimeout(() => document.getElementById('run-input').focus(), 100);
         }
 
         function closeWindow(id) {
             document.getElementById(id).style.display = 'none';
             updateTaskbar();
+            if(id === 'win-taskmgr' && monitorInterval) { clearInterval(monitorInterval); monitorInterval = null; }
         }
 
         function minimizeWindow(id) {
@@ -826,6 +885,67 @@
             // For safety, just clear the UI view for now, a deep delete requires a new API endpoint.
             alert("Recycle Bin Emptied (Mock)");
             loadExplorer('PocketMatrix/RecycleBin', 'recycle');
+        }
+
+        // --- Deep Agentic Hooks ---
+        function loadScheduler() {
+            fetch('/api/scheduler/tasks').then(r => r.json()).then(data => {
+                const list = document.getElementById('sched-list');
+                list.innerHTML = '';
+                data.forEach(t => {
+                    list.innerHTML += `<tr><td>${t.cron}</td><td>${t.command}</td><td>${t.status}</td></tr>`;
+                });
+            });
+        }
+
+        function addScheduledTask() {
+            const cron = document.getElementById('sched-cron').value;
+            const cmd = document.getElementById('sched-cmd').value;
+            if(!cron || !cmd) { alert("Cron and Command required."); return; }
+            fetch('/api/scheduler/add', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({cron: cron, command: cmd})
+            }).then(() => {
+                document.getElementById('sched-cron').value = '';
+                document.getElementById('sched-cmd').value = '';
+                loadScheduler();
+            });
+        }
+
+        let monitorInterval = null;
+        let cpuData = Array(46).fill(0);
+        let ramData = Array(46).fill(0);
+
+        function drawGraph(canvasId, data, color) {
+            const c = document.getElementById(canvasId);
+            const ctx = c.getContext('2d');
+            ctx.clearRect(0,0, c.width, c.height);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            const step = c.width / 45;
+            for(let i=0; i<data.length; i++) {
+                const x = i * step;
+                const y = c.height - (data[i] / 100 * c.height);
+                if(i===0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        function startSystemMonitor() {
+            monitorInterval = setInterval(() => {
+                fetch('/api/system/stats').then(r => r.json()).then(stats => {
+                    document.getElementById('cpu-lbl').innerText = `${stats.cpu}%`;
+                    document.getElementById('ram-lbl').innerText = `${stats.ram}%`;
+                    
+                    cpuData.shift(); cpuData.push(stats.cpu);
+                    ramData.shift(); ramData.push(stats.ram);
+                    
+                    drawGraph('cpu-graph', cpuData, '#0f0');
+                    drawGraph('ram-graph', ramData, '#0ff');
+                });
+            }, 1000);
         }
 
         function loadHelp() {

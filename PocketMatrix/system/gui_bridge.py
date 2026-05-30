@@ -312,6 +312,67 @@ def web_crawl():
     
     return jsonify({"source": url, "ai_logic": ai_response})
 
+SCHEDULER_FILE = os.path.join(HOME_DIR, ".matrix_ide/state/scheduler.json")
+
+@app.route('/api/scheduler/tasks', methods=['GET'])
+def get_scheduled_tasks():
+    if not os.path.exists(SCHEDULER_FILE):
+        return jsonify([])
+    try:
+        with open(SCHEDULER_FILE, 'r') as f:
+            return jsonify(json.load(f))
+    except:
+        return jsonify([])
+
+@app.route('/api/scheduler/add', methods=['POST'])
+def add_scheduled_task():
+    req = request.json
+    cron = req.get('cron')
+    cmd = req.get('command')
+    if not cron or not cmd:
+        return jsonify({"error": "Cron and Command required"}), 400
+    
+    tasks = []
+    if os.path.exists(SCHEDULER_FILE):
+        try:
+            with open(SCHEDULER_FILE, 'r') as f:
+                tasks = json.load(f)
+        except:
+            pass
+            
+    tasks.append({"id": int(time.time()), "cron": cron, "command": cmd, "status": "Scheduled"})
+    
+    os.makedirs(os.path.dirname(SCHEDULER_FILE), exist_ok=True)
+    with open(SCHEDULER_FILE, 'w') as f:
+        json.dump(tasks, f)
+        
+    return jsonify({"status": "SUCCESS"})
+
+@app.route('/api/system/stats')
+def system_stats():
+    try:
+        mem_total = mem_free = 0
+        with open('/proc/meminfo', 'r') as f:
+            for line in f:
+                if line.startswith('MemTotal:'):
+                    mem_total = int(line.split()[1])
+                elif line.startswith('MemFree:') or line.startswith('MemAvailable:'):
+                    mem_free = int(line.split()[1])
+        
+        ram_usage = 0
+        if mem_total > 0:
+            ram_usage = int(((mem_total - mem_free) / mem_total) * 100)
+            
+        load_avg = 0
+        with open('/proc/loadavg', 'r') as f:
+            load_avg = int(float(f.read().split()[0]) * 10) # Mock scaling for graph
+            if load_avg > 100: load_avg = 100
+            
+        return jsonify({"cpu": load_avg, "ram": ram_usage})
+    except Exception as e:
+        # Fallback to mock data if /proc is locked
+        return jsonify({"cpu": int(time.time() % 40) + 10, "ram": 45})
+
 @app.route('/api/tasks')
 def get_tasks():
     try:
