@@ -365,6 +365,20 @@
         </div>
     </div>
 
+    <!-- Image Viewer -->
+    <div class="window" id="win-image-viewer" style="top: 150px; left: 200px; width: 600px; height: 500px; display: none;">
+        <div class="window-header">
+            <span class="win-title" id="image-viewer-title">Image Viewer</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-image-viewer')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-image-viewer')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar" style="justify-content: center; background: #fff;">
+            <img id="iv-display" src="" style="max-width: 100%; max-height: 440px; object-fit: contain;">
+        </div>
+    </div>
+
     <!-- Settings -->
     <div class="window" id="win-settings" style="top: 150px; left: 250px; width: 400px; display: none;">
         <div class="window-header">
@@ -692,15 +706,42 @@
             const currentPath = document.getElementById(`${contextContainer}-path`).value;
             
             if(action === 'open') {
-                if(contextTarget.type === 'folder') loadExplorer(contextTarget.path, contextContainer);
-                else { openWindow('win-notepad'); document.getElementById('np-path').value = contextTarget.path; notepadOpen(); }
+                if(contextTarget.type === 'folder') {
+                    loadExplorer(contextTarget.path, contextContainer);
+                } else if(contextTarget.name.toLowerCase().endsWith('.png') || contextTarget.name.toLowerCase().endsWith('.jpg')) {
+                    // Open Image Viewer
+                    openWindow('win-image-viewer');
+                    document.getElementById('image-viewer-title').innerText = `Image Viewer - ${contextTarget.name}`;
+                    document.getElementById('iv-display').src = ''; // clear old
+                    fetch('/api/file/read_image', {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({path: contextTarget.path})
+                    }).then(r => r.json()).then(data => {
+                        if(data.error) alert(data.error);
+                        else document.getElementById('iv-display').src = data.content;
+                    });
+                } else { 
+                    // Fallback to Notepad
+                    openWindow('win-notepad'); 
+                    document.getElementById('np-path').value = contextTarget.path; 
+                    notepadOpen(); 
+                }
             } else if (action === 'delete') {
                 fetch('/api/file/delete', {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({path: contextTarget.path})
                 }).then(() => loadExplorer(currentPath, contextContainer));
             } else if (action === 'rename') {
-                alert("Rename API pending connection.");
+                const newName = prompt(`Rename '${contextTarget.name}' to:`, contextTarget.name);
+                if(newName && newName !== contextTarget.name) {
+                    fetch('/api/file/rename', {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({old_path: contextTarget.path, new_name: newName})
+                    }).then(r => r.json()).then(data => {
+                        if(data.error) alert(data.error);
+                        else loadExplorer(currentPath, contextContainer);
+                    });
+                }
             } else if (action === 'properties') {
                 alert(`Path: ${contextTarget.path}\nType: ${contextTarget.type}\nStatus: Synchronized`);
             }

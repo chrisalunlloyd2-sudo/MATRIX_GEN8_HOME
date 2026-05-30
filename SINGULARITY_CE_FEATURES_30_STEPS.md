@@ -22,8 +22,8 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 *   **[DONE] Step 914 (File Property Dialogs):** Right-click (or long-press) on a file to view its properties (simulated permissions, size, type).
 *   **[DONE] Step 915 (Folder Creation):** Add a 'New Folder' button in the Explorer toolbar.
 *   **[DONE] Step 916 (Text File Creation):** Add a 'New Text Document' context action.
-*   **Step 917 (File Renaming):** Implement inline renaming for files and folders.
-*   **Step 918 (Image Viewer):** A lightweight built-in viewer for `.png` and `.jpg` files found in the filesystem.
+*   **[DONE] Step 917 (File Renaming):** Implement inline renaming for files and folders.
+*   **[DONE] Step 918 (Image Viewer):** A lightweight built-in viewer for `.png` and `.jpg` files found in the filesystem.
 *   **Step 919 (Archive Extractor UI):** A GUI tool to extract `.zip` files by interfacing with the system `unzip` command.
 *   **Step 920 (Network Drive Mapping):** A UI to map external IP addresses as 'Network Drives' in the Explorer.
 

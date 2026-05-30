@@ -365,6 +365,21 @@ def read_file():
 
 import base64
 
+@app.route('/api/file/read_image', methods=['POST'])
+def read_image_api():
+    req = request.json
+    target_path = os.path.join(HOME_DIR, req.get('path', ''))
+    if not os.path.exists(target_path) or not os.path.isfile(target_path):
+        return jsonify({"error": "Invalid image file"}), 400
+    try:
+        with open(target_path, 'rb') as f:
+            encoded = base64.b64encode(f.read()).decode('utf-8')
+            # Very basic mime sniffing for the UI
+            mime = "image/png" if target_path.lower().endswith(".png") else "image/jpeg"
+            return jsonify({"content": f"data:{mime};base64,{encoded}"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/file/write_image', methods=['POST'])
 def write_image_api():
     req = request.json
@@ -393,6 +408,23 @@ def delete_file():
         if os.path.exists(target_path):
             basename = os.path.basename(target_path)
             shutil.move(target_path, os.path.join(RECYCLE_BIN_DIR, f"{int(time.time())}_{basename}"))
+            return jsonify({"status": "SUCCESS"})
+        return jsonify({"error": "File not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/file/rename', methods=['POST'])
+def rename_file():
+    req = request.json
+    old_path = os.path.join(HOME_DIR, req.get('old_path', ''))
+    new_name = req.get('new_name', '')
+    if not new_name:
+        return jsonify({"error": "New name required"}), 400
+    
+    new_path = os.path.join(os.path.dirname(old_path), new_name)
+    try:
+        if os.path.exists(old_path):
+            os.rename(old_path, new_path)
             return jsonify({"status": "SUCCESS"})
         return jsonify({"error": "File not found"}), 404
     except Exception as e:
