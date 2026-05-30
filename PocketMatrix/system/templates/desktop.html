@@ -216,6 +216,28 @@
             <div class="icon-img" style="background: #333; border: 2px outset #fff; display:flex; justify-content:center; align-items:center; font-size:20px;">C:\</div>
             <span>Terminal (MS-DOS)</span>
         </div>
+        <div class="icon" onclick="openWindow('win-swarm')">
+            <div class="icon-img" style="background: #e0e0ff; border: 1px solid #000; display:flex; justify-content:center; align-items:center; font-size:20px;">🤖</div>
+            <span>Swarm Chat</span>
+        </div>
+    </div>
+    
+    <!-- Swarm Chat -->
+    <div class="window" id="win-swarm" style="top: 130px; left: 130px; width: 650px; height: 450px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Multi-Agent Swarm Chat</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-swarm')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-swarm')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar">
+            <input type="text" id="swarm-topic" placeholder="Enter a topic for the swarm..." style="flex-grow:1;">
+            <button onclick="startSwarm()">Start Brainstorm</button>
+        </div>
+        <div class="window-content" id="swarm-out" style="padding: 15px; font-family: sans-serif; font-size: 16px; line-height: 1.5; display:flex; flex-direction:column; gap:10px;">
+            <div><i>Welcome to the Swarm. Enter a topic above to initiate a multi-agent brainstorm session.</i></div>
+        </div>
     </div>
     <!-- Terminal Emulator -->
     <div class="window" id="win-terminal" style="top: 100px; left: 180px; width: 600px; height: 400px; display: none;">
@@ -235,13 +257,17 @@
     </div>
 
     <!-- AI Clippy Assistant -->
-    <div id="clippy-container" style="display: none; position: absolute; bottom: 80px; right: 20px; z-index: 4000; display: flex; align-items: flex-end; gap: 10px; cursor: pointer;" onclick="toggleClippyHint()">
+    <div id="clippy-container" style="display: none; position: absolute; bottom: 80px; right: 20px; z-index: 4000; display: flex; align-items: flex-end; gap: 10px;">
         <div id="clippy-speech" style="display: none; background: #ffffe1; border: 2px solid #000; padding: 15px; border-radius: 10px; max-width: 250px; font-family: 'Comic Sans MS', sans-serif; font-size: 16px; box-shadow: 4px 4px 5px rgba(0,0,0,0.3); position: relative;">
             <span id="clippy-text">It looks like you're writing a letter. Would you like help?</span>
+            <div style="margin-top:10px; display:flex; gap:5px;">
+                <input type="text" id="clippy-input" placeholder="Teach me something..." style="flex-grow:1; font-size:12px;">
+                <button onclick="clippyLearn()">Learn</button>
+            </div>
             <div style="position: absolute; bottom: -10px; right: 20px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #000;"></div>
             <div style="position: absolute; bottom: -7px; right: 22px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #ffffe1;"></div>
         </div>
-        <div id="clippy-icon" style="font-size: 40px; background: #fff; border-radius: 50%; border: 2px solid #000; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; box-shadow: 2px 2px 5px rgba(0,0,0,0.5);">📎</div>
+        <div id="clippy-icon" style="font-size: 40px; background: #fff; border-radius: 50%; border: 2px solid #000; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); cursor: pointer;" onclick="toggleClippyHint()">📎</div>
     </div>
 
     <div class="window" id="win-cmd" style="top: 80px; left: 150px; width: 600px; height: 400px; display: none;">
@@ -612,6 +638,7 @@
             if(id === 'win-taskmgr') { if(!monitorInterval) startSystemMonitor(); }
             if(id === 'win-run') setTimeout(() => document.getElementById('run-input').focus(), 100);
             if(id === 'win-terminal') setTimeout(() => document.getElementById('term-in').focus(), 100);
+            if(id === 'win-swarm') setTimeout(() => document.getElementById('swarm-topic').focus(), 100);
         }
 
         function closeWindow(id) {
@@ -1052,11 +1079,61 @@
                 text.innerText = "Wow, what a masterpiece! Click 'Save' to export your canvas as a real .png file.";
             } else if (topWin === 'win-terminal') {
                 text.innerText = "Ah, the MS-DOS prompt. Here you can run raw bash commands directly against the 32-bit Android substrate.";
+            } else if (topWin === 'win-swarm') {
+                text.innerText = "Welcome to the Swarm! Multiple agents are ready to brainstorm on any topic you provide.";
             } else {
-                text.innerText = "I'm Clippy, your Matrix CE assistant! I provide hints based on the active window you are using.";
+                // If no specific window context, recall a learned fact
+                fetch('/api/clippy/recall').then(r => r.json()).then(data => {
+                    if (data.fact) {
+                        text.innerText = `You taught me: "${data.fact}"`;
+                    } else {
+                        text.innerText = "I'm Clippy, your Matrix CE assistant! I provide hints based on the active window you are using.";
+                    }
+                });
             }
             
             speech.style.display = (speech.style.display === 'none' || speech.style.display === '') ? 'block' : 'none';
+        }
+
+        function clippyLearn() {
+            const fact = document.getElementById('clippy-input').value;
+            if(!fact) return;
+            fetch('/api/clippy/learn', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({fact: fact})
+            }).then(r => r.json()).then(data => {
+                document.getElementById('clippy-text').innerText = data.message || data.error;
+                document.getElementById('clippy-input').value = '';
+            });
+        }
+
+        function startSwarm() {
+            const topic = document.getElementById('swarm-topic').value;
+            if(!topic) return;
+            const out = document.getElementById('swarm-out');
+            out.innerHTML = `<div><i>Summoning the swarm for: <b>${topic}</b>...</i></div>`;
+            
+            fetch('/api/swarm/chat', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({topic: topic})
+            }).then(r => r.json()).then(data => {
+                out.innerHTML = '';
+                if(data.error) {
+                    out.innerHTML = `<div style="color:red;">Error: ${data.error}</div>`;
+                    return;
+                }
+                data.conversation.forEach((line, index) => {
+                    setTimeout(() => {
+                        let color = "#000";
+                        if(line.startsWith("[Director]")) color = "#000080";
+                        if(line.startsWith("[Coder")) color = "#008000";
+                        if(line.startsWith("[Critic")) color = "#800000";
+                        
+                        out.innerHTML += `<div style="color:${color}; margin-bottom:5px;">${line}</div>`;
+                        out.scrollTop = out.scrollHeight;
+                    }, index * 1000); // Simulate typing delay
+                });
+            });
         }
 
         // --- Apps ---

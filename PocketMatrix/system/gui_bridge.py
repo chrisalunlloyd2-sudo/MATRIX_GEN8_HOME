@@ -312,6 +312,59 @@ def web_crawl():
     
     return jsonify({"source": url, "ai_logic": ai_response})
 
+CLIPPY_BRAIN_FILE = os.path.join(HOME_DIR, ".matrix_ide/state/clippy_brain.json")
+
+@app.route('/api/clippy/learn', methods=['POST'])
+def clippy_learn():
+    req = request.json
+    fact = req.get('fact', '').strip()
+    if not fact:
+        return jsonify({"error": "No fact provided."}), 400
+    
+    memory = []
+    if os.path.exists(CLIPPY_BRAIN_FILE):
+        try:
+            with open(CLIPPY_BRAIN_FILE, 'r') as f:
+                memory = json.load(f)
+        except: pass
+        
+    memory.append({"time": int(time.time()), "fact": fact})
+    
+    os.makedirs(os.path.dirname(CLIPPY_BRAIN_FILE), exist_ok=True)
+    with open(CLIPPY_BRAIN_FILE, 'w') as f:
+        json.dump(memory, f)
+        
+    return jsonify({"status": "SUCCESS", "message": f"I learned: {fact}"})
+
+@app.route('/api/clippy/recall', methods=['GET'])
+def clippy_recall():
+    if os.path.exists(CLIPPY_BRAIN_FILE):
+        try:
+            with open(CLIPPY_BRAIN_FILE, 'r') as f:
+                memory = json.load(f)
+                if memory:
+                    import random
+                    return jsonify({"fact": random.choice(memory)['fact']})
+        except: pass
+    return jsonify({"fact": None})
+
+@app.route('/api/swarm/chat', methods=['POST'])
+def swarm_chat():
+    req = request.json
+    topic = req.get('topic', 'General Inquiry')
+    
+    # Simulate a multi-agent conversation
+    # In a real environment, this would spawn multiple triton_broker instances with different system prompts
+    conversation = [
+        f"[Director] Initializing swarm session on topic: '{topic}'",
+        "[Coder Agent] Analyzing requirements... I suggest we approach this using a scalable modular pattern.",
+        "[Critic Agent] Wait, modular patterns introduce overhead. We need to ensure it meets the 32-bit constraints.",
+        "[Security Agent] Don't forget to sanitize the inputs before execution.",
+        "[Director] Consensus reached. Proceeding with constrained modular logic."
+    ]
+    
+    return jsonify({"conversation": conversation})
+
 SCHEDULER_FILE = os.path.join(HOME_DIR, ".matrix_ide/state/scheduler.json")
 
 @app.route('/api/scheduler/tasks', methods=['GET'])
