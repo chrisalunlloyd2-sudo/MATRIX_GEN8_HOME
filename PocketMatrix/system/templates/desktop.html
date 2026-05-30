@@ -220,6 +220,10 @@
             <div class="icon-img" style="background: #e0e0ff; border: 1px solid #000; display:flex; justify-content:center; align-items:center; font-size:20px;">🤖</div>
             <span>Swarm Chat</span>
         </div>
+        <div class="icon" onclick="openWindow('win-git')">
+            <div class="icon-img" style="background: #fff; border: 2px solid #f05032; display:flex; justify-content:center; align-items:center; font-size:20px;">🌿</div>
+            <span>Git Client</span>
+        </div>
     </div>
     
     <!-- Swarm Chat -->
@@ -270,6 +274,26 @@
         <div id="clippy-icon" style="font-size: 40px; background: #fff; border-radius: 50%; border: 2px solid #000; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); cursor: pointer;" onclick="toggleClippyHint()">📎</div>
     </div>
 
+    <!-- Git GUI Client -->
+    <div class="window" id="win-git" style="top: 150px; left: 150px; width: 600px; height: 450px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Git GUI Client</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-git')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-git')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar" style="display:flex; align-items:center;">
+            <button onclick="gitStatus()">Refresh Status</button>
+            <input type="text" id="git-msg" placeholder="Commit message..." style="flex-grow:1; font-size:16px;">
+            <label style="margin:0 5px;"><input type="checkbox" id="git-push"> Push</label>
+            <button onclick="gitCommit()">Commit All</button>
+        </div>
+        <div class="window-content" style="display:flex; flex-direction:column; background:#fff;">
+            <div id="git-out" style="flex-grow:1; padding:15px; font-family:monospace; white-space:pre-wrap; font-size:16px;">Loading git status...</div>
+        </div>
+    </div>
+
     <div class="window" id="win-cmd" style="top: 80px; left: 150px; width: 600px; height: 400px; display: none;">
         <div class="window-header">
             <span class="win-title">Agent Command Prompt</span>
@@ -292,6 +316,10 @@
                 <span class="ctrl-btn" onclick="minimizeWindow('win-db')">_</span>
                 <span class="ctrl-btn" onclick="closeWindow('win-db')">X</span>
             </div>
+        </div>
+        <div class="app-toolbar" style="padding: 2px 10px; display: flex; align-items: center; justify-content: space-between;">
+            <div><button onclick="viewSchema()">View Schema</button></div>
+            <span id="db-current-path" style="font-size: 14px; font-weight: bold;"></span>
         </div>
         <div class="window-content">
             <div class="explorer-container">
@@ -639,6 +667,7 @@
             if(id === 'win-run') setTimeout(() => document.getElementById('run-input').focus(), 100);
             if(id === 'win-terminal') setTimeout(() => document.getElementById('term-in').focus(), 100);
             if(id === 'win-swarm') setTimeout(() => document.getElementById('swarm-topic').focus(), 100);
+            if(id === 'win-git') gitStatus();
         }
 
         function closeWindow(id) {
@@ -703,6 +732,32 @@
             };
         });
 
+        // --- Git Client Integration ---
+        function gitStatus() {
+            const out = document.getElementById('git-out');
+            out.innerHTML = "Fetching status...";
+            fetch('/api/git/status').then(r => r.json()).then(data => {
+                if(data.error) out.innerHTML = `<span style="color:red">Error: ${data.error}</span>`;
+                else out.innerHTML = data.status_text || "Working tree clean.";
+            });
+        }
+
+        function gitCommit() {
+            const msg = document.getElementById('git-msg').value;
+            const push = document.getElementById('git-push').checked;
+            document.getElementById('git-out').innerHTML = "Committing...";
+            fetch('/api/git/commit', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: msg, push: push})
+            }).then(r => r.json()).then(data => {
+                if(data.error) document.getElementById('git-out').innerHTML = `<span style="color:red">Error: ${data.error}</span>`;
+                else {
+                    document.getElementById('git-out').innerHTML = `Commit successful.\n\n${data.output}`;
+                    document.getElementById('git-msg').value = '';
+                }
+            });
+        }
+
         // --- Backend Integration ---
         function loadDatabases() {
             fetch('/api/databases').then(r => r.json()).then(data => {
@@ -718,7 +773,13 @@
             });
         }
 
+        let activeDbPath = null;
+        let activeDbName = null;
+
         function viewDatabase(path, name) {
+            activeDbPath = path;
+            activeDbName = name;
+            document.getElementById('db-current-path').innerText = path;
             document.getElementById('viewer-title').innerText = `Matrix: ${name}`;
             document.getElementById('viewer-content').innerHTML = 'Querying state...';
             fetch('/api/db/query', {
@@ -739,6 +800,28 @@
                     html += `</tr>`;
                 });
                 html += `</table>`;
+                document.getElementById('viewer-content').innerHTML = html;
+            });
+        }
+
+        function viewSchema() {
+            if(!activeDbPath) { alert("Select a database first."); return; }
+            document.getElementById('viewer-title').innerText = `Schema: ${activeDbName}`;
+            document.getElementById('viewer-content').innerHTML = 'Querying schema...';
+            fetch('/api/db/schema', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({db_path: activeDbPath})
+            }).then(r => r.json()).then(data => {
+                if(data.error) {
+                    document.getElementById('viewer-content').innerText = "Error: " + data.error;
+                    return;
+                }
+                let html = `<ul>`;
+                data.tables.forEach(t => {
+                    html += `<li style="margin-bottom:10px;"><b>${t.name}</b><br><pre style="background:#eee; padding:5px; font-size:12px; white-space:pre-wrap;">${t.sql}</pre></li>`;
+                });
+                html += `</ul>`;
                 document.getElementById('viewer-content').innerHTML = html;
             });
         }

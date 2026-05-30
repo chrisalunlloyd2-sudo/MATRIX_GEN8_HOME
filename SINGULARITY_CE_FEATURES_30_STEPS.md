@@ -33,8 +33,8 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 *   **[DONE] Step 923 (Terminal Emulator Window):** A raw terminal window (distinct from the Agent Prompt) for direct bash access, styled like MS-DOS.
 *   **[DONE] Step 924 (AI 'Clippy' Assistant):** An optional, toggleable floating assistant that provides context-aware hints based on the active window. Upgraded with persistent learning capabilities (`clippy_brain.json`).
 *   **[DONE] Step 925 (Multi-Agent Chat Rooms):** A window where multiple specialized agents (e.g., Coder, Writer, Critic) can be seen conversing to solve a complex task.
-*   **Step 926 (Git GUI Client):** A visual Git client within the CE environment for staging, committing, and pushing.
-*   **Step 927 (Database Schema Visualizer):** Upgrade NetDB CE to visually map relationships between tables in a selected SQLite database.
+*   **[DONE] Step 926 (Git GUI Client):** A visual Git client within the CE environment for staging, committing, and pushing.
+*   **[DONE] Step 927 (Database Schema Visualizer):** Upgrade NetDB CE to visually map relationships between tables in a selected SQLite database.
 *   **Step 928 (Log Viewer Tool):** A dedicated utility to tail and filter system logs (e.g., `bridge_ghost.log`).
 *   **Step 929 (API Key Manager):** A secure GUI vault to manage external API keys, interacting with the `pat_manager.py` logic.
 *   **Step 930 (Phase 10 Readiness Check):** A diagnostic tool that verifies all new CE features are fully operational and memory-compliant.

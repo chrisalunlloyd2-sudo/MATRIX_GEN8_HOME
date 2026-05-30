@@ -365,6 +365,46 @@ def swarm_chat():
     
     return jsonify({"conversation": conversation})
 
+@app.route('/api/git/status', methods=['GET'])
+def git_status():
+    try:
+        # Run git status in HOME_DIR
+        result = subprocess.run(["git", "status", "-s"], cwd=HOME_DIR, capture_output=True, text=True)
+        return jsonify({"status_text": result.stdout.strip()})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/git/commit', methods=['POST'])
+def git_commit():
+    req = request.json
+    msg = req.get('message', 'Update via PocketMatrix GUI')
+    try:
+        subprocess.run(["git", "add", "-A"], cwd=HOME_DIR, capture_output=True)
+        result = subprocess.run(["git", "commit", "-m", msg], cwd=HOME_DIR, capture_output=True, text=True)
+        
+        # Optional: push
+        if req.get('push', False):
+            subprocess.run(["git", "push", "origin", "main"], cwd=HOME_DIR, capture_output=True)
+            
+        return jsonify({"output": result.stdout.strip()})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/db/schema', methods=['POST'])
+def db_schema():
+    req = request.json
+    db_rel_path = req.get('db_path')
+    db_path = os.path.join(HOME_DIR, db_rel_path)
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("SELECT name, sql FROM sqlite_master WHERE type='table';")
+        tables = [{"name": row[0], "sql": row[1]} for row in c.fetchall()]
+        conn.close()
+        return jsonify({"tables": tables})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 SCHEDULER_FILE = os.path.join(HOME_DIR, ".matrix_ide/state/scheduler.json")
 
 @app.route('/api/scheduler/tasks', methods=['GET'])
