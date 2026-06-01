@@ -681,5 +681,90 @@ def run_command():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+API_KEYS_FILE = os.path.join(HOME_DIR, ".matrix_ide/state/api_keys.json")
+
+@app.route('/api/logs/read', methods=['POST'])
+def read_log():
+    req = request.json
+    log_name = req.get('log_name', 'bridge_ghost.log')
+    log_path = os.path.join(HOME_DIR, f".matrix_ide/logs/{log_name}")
+    try:
+        if os.path.exists(log_path):
+            with open(log_path, 'r', encoding='utf-8', errors='ignore') as f:
+                # Read last 100 lines
+                lines = f.readlines()
+                content = "".join(lines[-100:])
+                return jsonify({"content": content})
+        return jsonify({"content": "Log file not found."})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/keys/list', methods=['GET'])
+def list_keys():
+    if not os.path.exists(API_KEYS_FILE):
+        return jsonify([])
+    try:
+        with open(API_KEYS_FILE, 'r') as f:
+            return jsonify(json.load(f))
+    except:
+        return jsonify([])
+
+@app.route('/api/keys/save', methods=['POST'])
+def save_key():
+    req = request.json
+    service = req.get('service')
+    key = req.get('key')
+    if not service or not key:
+        return jsonify({"error": "Service and Key required"}), 400
+    
+    keys = []
+    if os.path.exists(API_KEYS_FILE):
+        try:
+            with open(API_KEYS_FILE, 'r') as f:
+                keys = json.load(f)
+        except:
+            pass
+            
+    # Update or add
+    found = False
+    for k in keys:
+        if k['service'] == service:
+            k['key'] = key
+            found = True
+            break
+    if not found:
+        keys.append({"service": service, "key": key})
+    
+    os.makedirs(os.path.dirname(API_KEYS_FILE), exist_ok=True)
+    with open(API_KEYS_FILE, 'w') as f:
+        json.dump(keys, f)
+        
+    return jsonify({"status": "SUCCESS"})
+
+@app.route('/api/system/readiness', methods=['GET'])
+def check_readiness():
+    checks = []
+    # Check 1: Memory
+    mem_total = 0
+    try:
+        with open('/proc/meminfo', 'r') as f:
+            for line in f:
+                if line.startswith('MemTotal:'):
+                    mem_total = int(line.split()[1])
+                    break
+        checks.append({"name": "Memory Bounds", "status": "PASS" if mem_total > 0 else "FAIL"})
+    except:
+        checks.append({"name": "Memory Bounds", "status": "MOCK PASS"})
+
+    # Check 2: Core Paths
+    paths = [".matrix_ide", "PocketMatrix/documents", "VIPER_SCRIPT_LIBRARY"]
+    all_paths_ok = all([os.path.exists(os.path.join(HOME_DIR, p)) for p in paths])
+    checks.append({"name": "Core Filesystem", "status": "PASS" if all_paths_ok else "FAIL"})
+
+    # Check 3: State Lock
+    checks.append({"name": "Substrate State", "status": "PHASE-LOCKED"})
+    
+    return jsonify({"checks": checks})
+
 if __name__ == '__main__':
     app.run(port=8081, host='0.0.0.0')

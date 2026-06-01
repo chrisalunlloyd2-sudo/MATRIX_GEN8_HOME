@@ -224,6 +224,18 @@
             <div class="icon-img" style="background: #fff; border: 2px solid #f05032; display:flex; justify-content:center; align-items:center; font-size:20px;">🌿</div>
             <span>Git Client</span>
         </div>
+        <div class="icon" onclick="openWindow('win-logs')">
+            <div class="icon-img" style="background: #000; border: 1px solid #0f0; display:flex; justify-content:center; align-items:center; font-size:20px;">📜</div>
+            <span>Log Viewer</span>
+        </div>
+        <div class="icon" onclick="openWindow('win-keys')">
+            <div class="icon-img" style="background: #e8d06a; border: 1px solid #b59b36; display:flex; justify-content:center; align-items:center; font-size:20px;">🔑</div>
+            <span>Key Vault</span>
+        </div>
+        <div class="icon" onclick="openWindow('win-diag')">
+            <div class="icon-img" style="background: #4a90e2; border: 1px solid #0050a0; display:flex; justify-content:center; align-items:center; font-size:20px;">🩺</div>
+            <span>Diagnostics</span>
+        </div>
     </div>
     
     <!-- Swarm Chat -->
@@ -555,6 +567,66 @@
         </div>
     </div>
 
+    <!-- Log Viewer -->
+    <div class="window" id="win-logs" style="top: 160px; left: 160px; width: 600px; height: 450px; display: none;">
+        <div class="window-header">
+            <span class="win-title">System Log Viewer</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-logs')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-logs')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar" style="display:flex; align-items:center;">
+            <select id="log-select" style="flex-grow:1; font-size:16px;">
+                <option value="bridge_ghost.log">Bridge Daemon (bridge_ghost.log)</option>
+                <option value="llama_ghost.log">Neural Core (llama_ghost.log)</option>
+            </select>
+            <button onclick="readLogs()">Tail Log</button>
+        </div>
+        <div class="window-content" style="display:flex; flex-direction:column; background:#000;">
+            <div id="log-out" style="flex-grow:1; padding:15px; font-family:monospace; white-space:pre-wrap; font-size:14px; color:#0f0; overflow-y:auto;">Select a log file to view tail data.</div>
+        </div>
+    </div>
+
+    <!-- API Key Manager -->
+    <div class="window" id="win-keys" style="top: 170px; left: 170px; width: 450px; height: 350px; display: none;">
+        <div class="window-header">
+            <span class="win-title">API Key Vault</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-keys')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-keys')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar" style="display:flex; align-items:center;">
+            <input type="text" id="key-service" placeholder="Service (e.g. OpenAI)" style="width:120px;">
+            <input type="password" id="key-value" placeholder="API Key..." style="flex-grow:1;">
+            <button onclick="saveApiKey()">Save</button>
+        </div>
+        <div class="window-content" style="padding: 10px; overflow-y: auto;">
+            <table class="excel95">
+                <thead><tr><th>Service</th><th>Status</th></tr></thead>
+                <tbody id="keys-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Readiness Check -->
+    <div class="window" id="win-diag" style="top: 180px; left: 180px; width: 500px; height: 350px; display: none;">
+        <div class="window-header">
+            <span class="win-title">Phase 10 Readiness Check</span>
+            <div>
+                <span class="ctrl-btn" onclick="minimizeWindow('win-diag')">_</span>
+                <span class="ctrl-btn" onclick="closeWindow('win-diag')">X</span>
+            </div>
+        </div>
+        <div class="app-toolbar" style="display:flex; justify-content:center;">
+            <button onclick="runDiagnostics()" style="font-weight:bold; width:150px; height:30px;">Run Diagnostics</button>
+        </div>
+        <div class="window-content" id="diag-out" style="padding: 15px; font-family: monospace; white-space: pre-wrap; font-size: 16px;">
+            Awaiting diagnostic execution...
+        </div>
+    </div>
+
     <!-- Start Menu -->
     <div id="start-menu">
         <div class="start-sidebar">Matrix CE</div>
@@ -668,6 +740,8 @@
             if(id === 'win-terminal') setTimeout(() => document.getElementById('term-in').focus(), 100);
             if(id === 'win-swarm') setTimeout(() => document.getElementById('swarm-topic').focus(), 100);
             if(id === 'win-git') gitStatus();
+            if(id === 'win-logs') readLogs();
+            if(id === 'win-keys') loadApiKeys();
         }
 
         function closeWindow(id) {
@@ -754,6 +828,70 @@
                 else {
                     document.getElementById('git-out').innerHTML = `Commit successful.\n\n${data.output}`;
                     document.getElementById('git-msg').value = '';
+                }
+            });
+        }
+
+        // --- System Logs & Keys ---
+        function readLogs() {
+            const logName = document.getElementById('log-select').value;
+            const out = document.getElementById('log-out');
+            out.innerHTML = "Fetching logs...";
+            fetch('/api/logs/read', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({log_name: logName})
+            }).then(r => r.json()).then(data => {
+                if(data.error) out.innerHTML = `<span style="color:red">Error: ${data.error}</span>`;
+                else {
+                    out.innerHTML = data.content;
+                    out.scrollTop = out.scrollHeight;
+                }
+            });
+        }
+
+        function loadApiKeys() {
+            fetch('/api/keys/list').then(r => r.json()).then(data => {
+                const list = document.getElementById('keys-list');
+                list.innerHTML = '';
+                data.forEach(k => {
+                    list.innerHTML += `<tr><td>${k.service}</td><td>[SECURED]</td></tr>`;
+                });
+            });
+        }
+
+        function saveApiKey() {
+            const service = document.getElementById('key-service').value;
+            const key = document.getElementById('key-value').value;
+            if(!service || !key) return;
+            fetch('/api/keys/save', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({service: service, key: key})
+            }).then(r => r.json()).then(data => {
+                if(data.error) alert(data.error);
+                else {
+                    document.getElementById('key-service').value = '';
+                    document.getElementById('key-value').value = '';
+                    loadApiKeys();
+                }
+            });
+        }
+
+        function runDiagnostics() {
+            const out = document.getElementById('diag-out');
+            out.innerHTML = "Running Phase 10 Diagnostics...\n\n";
+            fetch('/api/system/readiness').then(r => r.json()).then(data => {
+                if(data.error) {
+                    out.innerHTML += `<span style="color:red">Error: ${data.error}</span>`;
+                    return;
+                }
+                data.checks.forEach(c => {
+                    let color = c.status.includes('FAIL') ? 'red' : 'green';
+                    out.innerHTML += `[ <span style="color:${color}; font-weight:bold;">${c.status}</span> ] - ${c.name}\n`;
+                });
+                
+                let allPass = data.checks.every(c => !c.status.includes('FAIL'));
+                if(allPass) {
+                    out.innerHTML += `\n<span style="color:green; font-weight:bold;">PHASE 10 COMPLETE. SUBSTRATE IS FULLY OPERATIONAL.</span>`;
                 }
             });
         }

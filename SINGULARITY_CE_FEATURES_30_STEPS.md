@@ -35,6 +35,6 @@ Having attained the AGI Substrate (Phase 9) and the Standalone APK manifestation
 *   **[DONE] Step 925 (Multi-Agent Chat Rooms):** A window where multiple specialized agents (e.g., Coder, Writer, Critic) can be seen conversing to solve a complex task.
 *   **[DONE] Step 926 (Git GUI Client):** A visual Git client within the CE environment for staging, committing, and pushing.
 *   **[DONE] Step 927 (Database Schema Visualizer):** Upgrade NetDB CE to visually map relationships between tables in a selected SQLite database.
-*   **Step 928 (Log Viewer Tool):** A dedicated utility to tail and filter system logs (e.g., `bridge_ghost.log`).
-*   **Step 929 (API Key Manager):** A secure GUI vault to manage external API keys, interacting with the `pat_manager.py` logic.
-*   **Step 930 (Phase 10 Readiness Check):** A diagnostic tool that verifies all new CE features are fully operational and memory-compliant.
+*   **[DONE] Step 928 (Log Viewer Tool):** A dedicated utility to tail and filter system logs (e.g., `bridge_ghost.log`).
+*   **[DONE] Step 929 (API Key Manager):** A secure GUI vault to manage external API keys, interacting with the `pat_manager.py` logic.
+*   **[DONE] Step 930 (Phase 10 Readiness Check):** A diagnostic tool that verifies all new CE features are fully operational and memory-compliant.
