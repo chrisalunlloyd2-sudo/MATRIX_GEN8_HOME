@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>PocketMatrix CE (Windows 95 Mode)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=240, user-scalable=no">
     <style>
         :root {
             --ce-gray: #c0c0c0;
@@ -17,18 +17,7 @@
             margin: 0; 
             width: 100vw; 
             height: 100vh;
-        }
-
-        /* Scaling Container */
-        #scaling-container {
-            width: 320px;
-            height: 480px;
-            transform-origin: 0 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-            background: var(--ce-teal);
+            position: relative;
         }
 
         /* Taskbar */
@@ -184,8 +173,7 @@
     </style>
 </head>
 <body>
-    <div id="scaling-container">
-        <div id="desktop">
+    <div id="desktop">
         <div class="icon" onclick="openWindow('win-docs')">
             <div class="icon-img" style="background-color: #fce94f; border: 1px solid #c4a000;"></div>
             <span>My Documents</span>
@@ -695,8 +683,6 @@
         <hr style="border: 1px inset #fff; margin:2px 0;">
         <div class="start-item" onclick="contextAction('properties')">📄 Properties</div>
     </div>
-
-    </div> <!-- End of scaling-container -->
 
     <script>
         // --- Core Window & Taskbar Logic ---
@@ -1486,26 +1472,6 @@
 
         // Desktop Click Hide Start
         document.getElementById('desktop').onmousedown = () => document.getElementById('start-menu').style.display = 'none';
-
-        // --- Scaling Engine ---
-        function applyScaling() {
-            const container = document.getElementById('scaling-container');
-            const logicalWidth = 320; // True Handheld PC Base Width
-            const scale = window.innerWidth / logicalWidth;
-            const logicalHeight = window.innerHeight / scale;
-            
-            container.style.width = `${logicalWidth}px`;
-            container.style.height = `${logicalHeight}px`;
-            container.style.transform = `scale(${scale})`;
-            
-            // Adjust window max sizes so they don't break boundaries
-            document.querySelectorAll('.window').forEach(w => {
-                w.style.maxWidth = `${logicalWidth - 10}px`;
-                w.style.maxHeight = `${logicalHeight - 30}px`;
-            });
-        }
-        window.addEventListener('resize', applyScaling);
-        applyScaling();
 
         // Windows start closed by default to enforce classic desktop feel.
     </script>
