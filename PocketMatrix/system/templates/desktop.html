@@ -10,24 +10,36 @@
             --ce-teal: #008080;
         }
 
-        body { 
-            background: var(--ce-teal); 
-            font-family: 'Tahoma', sans-serif; 
-            overflow: hidden; 
-            margin: 0; 
-            width: 100vw; 
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
             height: 100vh;
-            position: relative;
+            overflow: hidden;
+            background: var(--ce-teal);
+            font-family: 'Tahoma', sans-serif;
+            display: flex;
+            flex-direction: column;
+            /* Chunky Base Font matching legacy density */
+            font-size: 16px; 
+        }
+
+        #desktop {
+            flex-grow: 1; /* Pushes taskbar to bottom natively */
+            position: relative; /* Windows remain absolute to desktop bounds */
+            padding: 1rem; 
+            display: flex; 
+            flex-wrap: wrap; 
+            align-content: flex-start;
+            gap: 1.5rem;
         }
 
         /* Taskbar */
         #taskbar { 
-            position: absolute; 
-            bottom: 0; 
             width: 100%; 
-            height: 26px; 
+            height: 3.5rem; 
             background: var(--ce-gray); 
-            border-top: 1px solid #fff; 
+            border-top: 0.15rem solid #fff; 
             display: flex; 
             align-items: center; 
             z-index: 2000; 
@@ -35,41 +47,40 @@
         }
 
         #start-btn { 
-            height: 22px; 
-            width: 55px; 
+            height: 2.2rem; 
+            width: 5.5rem; 
             background: var(--ce-gray); 
-            border: 1px outset #fff; 
+            border: 0.15rem outset #fff; 
             font-weight: bold; 
-            font-size: 11px; 
-            margin-left: 2px; 
+            font-size: 1.1rem; 
+            margin-left: 0.2rem; 
             cursor: pointer; 
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2px;
+            gap: 0.2rem;
         }
-        #start-btn:active { border: 1px inset #fff; }
+        #start-btn:active { border: 0.15rem inset #fff; }
 
-        #taskbar-windows { display: flex; flex-grow: 1; padding: 0 5px; gap: 2px; overflow: hidden; }
+        #taskbar-windows { display: flex; flex-grow: 1; padding: 0 0.5rem; gap: 0.2rem; overflow: hidden; }
         .taskbar-btn { 
-            background: var(--ce-gray); border: 1px outset #fff; font-size: 10px; font-weight: bold;
-            padding: 1px 5px; cursor: pointer; display: flex; align-items: center; max-width: 80px; overflow: hidden; white-space: nowrap; height: 18px;
+            background: var(--ce-gray); border: 0.15rem outset #fff; font-size: 1rem; font-weight: bold;
+            padding: 0.1rem 0.5rem; cursor: pointer; display: flex; align-items: center; max-width: 8rem; overflow: hidden; white-space: nowrap; height: 1.8rem;
         }
-        .taskbar-btn.active { border: 1px inset #fff; background: #e0e0e0; }
+        .taskbar-btn.active { border: 0.15rem inset #fff; background: #e0e0e0; }
 
-        .win-logo { width: 12px; height: 12px; background: linear-gradient(45deg, #f00, #ff0, #0f0, #00f); }
+        .win-logo { width: 1.2rem; height: 1.2rem; background: linear-gradient(45deg, #f00, #ff0, #0f0, #00f); }
 
         /* Windows */
         .window { 
             position: absolute; 
             background: var(--ce-gray); 
-            border: 1px outset #fff; 
-            padding: 2px; 
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.5); 
+            border: 0.15rem outset #fff; 
+            padding: 0.2rem; 
+            box-shadow: 0.2rem 0.2rem 0.5rem rgba(0,0,0,0.5); 
             display: none;
-            width: 300px;
-            max-width: 95%;
-            max-height: 85%;
+            width: 95vw;
+            max-height: 85vh;
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -78,9 +89,9 @@
         .window-header { 
             background: var(--ce-blue); 
             color: #fff; 
-            padding: 2px 5px; 
+            padding: 0.2rem 0.5rem; 
             font-weight: bold; 
-            font-size: 11px;
+            font-size: 1.1rem;
             display: flex; 
             justify-content: space-between; 
             cursor: move; 
@@ -91,85 +102,84 @@
             cursor: pointer; 
             background: var(--ce-gray); 
             color: #000; 
-            border: 1px outset #fff; 
-            padding: 0 4px; 
-            font-size: 10px; 
+            border: 0.15rem outset #fff; 
+            padding: 0 0.4rem; 
+            font-size: 1rem; 
             font-weight: bold;
-            margin-left: 2px;
+            margin-left: 0.2rem;
         }
 
         .window-content { 
             background: #fff; 
-            border: 1px inset #fff; 
+            border: 0.15rem inset #fff; 
             overflow: auto; 
-            font-size: 11px;
+            font-size: 1.1rem;
             flex-grow: 1;
         }
 
         /* Toolbar */
-        .app-toolbar { background: var(--ce-gray); padding: 3px; display: flex; gap: 4px; border-bottom: 1px inset #fff; }
-        .app-toolbar button { font-family: 'Tahoma'; font-size: 10px; cursor: pointer; }
+        .app-toolbar { background: var(--ce-gray); padding: 0.3rem; display: flex; gap: 0.4rem; border-bottom: 0.15rem inset #fff; }
+        .app-toolbar button { font-family: 'Tahoma'; font-size: 1rem; cursor: pointer; }
 
         /* Explorer Layout */
-        .explorer-container { display: flex; height: 100%; min-height: 200px; }
-        .side-pane { width: 100px; border-right: 1px solid var(--ce-gray); background: #f0f0f0; padding: 5px; overflow-y: auto; font-size: 10px; }
-        .main-pane { flex-grow: 1; padding: 5px; background: #fff; overflow-y: auto; font-size: 10px; }
-        .db-item { cursor: pointer; padding: 4px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 4px; }
+        .explorer-container { display: flex; height: 100%; min-height: 20rem; }
+        .side-pane { width: 10rem; border-right: 0.15rem solid var(--ce-gray); background: #f0f0f0; padding: 0.5rem; overflow-y: auto; font-size: 1rem; }
+        .main-pane { flex-grow: 1; padding: 0.5rem; background: #fff; overflow-y: auto; font-size: 1rem; }
+        .db-item { cursor: pointer; padding: 0.4rem; border-bottom: 0.1rem solid #eee; display: flex; align-items: center; gap: 0.4rem; }
         .db-item:hover { background: #e0e0ff; }
 
         /* Desktop Icons */
-        #desktop { padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, 50px); gap: 15px; }
-        .icon { width: 50px; text-align: center; cursor: pointer; color: white; font-size: 10px; text-shadow: 1px 1px 1px #000; }
-        .icon-img { width: 28px; height: 28px; margin: 0 auto 4px auto; background-size: contain; background-repeat: no-repeat; background-position: center; }
+        .icon { width: 5rem; text-align: center; cursor: pointer; color: white; font-size: 1rem; text-shadow: 0.1rem 0.1rem 0.1rem #000; }
+        .icon-img { width: 2.8rem; height: 2.8rem; margin: 0 auto 0.4rem auto; background-size: contain; background-repeat: no-repeat; background-position: center; }
         
         /* Start Menu */
         #start-menu { 
-            position: absolute; bottom: 26px; left: 0; width: 180px; background: var(--ce-gray); border: 1px outset #fff; 
+            position: absolute; bottom: 3rem; left: 0; width: 18rem; background: var(--ce-gray); border: 0.15rem outset #fff; 
             display: none; z-index: 2000; flex-direction: row;
         }
         
         .start-sidebar { 
-            width: 20px; background: linear-gradient(to bottom, #808080, #000); 
+            width: 2rem; background: linear-gradient(to bottom, #808080, #000); 
             writing-mode: vertical-rl; transform: rotate(180deg); color: #c0c0c0; 
-            font-weight: bold; font-size: 14px; padding: 5px 2px;
+            font-weight: bold; font-size: 1.4rem; padding: 0.5rem 0.2rem;
         }
 
         .start-items { flex-grow: 1; display: flex; flex-direction: column; }
         .start-item { 
-            padding: 5px 8px; display: flex; align-items: center; cursor: pointer; font-size: 11px;
+            padding: 0.5rem 0.8rem; display: flex; align-items: center; cursor: pointer; font-size: 1.1rem;
             position: relative;
             color: #000;
         }
         .start-item:hover { background: var(--ce-blue); color: #fff; }
         .start-item:hover > .submenu { display: block; }
         
-        .arrow { margin-left: auto; border: solid #000; border-width: 0 1px 1px 0; display: inline-block; padding: 2px; transform: rotate(-45deg); }
+        .arrow { margin-left: auto; border: solid #000; border-width: 0 0.15rem 0.15rem 0; display: inline-block; padding: 0.2rem; transform: rotate(-45deg); }
         .start-item:hover .arrow { border-color: #fff; }
 
         /* Submenus */
         .submenu { 
-            position: absolute; left: 158px; top: -1px; width: 140px; background: var(--ce-gray); 
-            border: 1px outset #fff; display: none; color: #000; z-index: 2100;
+            position: absolute; left: 15.8rem; top: -0.15rem; width: 14rem; background: var(--ce-gray); 
+            border: 0.15rem outset #fff; display: none; color: #000; z-index: 2100;
         }
 
         /* Agent Command Prompt */
-        #cmd-out { height: 100%; min-height: 200px; background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 5px; overflow-y: auto; font-size: 11px; line-height: 1.2; flex-grow: 1;}
-        #cmd-in { width: 100%; border: none; background: #000; color: #0f0; font-family: 'Courier New', monospace; outline: none; font-size: 11px; padding: 3px; box-sizing: border-box; }
+        #cmd-out { height: 100%; min-height: 20rem; background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 0.5rem; overflow-y: auto; font-size: 1.1rem; line-height: 1.2; flex-grow: 1;}
+        #cmd-in { width: 100%; border: none; background: #000; color: #0f0; font-family: 'Courier New', monospace; outline: none; font-size: 1.1rem; padding: 0.3rem; box-sizing: border-box; }
 
         /* Table Style */
-        table.excel95 { border-collapse: collapse; width: 100%; font-size: 10px; }
-        table.excel95 th { background: var(--ce-gray); border: 1px outset #fff; padding: 2px 4px; position: sticky; top: 0; }
-        table.excel95 td { border: 1px solid #ccc; padding: 2px 4px; }
+        table.excel95 { border-collapse: collapse; width: 100%; font-size: 1rem; }
+        table.excel95 th { background: var(--ce-gray); border: 0.15rem outset #fff; padding: 0.2rem 0.4rem; position: sticky; top: 0; }
+        table.excel95 td { border: 0.15rem solid #ccc; padding: 0.2rem 0.4rem; }
 
         /* Calculator */
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 5px; background: var(--ce-gray); }
-        .calc-grid button { padding: 5px; font-weight: bold; font-size: 12px; border: 1px outset #fff; cursor: pointer; }
-        .calc-grid button:active { border: 1px inset #fff; }
-        #calc-display { grid-column: span 4; background: #fff; border: 1px inset #fff; padding: 4px; text-align: right; font-size: 14px; margin-bottom: 4px; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.2rem; padding: 0.5rem; background: var(--ce-gray); }
+        .calc-grid button { padding: 0.5rem; font-weight: bold; font-size: 1.2rem; border: 0.15rem outset #fff; cursor: pointer; }
+        .calc-grid button:active { border: 0.15rem inset #fff; }
+        #calc-display { grid-column: span 4; background: #fff; border: 0.15rem inset #fff; padding: 0.4rem; text-align: right; font-size: 1.4rem; margin-bottom: 0.4rem; }
 
         /* Settings */
-        fieldset { border: 1px groove #fff; padding: 5px; margin-bottom: 5px; font-size: 10px; }
-        legend { padding: 0 4px; }
+        fieldset { border: 0.15rem groove #fff; padding: 0.5rem; margin-bottom: 0.5rem; font-size: 1rem; }
+        legend { padding: 0 0.4rem; }
     </style>
 </head>
 <body>
