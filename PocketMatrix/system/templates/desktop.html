@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>PocketMatrix CE (Windows 95 Mode)</title>
-    <meta name="viewport" content="width=240, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         :root {
             --ce-gray: #c0c0c0;
@@ -1482,6 +1482,24 @@
 
         // Desktop Click Hide Start
         document.getElementById('desktop').onmousedown = () => document.getElementById('start-menu').style.display = 'none';
+
+        // --- Native DP Scaling Engine ---
+        // Simulates Android's `(this * density).toInt()` logic for the WebView
+        function applyDensityScaling() {
+            // Target the requested chunky 240 width aesthetic
+            const targetWidthDp = 240; 
+            const currentWidthDp = window.innerWidth;
+            
+            // Calculate ratio
+            const scale = currentWidthDp / targetWidthDp;
+            
+            // Apply scale to root font size (1rem). 
+            // A base font of 14dp scales dynamically.
+            const baseFontSizeDp = 14 * scale;
+            document.documentElement.style.fontSize = baseFontSizeDp + 'px';
+        }
+        window.addEventListener('resize', applyDensityScaling);
+        applyDensityScaling();
 
         // Windows start closed by default to enforce classic desktop feel.
     </script>
