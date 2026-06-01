@@ -19,11 +19,14 @@
             height: 100vh;
         }
 
-        /* Fluid Responsive Container */
+        /* Scaling Container */
         #scaling-container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
+            width: 320px;
+            height: 480px;
+            transform-origin: 0 0;
+            position: absolute;
+            top: 0;
+            left: 0;
             overflow: hidden;
             background: var(--ce-teal);
         }
@@ -33,9 +36,9 @@
             position: absolute; 
             bottom: 0; 
             width: 100%; 
-            height: 56px; 
+            height: 26px; 
             background: var(--ce-gray); 
-            border-top: 2px solid #fff; 
+            border-top: 1px solid #fff; 
             display: flex; 
             align-items: center; 
             z-index: 2000; 
@@ -43,41 +46,41 @@
         }
 
         #start-btn { 
-            height: 48px; 
-            width: 110px; 
+            height: 22px; 
+            width: 55px; 
             background: var(--ce-gray); 
-            border: 2px outset #fff; 
+            border: 1px outset #fff; 
             font-weight: bold; 
-            font-size: 20px; 
-            margin-left: 4px; 
+            font-size: 11px; 
+            margin-left: 2px; 
             cursor: pointer; 
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 2px;
         }
-        #start-btn:active { border: 2px inset #fff; }
+        #start-btn:active { border: 1px inset #fff; }
 
-        #taskbar-windows { display: flex; flex-grow: 1; padding: 0 10px; gap: 5px; overflow: hidden; }
+        #taskbar-windows { display: flex; flex-grow: 1; padding: 0 5px; gap: 2px; overflow: hidden; }
         .taskbar-btn { 
-            background: var(--ce-gray); border: 2px outset #fff; font-size: 16px; font-weight: bold;
-            padding: 2px 10px; cursor: pointer; display: flex; align-items: center; max-width: 150px; overflow: hidden; white-space: nowrap; height: 36px;
+            background: var(--ce-gray); border: 1px outset #fff; font-size: 10px; font-weight: bold;
+            padding: 1px 5px; cursor: pointer; display: flex; align-items: center; max-width: 80px; overflow: hidden; white-space: nowrap; height: 18px;
         }
-        .taskbar-btn.active { border: 2px inset #fff; background: #e0e0e0; }
+        .taskbar-btn.active { border: 1px inset #fff; background: #e0e0e0; }
 
-        .win-logo { width: 24px; height: 24px; background: linear-gradient(45deg, #f00, #ff0, #0f0, #00f); }
+        .win-logo { width: 12px; height: 12px; background: linear-gradient(45deg, #f00, #ff0, #0f0, #00f); }
 
         /* Windows */
         .window { 
             position: absolute; 
             background: var(--ce-gray); 
-            border: 2px outset #fff; 
-            padding: 4px; 
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.5); 
+            border: 1px outset #fff; 
+            padding: 2px; 
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5); 
             display: none;
-            width: 95vw;
-            max-width: 600px;
-            max-height: 85vh;
+            width: 300px;
+            max-width: 95%;
+            max-height: 85%;
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -86,9 +89,9 @@
         .window-header { 
             background: var(--ce-blue); 
             color: #fff; 
-            padding: 4px 10px; 
+            padding: 2px 5px; 
             font-weight: bold; 
-            font-size: 18px;
+            font-size: 11px;
             display: flex; 
             justify-content: space-between; 
             cursor: move; 
@@ -99,85 +102,85 @@
             cursor: pointer; 
             background: var(--ce-gray); 
             color: #000; 
-            border: 2px outset #fff; 
-            padding: 0 6px; 
-            font-size: 16px; 
+            border: 1px outset #fff; 
+            padding: 0 4px; 
+            font-size: 10px; 
             font-weight: bold;
-            margin-left: 4px;
+            margin-left: 2px;
         }
 
         .window-content { 
             background: #fff; 
-            border: 2px inset #fff; 
+            border: 1px inset #fff; 
             overflow: auto; 
-            font-size: 16px;
+            font-size: 11px;
             flex-grow: 1;
         }
 
-        /* Toolbar for apps like Notepad/Paint */
-        .app-toolbar { background: var(--ce-gray); padding: 6px; display: flex; gap: 8px; border-bottom: 2px inset #fff; }
-        .app-toolbar button { font-family: 'Tahoma'; font-size: 16px; cursor: pointer; }
+        /* Toolbar */
+        .app-toolbar { background: var(--ce-gray); padding: 3px; display: flex; gap: 4px; border-bottom: 1px inset #fff; }
+        .app-toolbar button { font-family: 'Tahoma'; font-size: 10px; cursor: pointer; }
 
         /* Explorer Layout */
-        .explorer-container { display: flex; height: 100%; min-height: 400px; }
-        .side-pane { width: 250px; border-right: 2px solid var(--ce-gray); background: #f0f0f0; padding: 10px; overflow-y: auto; font-size: 16px; }
-        .main-pane { flex-grow: 1; padding: 15px; background: #fff; overflow-y: auto; font-size: 16px; }
-        .db-item { cursor: pointer; padding: 8px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+        .explorer-container { display: flex; height: 100%; min-height: 200px; }
+        .side-pane { width: 100px; border-right: 1px solid var(--ce-gray); background: #f0f0f0; padding: 5px; overflow-y: auto; font-size: 10px; }
+        .main-pane { flex-grow: 1; padding: 5px; background: #fff; overflow-y: auto; font-size: 10px; }
+        .db-item { cursor: pointer; padding: 4px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 4px; }
         .db-item:hover { background: #e0e0ff; }
 
         /* Desktop Icons */
-        #desktop { padding: 30px; display: grid; grid-template-columns: repeat(auto-fill, 100px); gap: 30px; }
-        .icon { width: 90px; text-align: center; cursor: pointer; color: white; font-size: 16px; text-shadow: 2px 2px 2px #000; }
-        .icon-img { width: 48px; height: 48px; margin: 0 auto 8px auto; background-size: contain; background-repeat: no-repeat; background-position: center; }
+        #desktop { padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, 50px); gap: 15px; }
+        .icon { width: 50px; text-align: center; cursor: pointer; color: white; font-size: 10px; text-shadow: 1px 1px 1px #000; }
+        .icon-img { width: 28px; height: 28px; margin: 0 auto 4px auto; background-size: contain; background-repeat: no-repeat; background-position: center; }
         
         /* Start Menu */
         #start-menu { 
-            position: absolute; bottom: 48px; left: 0; width: 350px; background: var(--ce-gray); border: 2px outset #fff; 
+            position: absolute; bottom: 26px; left: 0; width: 180px; background: var(--ce-gray); border: 1px outset #fff; 
             display: none; z-index: 2000; flex-direction: row;
         }
         
         .start-sidebar { 
-            width: 40px; background: linear-gradient(to bottom, #808080, #000); 
+            width: 20px; background: linear-gradient(to bottom, #808080, #000); 
             writing-mode: vertical-rl; transform: rotate(180deg); color: #c0c0c0; 
-            font-weight: bold; font-size: 28px; padding: 15px 10px;
+            font-weight: bold; font-size: 14px; padding: 5px 2px;
         }
 
         .start-items { flex-grow: 1; display: flex; flex-direction: column; }
         .start-item { 
-            padding: 12px 15px; display: flex; align-items: center; cursor: pointer; font-size: 18px;
+            padding: 5px 8px; display: flex; align-items: center; cursor: pointer; font-size: 11px;
             position: relative;
             color: #000;
         }
         .start-item:hover { background: var(--ce-blue); color: #fff; }
         .start-item:hover > .submenu { display: block; }
         
-        .arrow { margin-left: auto; border: solid #000; border-width: 0 2px 2px 0; display: inline-block; padding: 4px; transform: rotate(-45deg); }
+        .arrow { margin-left: auto; border: solid #000; border-width: 0 1px 1px 0; display: inline-block; padding: 2px; transform: rotate(-45deg); }
         .start-item:hover .arrow { border-color: #fff; }
 
         /* Submenus */
         .submenu { 
-            position: absolute; left: 306px; top: -2px; width: 250px; background: var(--ce-gray); 
-            border: 2px outset #fff; display: none; color: #000; z-index: 2100;
+            position: absolute; left: 158px; top: -1px; width: 140px; background: var(--ce-gray); 
+            border: 1px outset #fff; display: none; color: #000; z-index: 2100;
         }
 
         /* Agent Command Prompt */
-        #cmd-out { height: 100%; min-height: 400px; background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 15px; overflow-y: auto; font-size: 18px; line-height: 1.4; flex-grow: 1;}
-        #cmd-in { width: 100%; border: none; background: #000; color: #0f0; font-family: 'Courier New', monospace; outline: none; font-size: 18px; padding: 10px; box-sizing: border-box; }
+        #cmd-out { height: 100%; min-height: 200px; background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 5px; overflow-y: auto; font-size: 11px; line-height: 1.2; flex-grow: 1;}
+        #cmd-in { width: 100%; border: none; background: #000; color: #0f0; font-family: 'Courier New', monospace; outline: none; font-size: 11px; padding: 3px; box-sizing: border-box; }
 
         /* Table Style */
-        table.excel95 { border-collapse: collapse; width: 100%; font-size: 16px; }
-        table.excel95 th { background: var(--ce-gray); border: 2px outset #fff; padding: 4px 8px; position: sticky; top: 0; }
-        table.excel95 td { border: 1px solid #ccc; padding: 4px 8px; }
+        table.excel95 { border-collapse: collapse; width: 100%; font-size: 10px; }
+        table.excel95 th { background: var(--ce-gray); border: 1px outset #fff; padding: 2px 4px; position: sticky; top: 0; }
+        table.excel95 td { border: 1px solid #ccc; padding: 2px 4px; }
 
         /* Calculator */
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 15px; background: var(--ce-gray); }
-        .calc-grid button { padding: 15px; font-weight: bold; font-size: 20px; border: 2px outset #fff; cursor: pointer; }
-        .calc-grid button:active { border: 2px inset #fff; }
-        #calc-display { grid-column: span 4; background: #fff; border: 2px inset #fff; padding: 10px; text-align: right; font-size: 24px; margin-bottom: 8px; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 5px; background: var(--ce-gray); }
+        .calc-grid button { padding: 5px; font-weight: bold; font-size: 12px; border: 1px outset #fff; cursor: pointer; }
+        .calc-grid button:active { border: 1px inset #fff; }
+        #calc-display { grid-column: span 4; background: #fff; border: 1px inset #fff; padding: 4px; text-align: right; font-size: 14px; margin-bottom: 4px; }
 
         /* Settings */
-        fieldset { border: 2px groove #fff; padding: 15px; margin-bottom: 15px; font-size: 16px; }
-        legend { padding: 0 8px; }
+        fieldset { border: 1px groove #fff; padding: 5px; margin-bottom: 5px; font-size: 10px; }
+        legend { padding: 0 4px; }
     </style>
 </head>
 <body>
@@ -1483,6 +1486,26 @@
 
         // Desktop Click Hide Start
         document.getElementById('desktop').onmousedown = () => document.getElementById('start-menu').style.display = 'none';
+
+        // --- Scaling Engine ---
+        function applyScaling() {
+            const container = document.getElementById('scaling-container');
+            const logicalWidth = 320; // True Handheld PC Base Width
+            const scale = window.innerWidth / logicalWidth;
+            const logicalHeight = window.innerHeight / scale;
+            
+            container.style.width = `${logicalWidth}px`;
+            container.style.height = `${logicalHeight}px`;
+            container.style.transform = `scale(${scale})`;
+            
+            // Adjust window max sizes so they don't break boundaries
+            document.querySelectorAll('.window').forEach(w => {
+                w.style.maxWidth = `${logicalWidth - 10}px`;
+                w.style.maxHeight = `${logicalHeight - 30}px`;
+            });
+        }
+        window.addEventListener('resize', applyScaling);
+        applyScaling();
 
         // Windows start closed by default to enforce classic desktop feel.
     </script>
