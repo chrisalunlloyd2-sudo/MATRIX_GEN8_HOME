@@ -72,7 +72,7 @@ PYTHONPATH=. python3 PocketMatrix/system/gui_bridge.py &
 
 ## 🧠 Architectural Logic Flow
 
-The dual-agent handoff between the semantic conversational interface and the headless executor operates as follows:
+The dual-agent handoff between the semantic conversational interface and the headless executor operates entirely on-device with **ZERO external API usage**. We achieve sub-1s local response times by routing intents between two highly quantized, purpose-built edge models:
 
 ```text
 [ USER INPUT (Pocket CMD) ]
@@ -81,14 +81,15 @@ The dual-agent handoff between the semantic conversational interface and the hea
 [ Flask Bridge (gui_bridge.py) ]
          │
          ▼
-[ Triton Broker (Intent Router) ]
+[ Intent Router (Local) ]
          │
     ┌────┴────┐
     │         │
  [ CODE ]  [ CHAT ]
     │         │
     ▼         ▼
-[  agy  ]  [ llama ] (Danube3)
+[ Triton ] [ Danube ]
+ (300MB)    (500MB)
     │         │
     └────┬────┘
          │
