@@ -21,8 +21,8 @@
 
         /* Scaling Container */
         #scaling-container {
-            width: 1920px;
-            height: 1080px;
+            width: 1024px;
+            height: 768px;
             transform-origin: 0 0;
             position: absolute;
             top: 0;
@@ -700,14 +700,14 @@
         // --- Scaling Engine ---
         function applyScaling() {
             const container = document.getElementById('scaling-container');
-            const scaleX = window.innerWidth / 1920;
-            const scaleY = window.innerHeight / 1080;
+            const scaleX = window.innerWidth / 1024;
+            const scaleY = window.innerHeight / 768;
             const scale = Math.min(scaleX, scaleY);
             container.style.transform = `scale(${scale})`;
             
             // Center the container
-            const leftOffset = (window.innerWidth - 1920 * scale) / 2;
-            const topOffset = (window.innerHeight - 1080 * scale) / 2;
+            const leftOffset = (window.innerWidth - 1024 * scale) / 2;
+            const topOffset = (window.innerHeight - 768 * scale) / 2;
             container.style.left = `${leftOffset}px`;
             container.style.top = `${topOffset}px`;
         }
@@ -1502,8 +1502,7 @@
         // Desktop Click Hide Start
         document.getElementById('desktop').onmousedown = () => document.getElementById('start-menu').style.display = 'none';
 
-        // Initial Focus
-        openWindow('win-cmd');
+        // Windows start closed by default to enforce classic desktop feel.
     </script>
 </body>
 </html>
