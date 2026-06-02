@@ -7,10 +7,15 @@ import datetime
 import shutil
 import base64
 import time
+import requests
+import PocketMatrix.system.evernote_manager as evernote_manager
+import PocketMatrix.system.knowledge_hub as knowledge_hub
+import PocketMatrix.system.orchestrator as orchestrator
 import PocketMatrix.system.google_bridge as google_bridge
 from PocketMatrix.system.ingestion_engine import IngestionEngine
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 ingestor = IngestionEngine()
 
 HOME_DIR = os.path.expanduser("~")
@@ -104,7 +109,7 @@ def knowledge_stats():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# --- UI ROUTES ---
+# --- UI ROUTES: LOCKED (Do not modify without explicit consent) ---
 @app.route('/')
 def desktop():
     return render_template('desktop.html')
@@ -321,32 +326,65 @@ def clippy_learn():
     if not fact:
         return jsonify({"error": "No fact provided."}), 400
     
+    # Store the fact
     memory = []
     if os.path.exists(CLIPPY_BRAIN_FILE):
         try:
             with open(CLIPPY_BRAIN_FILE, 'r') as f:
                 memory = json.load(f)
         except: pass
-        
     memory.append({"time": int(time.time()), "fact": fact})
-    
     os.makedirs(os.path.dirname(CLIPPY_BRAIN_FILE), exist_ok=True)
     with open(CLIPPY_BRAIN_FILE, 'w') as f:
         json.dump(memory, f)
         
-    return jsonify({"status": "SUCCESS", "message": f"I learned: {fact}"})
+    # Generate conversational response
+    # Using simple prompt format for SmolLM
+    prompt = f"You are Clippy. You just learned: '{fact}'. Respond as Clippy, happily acknowledging this new information in a helpful way."
+    
+    try:
+        # llama.cpp server expects 'prompt' for /completion
+        response = requests.post("http://127.0.0.1:8080/completion", json={
+            "prompt": prompt,
+            "n_predict": 100
+        }, timeout=20)
+        if response.status_code == 200:
+            # Check response format. llama.cpp /completion returns {'content': '...'}
+            data = response.json()
+            clippy_response = data.get('content', '').strip()
+            # If empty, it might have failed to generate or returned wrong field
+            if not clippy_response:
+                 clippy_response = "I've stored that information, but I'm having trouble phrasing it right now!"
+            return jsonify({"status": "SUCCESS", "message": clippy_response})
+    except Exception as e:
+        pass
+        
+    return jsonify({"status": "SUCCESS", "message": "I learned that: " + fact})
 
+import PocketMatrix.system.knowledge_hub as knowledge_hub
+# ...
 @app.route('/api/clippy/recall', methods=['GET'])
 def clippy_recall():
-    if os.path.exists(CLIPPY_BRAIN_FILE):
-        try:
-            with open(CLIPPY_BRAIN_FILE, 'r') as f:
-                memory = json.load(f)
-                if memory:
-                    import random
-                    return jsonify({"fact": random.choice(memory)['fact']})
-        except: pass
-    return jsonify({"fact": None})
+    query = request.args.get('query', '')
+    
+    # Use knowledge_hub BM25 for intelligent retrieval
+    relevant_content = knowledge_hub.search_knowledge_bm25(query if query else "latest actions")
+    context = " ".join(relevant_content)
+    
+    # Prompt for local model
+    prompt = f"You are Clippy. Using this context: '{context}', answer the user's query: '{query}'. Be helpful and happy."
+    
+    try:
+        response = requests.post("http://127.0.0.1:8080/completion", json={
+            "prompt": prompt,
+            "n_predict": 100
+        }, timeout=20)
+        if response.status_code == 200:
+            clippy_response = response.json().get('content', '').strip()
+            return jsonify({"fact": clippy_response if clippy_response else "I've processed your request, but I have no relevant information."})
+    except Exception as e:
+        pass
+    return jsonify({"fact": "I'm processing, but having trouble communicating right now."})
 
 @app.route('/api/swarm/chat', methods=['POST'])
 def swarm_chat():
@@ -768,3 +806,60 @@ def check_readiness():
 
 if __name__ == '__main__':
     app.run(port=8081, host='0.0.0.0')
+
+@app.route('/api/clippy/evernote/search', methods=['GET'])
+def evernote_search():
+    query = request.args.get('query', '')
+    if not query:
+        return jsonify({'error': 'No query provided'}), 400
+    results = evernote_manager.search_notes(query)
+    return jsonify({'results': results})
+
+
+@app.route('/api/clippy/orchestrate', methods=['POST'])
+def trigger_orchestration():
+    proposals = orchestrator.run_orchestration()
+    return jsonify({"status": "SUCCESS", "message": "Orchestration complete.", "proposals": proposals})
+
+@app.route('/api/clippy/proposals', methods=['GET'])
+def get_proposals():
+    if os.path.exists(orchestrator.PROPOSED_ACTIONS_FILE):
+        with open(orchestrator.PROPOSED_ACTIONS_FILE, 'r') as f:
+            return jsonify(json.load(f))
+    return jsonify({"proposals": "No proposals found."})
+
+@app.route('/api/chat', methods=['POST'])
+def handle_chat():
+    req = request.json
+    msg = req.get('message', '').strip()
+    
+    if msg.lower().startswith('note:'):
+        note_content = msg[5:].strip()
+        import uuid
+        import PocketMatrix.system.evernote_manager as evm
+        import PocketMatrix.system.knowledge_hub as kh
+        note_id = str(uuid.uuid4())
+        evm.upsert_note(note_id, f"ClippyNote_{int(time.time())}", note_content, "clippy-chat", int(time.time()))
+        
+        conn = sqlite3.connect(kh.HUB_DB)
+        c = conn.cursor()
+        c.execute("INSERT OR REPLACE INTO knowledge (category, content, priority) VALUES (?, ?, ?)", 
+                  (f"Clippy_SOP:{note_id}", note_content, 1.0))
+        conn.commit()
+        conn.close()
+        return jsonify({"output": "I have successfully tabulated that note into your global Knowledge Hub!"})
+        
+    # If not a note, query the LLM
+    try:
+        prompt = f"You are Clippy. Respond to the user: '{msg}'. Be helpful and happy."
+        response = requests.post("http://127.0.0.1:8080/completion", json={
+            "prompt": prompt,
+            "n_predict": 100
+        }, timeout=20)
+        if response.status_code == 200:
+            clippy_response = response.json().get('content', '').strip()
+            return jsonify({"output": clippy_response if clippy_response else "I'm thinking..."})
+    except Exception as e:
+        pass
+
+    return jsonify({"output": "I am Clippy. Start your message with 'Note:' to have me securely store it in your Brain Database."})

@@ -82,3 +82,19 @@ The Windows CE-styled graphical interface (`PocketMatrix`) has been finalized an
 - **Final Manifestation:** Unified Phase 7 orchestration script with Singularity logging.
 
 *No legacy architecture, logic, or notes were deleted during this transition. All historic nodes are preserved as per the project mandate.*
+
+## [1.3.0] - 2026-06-01
+### Added
+- **v1.0 GUI Locked:** Finalized the PocketMatrix CE Mobile Accessibility layout! Fixed Android WebView 100vh scaling bug and anchored the taskbar.
+- Added BM25 Self-Learning Orchestrator integration.
+- Wired Clippy to local agent backend.
+
+## [1.4.0-Alpha] - 2026-06-02
+### Added
+- **Alpha Upgrade:** System advanced to Alpha testing phase.
+- **BM25 Knowledge Hub:** Implemented a local SQLite `knowledge_hub.db` backed by `rank_bm25` for intelligent Retrieval-Augmented Generation (RAG).
+- **Evernote Gateway:** Full Python 3 compatible, offline-first ENEX and API integration for bidirectional note harvesting.
+- **Action-Oriented Orchestrator:** Developed an engine that cross-correlates harvested knowledge against active `todo.db` tasks and blueprints to propose agentic duties.
+- **SmolLM Integration:** Swapped to the lightning-fast SmolLM-135M model for Clippy's internal logic, dramatically improving response latency on the 32-bit substrate.
+- **Agentic Sync Daemon:** A background process that executes hourly to summarize blueprints, harvest logs, and sync Evernote exports into the Knowledge Hub.
+- **Refined WebUI:** Implemented strict taskbar visibility logic and a 150-character cycling speech bubble for Clippy, preserving the pristine Windows CE aesthetic.

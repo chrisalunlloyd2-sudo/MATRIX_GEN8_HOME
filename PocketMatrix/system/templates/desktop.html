@@ -13,8 +13,10 @@
         html, body {
             margin: 0;
             padding: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
             overflow: hidden;
             background: var(--ce-teal);
             font-family: 'Tahoma', sans-serif;
@@ -26,6 +28,8 @@
 
         #desktop {
             flex-grow: 1; /* Pushes taskbar to bottom natively */
+            min-height: 0; /* Prevents flex blowout */
+            overflow-y: auto; /* Allows desktop icons to scroll if needed */
             position: relative; /* Windows remain absolute to desktop bounds */
             padding: 1rem; 
             display: flex; 
@@ -38,6 +42,7 @@
         #taskbar { 
             width: 100%; 
             height: 3.5rem; 
+            flex-shrink: 0;
             background: var(--ce-gray); 
             border-top: 0.15rem solid #fff; 
             display: flex; 
@@ -180,6 +185,25 @@
         /* Settings */
         fieldset { border: 0.15rem groove #fff; padding: 0.5rem; margin-bottom: 0.5rem; font-size: 1rem; }
         legend { padding: 0 0.4rem; }
+
+        /* Mobile Accessibility Overrides */
+        @media (max-width: 800px) {
+            html, body { font-size: 9px !important; }
+            .window {
+                width: 95vw !important;
+                height: 80vh !important;
+                left: 2.5vw !important;
+                top: 2.5vh !important;
+            }
+            .window-title { font-size: 1.2rem !important; padding: 0.8rem !important; }
+            .window-controls button { width: 2rem !important; height: 2rem !important; }
+            #taskbar { height: 5rem !important; }
+            #start-btn { height: 4rem !important; font-size: 1.5rem !important; padding: 0 1rem !important; }
+            .icon { width: 6rem !important; font-size: 1rem !important; }
+            .icon-img { width: 4rem !important; height: 4rem !important; }
+            #start-menu { width: 90vw !important; bottom: 5rem !important; }
+            .menu-item { padding: 1.5rem !important; font-size: 1.5rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -626,6 +650,7 @@
             Awaiting diagnostic execution...
         </div>
     </div>
+    </div>
 
     <!-- Start Menu -->
     <div id="start-menu">
@@ -706,6 +731,7 @@
         function openWindow(id) {
             const win = document.getElementById(id);
             win.style.display = 'flex';
+            activeWindows[id] = true;
             document.getElementById('start-menu').style.display = 'none';
             focusWindow(id);
             updateTaskbar();
@@ -727,6 +753,7 @@
 
         function closeWindow(id) {
             document.getElementById(id).style.display = 'none';
+            delete activeWindows[id];
             updateTaskbar();
             if(id === 'win-taskmgr' && monitorInterval) { clearInterval(monitorInterval); monitorInterval = null; }
         }
@@ -747,7 +774,7 @@
             const tb = document.getElementById('taskbar-windows');
             tb.innerHTML = '';
             document.querySelectorAll('.window').forEach(win => {
-                if(win.style.display !== '') {
+                if(activeWindows[win.id]) {
                     const title = win.querySelector('.win-title').innerText;
                     const btn = document.createElement('div');
                     btn.className = 'taskbar-btn' + (win.style.display !== 'none' && win.style.zIndex == 1000 ? ' active' : '');
@@ -1257,55 +1284,74 @@
             clippy.style.display = (clippy.style.display === 'none' || clippy.style.display === '') ? 'flex' : 'none';
         }
 
-        function toggleClippyHint() {
-            const speech = document.getElementById('clippy-speech');
-            const text = document.getElementById('clippy-text');
-            
-            // Context aware hint based on topmost window
-            let topWin = null;
-            let maxZ = 0;
-            document.querySelectorAll('.window').forEach(w => {
-                if(w.style.display !== 'none' && parseInt(w.style.zIndex) > maxZ) {
-                    maxZ = parseInt(w.style.zIndex);
-                    topWin = w.id;
-                }
-            });
-
-            if (topWin === 'win-cmd') {
-                text.innerText = "I see you're using the Agent Prompt! Try typing a semantic intent like 'Scan for bugs' and the AI will route it.";
-            } else if (topWin === 'win-db') {
-                text.innerText = "In the Database Neighborhood, any edits you make in the grid are instantly saved using SQLite ROWIDs.";
-            } else if (topWin === 'win-notepad') {
-                text.innerText = "Need to jot something down? You can type a path like 'notes.txt' and hit Save to write directly to the host filesystem.";
-            } else if (topWin === 'win-paint') {
-                text.innerText = "Wow, what a masterpiece! Click 'Save' to export your canvas as a real .png file.";
-            } else if (topWin === 'win-terminal') {
-                text.innerText = "Ah, the MS-DOS prompt. Here you can run raw bash commands directly against the 32-bit Android substrate.";
-            } else if (topWin === 'win-swarm') {
-                text.innerText = "Welcome to the Swarm! Multiple agents are ready to brainstorm on any topic you provide.";
-            } else {
-                // If no specific window context, recall a learned fact
-                fetch('/api/clippy/recall').then(r => r.json()).then(data => {
-                    if (data.fact) {
-                        text.innerText = `You taught me: "${data.fact}"`;
-                    } else {
-                        text.innerText = "I'm Clippy, your Matrix CE assistant! I provide hints based on the active window you are using.";
-                    }
-                });
-            }
-            
-            speech.style.display = (speech.style.display === 'none' || speech.style.display === '') ? 'block' : 'none';
-        }
-
         function clippyLearn() {
             const fact = document.getElementById('clippy-input').value;
             if(!fact) return;
+            
+            // Ensure speech bubble is visible
+            document.getElementById('clippy-speech').style.display = 'block';
+            document.getElementById('clippy-text').innerText = "Thinking...";
+            
             fetch('/api/clippy/learn', {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({fact: fact})
             }).then(r => r.json()).then(data => {
-                document.getElementById('clippy-text').innerText = data.message || data.error;
+                if(data.status === 'SUCCESS') {
+                    document.getElementById('clippy-text').innerText = data.message;
+                    document.getElementById('clippy-input').value = '';
+                } else {
+                    alert("Error teaching Clippy: " + data.error);
+                }
+            });
+        }
+
+        let clippyMessageQueue = [];
+        let clippyQueueIdx = 0;
+
+        function toggleClippyHint() {
+            const speech = document.getElementById('clippy-speech');
+            const text = document.getElementById('clippy-text');
+            
+            // If currently showing a message, cycle to next
+            if (speech.style.display === 'block' && clippyMessageQueue.length > 0) {
+                clippyQueueIdx = (clippyQueueIdx + 1) % clippyMessageQueue.length;
+                text.innerText = clippyMessageQueue[clippyQueueIdx];
+                return;
+            }
+
+            // Otherwise, fetch/generate new content
+            fetch('/api/clippy/recall').then(r => r.json()).then(data => {
+                let message = "I'm Clippy, your Matrix CE assistant!";
+                if (data.fact) {
+                    message = data.fact;
+                }
+                
+                // Length Sensor: Split into chunks of ~150 chars if too long
+                if (message.length > 150) {
+                    clippyMessageQueue = message.match(/.{1,150}(\s|$)/g) || [message];
+                    clippyQueueIdx = 0;
+                    text.innerText = clippyMessageQueue[0];
+                } else {
+                    clippyMessageQueue = [message];
+                    clippyQueueIdx = 0;
+                    text.innerText = message;
+                }
+                speech.style.display = 'block';
+            });
+        }
+
+        function clippyAsk() {
+            const query = document.getElementById('clippy-input').value;
+            if(!query) return;
+            document.getElementById('clippy-text').innerText = "Thinking...";
+            fetch('/api/chat', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: query})
+            }).then(r => r.json()).then(data => {
+                document.getElementById('clippy-text').innerText = data.output || "Error connecting to local agent.";
                 document.getElementById('clippy-input').value = '';
+            }).catch(e => {
+                document.getElementById('clippy-text').innerText = "Local agent offline.";
             });
         }
 
@@ -1482,24 +1528,6 @@
 
         // Desktop Click Hide Start
         document.getElementById('desktop').onmousedown = () => document.getElementById('start-menu').style.display = 'none';
-
-        // --- Native DP Scaling Engine ---
-        // Simulates Android's `(this * density).toInt()` logic for the WebView
-        function applyDensityScaling() {
-            // Target the requested chunky 240 width aesthetic
-            const targetWidthDp = 240; 
-            const currentWidthDp = window.innerWidth;
-            
-            // Calculate ratio
-            const scale = currentWidthDp / targetWidthDp;
-            
-            // Apply scale to root font size (1rem). 
-            // A base font of 14dp scales dynamically.
-            const baseFontSizeDp = 14 * scale;
-            document.documentElement.style.fontSize = baseFontSizeDp + 'px';
-        }
-        window.addEventListener('resize', applyDensityScaling);
-        applyDensityScaling();
 
         // Windows start closed by default to enforce classic desktop feel.
     </script>

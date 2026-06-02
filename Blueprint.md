@@ -49,3 +49,47 @@ The system now supports multi-layered agentic execution via the `Danube Logic Or
 5. **Verification Script** -> **Validator** (Local) -> **Success/Failure**
 6. **Success** -> **Synchronizer** (Git) -> **GitHub Cloud**
 7. **Recursive Loop** -> Repeat for next task in Logic Tree.
+
+# --- FOUNDRY v10.2 ALPHA UPGRADE ---
+# Data Flow & Orchestration Blueprint
+======================================
+## System Architecture (Alpha)
+```ascii
+                                      +-------------------------+
+                                      |     User Interfaces     |
+                                      | (WebUI / Mobile Client) |
+                                      +-------------------------+
+                                                 |
+                                     (HTTP /api/chat & /api/clippy)
+                                                 |
+                                                 v
+                                      +-------------------------+
+                                      |  Flask Bridge (Python)  |
+                                      |      gui_bridge.py      |
+                                      +-------------------------+
+                                         /        |         \
+                    (BM25 Search)       /  (CRUD) |          \ (Orchestrate)
+                                       /          |           \
+                                      v           v            v
+        +--------------------+     +------+   +--------+   +---------------+
+        |   Knowledge Hub    |<----| ENEX |   |  Todo  |   | Orchestrator  |
+        | knowledge_hub.db   |     |  GW  |   | todo.db|   |orchestrator.py|
+        +--------------------+     +------+   +--------+   +---------------+
+                   ^                   ^                        |
+                   |                   |                        |
+             (BM25 Context)       (Sync Daemon)             (Proposals)
+                   |                   |                        |
+                   +-------------------+------------------------+
+                                       |
+                                       v
+                             +-------------------+
+                             |   Local Llama     |
+                             |   (Danube/Smol)   |
+                             |  127.0.0.1:8080   |
+                             +-------------------+
+```
+
+## Performatives & Protocols
+1. **Evernote Sync Daemon:** Runs continuously in the background, harvesting logs, blueprints, and ENEX exports every 3600 seconds.
+2. **Clippy Orchestrator:** Uses BM25 Retrieval-Augmented Generation (RAG) to cross-correlate active projects with the knowledge base, proposing automated duties to the developer.
+3. **Substrate Lock:** The WebUI and Model architecture are locked; only the behavioral cycling and knowledge components are dynamically mutable.
