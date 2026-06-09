@@ -1,0 +1,26 @@
+[Mon Jun  8 20:07:57 MDT 2026] REFRACTION DETECTED
+[!] REFRACTION ALERT: High-confidence match found (85.0%).
+[*] Signature: 2e1117f8e1b07b792eb0192ed38538ce0828ee13a1f34bc4af848c289508200d
+[*] ACTION: ABORT_GENERATION | ESTABLISH_VAULT_LINK
+
+--- EXISTING CODE ---
+[ USER INPUT (Pocket CMD) ]
+         │
+         ▼
+[ Flask Bridge (gui_bridge.py) ]
+         │
+         ▼
+[ Intent Router (Local) ]
+         │
+    ┌────┴────┐
+    │         │
+ [ CODE ]  [ CHAT ]
+    │         │
+    ▼         ▼
+[ Triton ] [ Danube ]
+ (300MB)    (500MB)
+    │         │
+    └────┬────┘
+         │
+         ▼
+[ SYSTEM EXECUTION & UI UPDATE ]

@@ -1,0 +1,42 @@
+{
+  "code_1780839813802566823": {
+    "timestamp": "2026-06-07T07:43:34.309952",
+    "content": "print(\"test snippet\")"
+  },
+  "output_1780839813802566823": {
+    "timestamp": "2026-06-07T07:43:34.310503",
+    "content": "test snippet\n"
+  },
+  "run_1780839813802566823": {
+    "timestamp": "2026-06-07T07:43:34.310892",
+    "content": "{\"run_id\": \"1780839813802566823\", \"timestamp\": \"2026-06-07T07:43:33-06:00\", \"language\": \"python\", \"exit_code\": 0, \"code_file\": \"/data/data/com.termux/files/home/KAI_9000/logs/code_1780839813802566823.py\", \"log_file\": \"/data/data/com.termux/files/home/KAI_9000/logs/run_1780839813802566823.log\", \"output\": \"test snippet\\n\", \"success\": true}"
+  },
+  "last_run_id": {
+    "timestamp": "2026-06-07T21:21:12.034466",
+    "content": "1780888871760645966"
+  },
+  "code_1780843375298371295": {
+    "timestamp": "2026-06-07T08:42:55.560210",
+    "content": "#!/usr/bin/env python3\nimport os\nimport json\nimport time\nimport requests\n\nPROJECT_ROOT = \"/data/data/com.termux/files/home/KAI_9000\"\nTODO_DIR = \"/data/data/com.termux/files/home/.qwen/todos\"\nSERVER_URL = \"http://127.0.0.1:9000/api/brew\"\n\ndef get_active_todo_file():\n    if not os.path.exists(TODO_DIR):\n        return None\n    files = [f for f in os.listdir(TODO_DIR) if f.endswith('.json')]\n    if not files:\n        return None\n    # Just take the first todo list for now\n    return os.path.join(TODO_DIR, files[0])\n\ndef load_todos(filepath):\n    try:\n        with open(filepath, 'r') as f:\n            return json.load(f)\n    except Exception as e:\n        print(f\"Error loading todos: {e}\")\n        return None\n\ndef save_todos(filepath, data):\n    try:\n        with open(filepath, 'w') as f:\n            json.dump(data, f, indent=2)\n    except Exception as e:\n        print(f\"Error saving todos: {e}\")\n\ndef run_autonomous_loop():\n    todo_file = get_active_todo_file()\n    if not todo_file:\n        print(\"No granular list found.\")\n        return\n        \n    data = load_todos(todo_file)\n    if not data or 'todos' not in data:\n        print(\"Invalid todo list format.\")\n        return\n        \n    todos = data['todos']\n    \n    print(f\"Found granular list: {todo_file}\")\n    \n    for task in todos:\n        if task.get('status') in ['completed', 'done']:\n            continue\n            \n        task_id = task.get('id')\n        content = task.get('content')\n        \n        print(f\"\\n[+] Executing Task {task_id}: {content}\")\n        \n        # Mark as in progress\n        task['status'] = 'in_progress'\n        save_todos(todo_file, data)\n        \n        # Send to KAI_9000 Pedagogy Server\n        payload = {\n            \"prompt\": f\"Write a bash or python script to accomplish this task: '{content}'. The script must execute automatically. Do not include interactive prompts.\"\n        }\n        \n        try:\n            print(\"    -> Brewing code via LLM API...\")\n            response = requests.post(SERVER_URL, json=payload, timeout=120)\n            result = response.json()\n            \n            if result.get(\"success\"):\n                print(\"    -> Execution successful!\")\n                print(f\"    -> Response: {result.get('execution_summary', '')[:100]}...\")\n                task['status'] = 'completed'\n            else:\n                print(f\"    -> Execution failed: {result.get('error', 'Unknown error')}\")\n                task['status'] = 'failed'\n                \n        except requests.exceptions.RequestException as e:\n            print(f\"    -> Server connection failed: {e}\")\n            task['status'] = 'pending' # Revert to pending\n            break # Stop loop if server is down\n            \n        # Save state after each task\n        save_todos(todo_file, data)\n        \n        # Add a sleep gap for thermal throttling / API limits\n        time.sleep(5)\n        \n    print(\"\\nAutonomous loop finished.\")\n\nif __name__ == \"__main__\":\n    # Ensure server is reachable before starting\n    try:\n        requests.get(\"http://127.0.0.1:9000/api/status\", timeout=5)\n        run_autonomous_loop()\n    except requests.exceptions.RequestException:\n        print(\"KAI_9000 Pedagogy Server is not running. Please start it first.\")"
+  },
+  "output_1780843375298371295": {
+    "timestamp": "2026-06-07T08:42:55.561733",
+    "content": "\n"
+  },
+  "run_1780843375298371295": {
+    "timestamp": "2026-06-07T08:42:55.563105",
+    "content": "{\"run_id\": \"1780843375298371295\", \"timestamp\": \"2026-06-07T08:42:55-06:00\", \"language\": \"python\", \"exit_code\": 0, \"code_file\": \"/data/data/com.termux/files/home/KAI_9000/logs/code_1780843375298371295.py\", \"log_file\": \"/data/data/com.termux/files/home/KAI_9000/logs/run_1780843375298371295.log\", \"output\": \"\\n\", \"success\": true}"
+  },
+  "code_1780888871760645966": {
+    "timestamp": "2026-06-07T21:21:12.030363",
+    "content": "#!/usr/bin/env python3\nimport sys\nfrom pathlib import Path\n\ndef find_downloads_dir():\n    home = Path.home()\n    candidates = [\n        home / \"storage\" / \"downloads\",  # Termux storage\n        home / \"storage\" / \"Download\",\n        home / \"Downloads\",\n        Path(\"/sdcard/Download\"),\n        Path(\"/sdcard/Downloads\"),\n        Path(\"/storage/emulated/0/Download\"),\n        Path(\"/storage/emulated/0/Downloads\"),\n    ]\n    for d in candidates:\n        if d.exists() and d.is_dir():\n            return d\n    # Fallback: create and use ~/Downloads\n    fallback = home / \"Downloads\"\n    fallback.mkdir(parents=True, exist_ok=True)\n    return fallback\n\ndef main():\n    # Optional content passed as command-line arguments; otherwise default text\n    content = \"This is txt.txt content.\\n\"\n    if len(sys.argv) > 1:\n        content = \" \".join(sys.argv[1:])\n\n    downloads_dir = find_downloads_dir()\n    file_path = downloads_dir / \"txt.txt\"\n\n    try:\n        with file_path.open(\"w\", encoding=\"utf-8\") as f:\n            f.write(content)\n        print(f\"Saved: {file_path}\")\n    except Exception as e:\n        print(f\"Failed to save {file_path}: {e}\", file=sys.stderr)\n        sys.exit(1)\n\nif __name__ == \"__main__\":\n    main()"
+  },
+  "output_1780888871760645966": {
+    "timestamp": "2026-06-07T21:21:12.032195",
+    "content": "\n"
+  },
+  "run_1780888871760645966": {
+    "timestamp": "2026-06-07T21:21:12.033728",
+    "content": "{\"run_id\": \"1780888871760645966\", \"timestamp\": \"2026-06-07T21:21:11-06:00\", \"language\": \"python\", \"exit_code\": 0, \"code_file\": \"/data/data/com.termux/files/home/KAI_9000/logs/code_1780888871760645966.py\", \"log_file\": \"/data/data/com.termux/files/home/KAI_9000/logs/run_1780888871760645966.log\", \"output\": \"\\n\", \"success\": true}"
+  }
+}

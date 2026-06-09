@@ -1,0 +1,1 @@
+config = json.load(f)

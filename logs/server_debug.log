@@ -1,0 +1,434 @@
+🚀 Starting KAI_9000 Pedagogy Server on port 9000...
+ * Serving Flask app 'qwen_pedagogy_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:9000
+ * Running on http://192.0.0.4:9000
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [08/Jun/2026 13:53:34] "GET /api/status HTTP/1.1" 200 -
+127.0.0.1 - - [08/Jun/2026 13:53:34] "GET /api/status HTTP/1.1" 200 -
+127.0.0.1 - - [08/Jun/2026 13:53:41] "POST /api/brew HTTP/1.1" 200 -
+127.0.0.1 - - [08/Jun/2026 13:53:52] "POST /api/brew HTTP/1.1" 200 -
+127.0.0.1 - - [08/Jun/2026 13:56:20] "POST /api/brew HTTP/1.1" 200 -
+127.0.0.1 - - [08/Jun/2026 13:59:17] "POST /api/brew HTTP/1.1" 200 -
+127.0.0.1 - - [08/Jun/2026 16:12:14] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+[2026-06-08 16:12:14,820] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:14] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:15,243] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:15] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:15] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:16,134] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:16] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:16] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:18,138] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:18] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:18] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:19] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:19,818] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:19] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:19] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:20,284] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:20] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:20] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:21,129] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:21] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:22] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:23,037] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:23] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:25] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:25,676] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:25] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:26] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:26,155] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:26] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+[2026-06-08 16:12:27,133] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:27] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+127.0.0.1 - - [08/Jun/2026 16:12:27] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:28] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -
+Error on request:
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 371, in run_wsgi
+    execute(self.server.app)
+    ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/serving.py", line 334, in execute
+    for data in application_iter:
+                ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wsgi.py", line 270, in __next__
+    return self._next()
+           ~~~~~~~~~~^^
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/werkzeug/wrappers/response.py", line 32, in _iter_encoded
+    for item in iterable:
+                ^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 207, in generate
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+[2026-06-08 16:12:28,922] ERROR in app: Exception on /v1/chat/completions [POST]
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/data/data/com.termux/files/usr/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/KAI_9000/scripts/qwen_pedagogy_server.py", line 297, in chat_completions
+    "model": model_name,
+             ^^^^^^^^^^
+NameError: name 'model_name' is not defined
+127.0.0.1 - - [08/Jun/2026 16:12:28] "[35m[1mPOST /v1/chat/completions HTTP/1.1[0m" 500 -

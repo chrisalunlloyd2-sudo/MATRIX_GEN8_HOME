@@ -1,0 +1,1 @@
+{ "id_slot": 0, "filename": "slot_save_file.bin", "n_saved": 1745, "n_written": 14309796, "timings": { "save_ms": 49.865 } }

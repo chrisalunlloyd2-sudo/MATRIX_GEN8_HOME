@@ -1,0 +1,11 @@
+# security & linting checks
+*:rm\s+-rf\s+/ :error
+*:dd\s+if=\s+ :error
+*:>\s+\/dev\/sd[a-z] :error
+
+# language‑specific
+python:eval\(.+\):warning
+python:exec\(.+\):warning
+
+javascript:eval\(.+\):warning
+javascript:new\s+Function\(.+\):warning

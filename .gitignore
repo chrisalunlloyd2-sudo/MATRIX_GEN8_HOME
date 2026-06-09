@@ -1,0 +1,34 @@
+# --- AI Models (Excluded) ---
+KAI_9000/models/
+*.gguf
+*.weights
+*.bin
+
+# --- Databases & State (Excluded) ---
+KAI_9000/data/*.db
+KAI_9000/data/*.sql
+KAI_9000/memory/*.json
+KAI_9000/memory/*.jsonl
+swarm_registry.json
+
+# --- Logs & Temp ---
+KAI_9000/logs/*.log
+*.tmp
+__pycache__/
+
+# --- Credentials ---
+.env
+oauth_creds.json
+client_secret.json
+
+# --- Android Artifacts ---
+*.apk
+*.dex
+bin/
+obj/
+
+# --- Infrastructure Exclusions ---
+/data/data/com.termux/files/home/KAI_9000/lib/models/
+/data/data/com.termux/files/home/KAI_9000/logs/gguf/
+/data/data/com.termux/files/home/KAI_9000/secure/*.key
+/data/data/com.termux/files/home/KAI_9000/tmp/

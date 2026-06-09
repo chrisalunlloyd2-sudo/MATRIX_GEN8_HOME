@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/KAI_9000/projects/PocketMatrix/PocketMatrix/system/gui_bridge.py", line 11, in <module>
+    import PocketMatrix.system.evernote_manager as evernote_manager
+ModuleNotFoundError: No module named 'PocketMatrix'

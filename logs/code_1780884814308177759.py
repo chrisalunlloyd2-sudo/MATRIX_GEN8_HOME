@@ -1,0 +1,1 @@
+self.gguf_writer.add_key_length_mla(hparams["qk_nope_head_dim"] + hparams["qk_rope_head_dim"]) logger.info(f" Aligned chars {len(aligned):>7} (of {len(ocr_out)} OCR chars)") print_tool_call(tool_name, args) if "arguments" in tc["function"]: self._experts[bid][name] = data_torch

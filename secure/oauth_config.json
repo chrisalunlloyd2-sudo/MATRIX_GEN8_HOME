@@ -1,0 +1,5 @@
+{
+  "client_id": "TEMP_CLIENT_ID",
+  "client_secret": "TEMP_CLIENT_SECRET",
+  "redirect_uri": "http://localhost:8080/oauth/callback"
+}
