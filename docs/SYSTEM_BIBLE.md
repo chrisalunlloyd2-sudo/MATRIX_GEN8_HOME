@@ -43,6 +43,27 @@ The **H2O Matrix** is an autonomous development ecosystem running on Android/Ter
 *   **Intent Broadcaster**: Enables agents to open URLs and trigger Android system events directly from the CLI.
 
 
+### 📁 Unified Substrate Explorer
+*   **Virtual Root Integration**: Bridges local Matrix system files, host phone storage (`/sdcard`), and cloud endpoints (OneDrive/Google Drive) into a single, seamless filesystem.
+*   **Cloud Orchestration**: Native integration with `rclone` allowing agents to interact with remote files as if they were local.
+*   **Full Phone Access**: Direct visibility and editing capabilities for the phone's internal storage and downloads.
+
+### 🗑️ Persistent Recycle Bin (Rollback Substrate)
+*   **System-Wide Interception**: Every deletion triggered by a GUI user, a model, or a swarm node is intercepted and logged.
+*   **Rollback Ledger**: Deletions are tracked in `recycle.db` with absolute original paths and timestamps.
+*   **One-Click Restoration**: Items can be instantly restored to their exact original location, maintaining system integrity during experiments.
+
+---
+
+## 🧠 Advanced ML Orchestration Architecture
+The Matrix does not rely on standard "Chatbot" LLM logic. It utilizes a multi-layered symbolic and neural orchestration stack:
+
+1.  **Algebraic Intent Mapping**: User performatives (COMPARE, DERIVE, ANALYZE) are mapped as typed edges in a topological graph (NXEngine).
+2.  **Layered BM25 Retrieval**: Dual-layer lexical search across the Knowledge Hub and Action Vault for high-fidelity RAG.
+3.  **Tok Treelike Traversal**: A context-aware retrieval method that follows semantic paths within the database pyramid.
+4.  **LSTM/Google Bot Hybrid**: Clippy utilizes LSTM memory to avoid conversational repetition and integrates live Google Search logic for statistics mapping and sentiment analysis.
+5.  **Speculative Synthesis**: Local 135M models perform intelligent comparisons between search results and local project files.
+
 ---
 
 ## 📜 System Mantras
