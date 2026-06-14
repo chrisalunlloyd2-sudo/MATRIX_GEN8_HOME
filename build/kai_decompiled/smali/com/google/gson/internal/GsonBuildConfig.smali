@@ -1,0 +1,21 @@
+.class public final Lcom/google/gson/internal/GsonBuildConfig;
+.super Ljava/lang/Object;
+.source "r8-map-id-ff5e69a135e12d4a5f9c0dcce27245422008dc85ace58877c0af969feff409e5"
+
+
+# static fields
+.field public static final VERSION:Ljava/lang/String; = "2.13.2"
+
+
+# direct methods
+.method private constructor <init>()V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    return-void
+.end method

@@ -27,9 +27,21 @@ The **H2O Matrix** is an autonomous development ecosystem running on Android/Ter
 *   **P2P Worker Nodes**: Displays secondary devices linked via the DePIN Master Handshake.
 *   **Capability Map**: Lists the specific "performatives" each agent can handle.
 
-### 🩺 Diagnostics
-*   **Internal Stats**: Real-time CPU and RAM monitoring via `/proc` filesystem.
-*   **Path Integrity**: Verifies that all core directories (`docs/`, `scripts/`, `db/`) are reachable.
+### 💬 Swarm Status (MSN/Sims Mode)
+*   **Live Chat UI**: A social-style dashboard showing every agent's "Health," "Happiness," and "Current Activity."
+*   **Mood Logic**: Agents display emojis based on system RAM availability and CPU load (😊, 😐, 😫).
+*   **Real-time Monitoring**: Polled every 10 seconds to ensure the Hive Mind is synchronized.
+
+### 🚀 Genesis Manifestation (The Auto-Installer)
+*   **Full Restore**: Automatically pulls the entire ecosystem from GitHub and restores SQLite project databases.
+*   **Surgical Dependency Check**: Verifies all Termux and Python requirements are met before awakening the swarm.
+*   **Model Hydration**: Direct integration with the Model Fetcher to ensure GGUF weights are ready for local inference.
+
+### 🕹️ Remote Assistance Hook (Phone Control)
+*   **Bi-directional Logic**: Allows agents to send notifications and text-to-speech alerts to your phone.
+*   **Voice Automation**: Pre-configured hooks for Android speech-to-text (STT) instructions.
+*   **Intent Broadcaster**: Enables agents to open URLs and trigger Android system events directly from the CLI.
+
 
 ---
 

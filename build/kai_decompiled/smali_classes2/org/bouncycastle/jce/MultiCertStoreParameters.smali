@@ -1,0 +1,75 @@
+.class public Lorg/bouncycastle/jce/MultiCertStoreParameters;
+.super Ljava/lang/Object;
+
+# interfaces
+.implements Ljava/security/cert/CertStoreParameters;
+
+
+# instance fields
+.field private certStores:Ljava/util/Collection;
+
+.field private searchAllStores:Z
+
+
+# direct methods
+.method public constructor <init>(Ljava/util/Collection;)V
+    .locals 1
+
+    .line 9
+    const/4 v0, 0x1
+
+    invoke-direct {p0, p1, v0}, Lorg/bouncycastle/jce/MultiCertStoreParameters;-><init>(Ljava/util/Collection;Z)V
+
+    return-void
+.end method
+
+.method public constructor <init>(Ljava/util/Collection;Z)V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    iput-object p1, p0, Lorg/bouncycastle/jce/MultiCertStoreParameters;->certStores:Ljava/util/Collection;
+
+    .line 5
+    .line 6
+    iput-boolean p2, p0, Lorg/bouncycastle/jce/MultiCertStoreParameters;->searchAllStores:Z
+
+    .line 7
+    .line 8
+    return-void
+.end method
+
+
+# virtual methods
+.method public clone()Ljava/lang/Object;
+    .locals 0
+
+    .line 1
+    return-object p0
+.end method
+
+.method public getCertStores()Ljava/util/Collection;
+    .locals 0
+
+    .line 1
+    iget-object p0, p0, Lorg/bouncycastle/jce/MultiCertStoreParameters;->certStores:Ljava/util/Collection;
+
+    .line 2
+    .line 3
+    return-object p0
+.end method
+
+.method public getSearchAllStores()Z
+    .locals 0
+
+    .line 1
+    iget-boolean p0, p0, Lorg/bouncycastle/jce/MultiCertStoreParameters;->searchAllStores:Z
+
+    .line 2
+    .line 3
+    return p0
+.end method

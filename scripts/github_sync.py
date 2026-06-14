@@ -12,14 +12,36 @@ from datetime import datetime
 
 # --- Configuration ---
 OAUTH_FILE = "/data/data/com.termux/files/home/.gemini/oauth_creds.json"
-PROJECT_ROOT = "/data/data/com.termux/files/home/KAI_9000"
+PROJECT_ROOT = "/data/data/com.termux/files/home/KAI_9000/Sprite"
 
 def get_oauth_token():
     if not os.path.exists(OAUTH_FILE):
         return None
+        
     with open(OAUTH_FILE, 'r') as f:
         data = json.load(f)
-        return data.get('github_token')
+        token = data.get('github_token')
+        
+    # Check if current token works
+    try:
+        res = requests.get("https://api.github.com/user", 
+                           headers={"Authorization": f"token {token}"},
+                           timeout=5)
+        if res.status_code == 401:
+            print("[!] Token expired. Triggering lightweight refresh...")
+            refresh_script = "/data/data/com.termux/files/home/KAI_9000/secure/refresh_tokens.sh"
+            result = subprocess.run(["bash", refresh_script], capture_output=True, text=True)
+            if result.returncode == 0:
+                # Reload token after refresh
+                with open(OAUTH_FILE, 'r') as f:
+                    data = json.load(f)
+                    return data.get('github_token')
+            else:
+                print(f"[-] Refresh failed: {result.stderr}")
+    except Exception as e:
+        print(f"[-] Connection error during token check: {e}")
+        
+    return token
 
 def github_api_request(method, endpoint, data=None):
     token = get_oauth_token()
@@ -55,7 +77,7 @@ def sync_readme():
     # Placeholder for actual git push or API blob update
     subprocess.run(["git", "add", "README.md"], cwd=PROJECT_ROOT)
     subprocess.run(["git", "commit", "-m", f"docs: Automated README sync {datetime.now().isoformat()}"], cwd=PROJECT_ROOT)
-    # subprocess.run(["git", "push"], cwd=PROJECT_ROOT)
+    subprocess.run(["git", "push"], cwd=PROJECT_ROOT)
 
 def create_snapshot():
     """Creates a tagged snapshot of the current TIC_LOG and ROADMAP."""

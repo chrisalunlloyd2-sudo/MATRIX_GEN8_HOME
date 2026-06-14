@@ -1,4 +1,14 @@
-Traceback (most recent call last):
-  File "/data/data/com.termux/files/home/KAI_9000/projects/PocketMatrix/PocketMatrix/system/gui_bridge.py", line 11, in <module>
-    import PocketMatrix.system.evernote_manager as evernote_manager
-ModuleNotFoundError: No module named 'PocketMatrix'
+ * Serving Flask app 'gui_bridge'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8081
+ * Running on http://192.0.0.4:8081
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [10/Jun/2026 13:38:12] "GET /api/swarm/status HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jun/2026 13:39:49] "GET /api/swarm/status HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jun/2026 17:02:31] "GET /api/swarm/status HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jun/2026 17:02:47] "GET /api/swarm/status HTTP/1.1" 200 -
+192.0.0.4 - - [10/Jun/2026 17:03:13] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+192.0.0.4 - - [10/Jun/2026 17:03:16] "GET / HTTP/1.1" 200 -
+192.0.0.4 - - [10/Jun/2026 17:03:46] "GET /api/nx/nodes HTTP/1.1" 200 -

@@ -1,0 +1,36 @@
+.class Lorg/bouncycastle/jcajce/provider/symmetric/SM4$SM4WrapEngine;
+.super Lorg/bouncycastle/crypto/engines/RFC3394WrapEngine;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lorg/bouncycastle/jcajce/provider/symmetric/SM4;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x9
+    name = "SM4WrapEngine"
+.end annotation
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 1
+
+    .line 1
+    new-instance v0, Lorg/bouncycastle/crypto/engines/SM4Engine;
+
+    .line 2
+    .line 3
+    invoke-direct {v0}, Lorg/bouncycastle/crypto/engines/SM4Engine;-><init>()V
+
+    .line 4
+    .line 5
+    .line 6
+    invoke-direct {p0, v0}, Lorg/bouncycastle/crypto/engines/RFC3394WrapEngine;-><init>(Lorg/bouncycastle/crypto/BlockCipher;)V
+
+    .line 7
+    .line 8
+    .line 9
+    return-void
+.end method
