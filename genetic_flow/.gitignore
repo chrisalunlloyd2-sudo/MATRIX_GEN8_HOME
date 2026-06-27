@@ -1,6 +1,0 @@
-# FENCE: Blocks heavy DuckDB relational binary files from Git track
-genetic_flow/tracking_db/memory.db
-genetic_flow/tracking_db/memory.db.wal
-genetic_flow/__pycache__/
-*.log
-venv/

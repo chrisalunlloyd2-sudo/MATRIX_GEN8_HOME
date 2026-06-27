@@ -1,1 +1,0 @@
-CeGCC Placeholder

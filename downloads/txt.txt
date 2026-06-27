@@ -1,3 +1,0 @@
-VERIFIED_MANIFESTATION
-[CMD]
-ls ~/downloads/txt.txt

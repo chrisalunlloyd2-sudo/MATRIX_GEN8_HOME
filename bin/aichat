@@ -1,3 +1,0 @@
-#!/bin/bash
-cd /data/data/com.termux/files/home/H2OIDE
-python3 h2o_cli_ide.py
