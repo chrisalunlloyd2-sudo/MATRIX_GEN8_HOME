@@ -4,6 +4,7 @@ All notable changes to this project.
 
 ## 2026-08
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 
 ## 2026-06
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-06-30 09:52 ($hash)
@@ -56,5 +57,4 @@ All notable changes to this project.
 - **[Changed]** [ZLC] Implemented Single-Entrypoint Bootloader (alias aichat) ($hash)
 - **[Changed]** [PEDAGOGY] Manifested Training Block 003: Autonomous Git Hygiene ($hash)
 - **[Changed]** [HYGIENE] Implemented Git Pre-commit hook (90MB block) and Root Auto-Organizer ($hash)
-- **[Changed]** [PEDAGOGY] Manifested Training Block 002: Linguistic Smoothing, Auto-Sync Daemon, and Cat Topology Test ($hash)
 
