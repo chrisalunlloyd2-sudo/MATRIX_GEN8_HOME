@@ -7,6 +7,7 @@ All notable changes to this project.
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 
 ## 2026-06
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-06-30 09:52 ($hash)
@@ -56,5 +57,4 @@ All notable changes to this project.
 - **[Changed]** [AUTO-SYNC] Swarm Pedagogical Lab Results & Formations ($hash)
 - **[Changed]** [PHASE 13] Hyper-Optimization: DB Schema Upgraded for Vector Pre-Caching & ZLC Web Prompt Manifested ($hash)
 - **[Changed]** [PHASE 11] Unified Omni-Router: Orchestrator natively delegates path (Danube vs Triton) via Hash-Shannon analysis ($hash)
-- **[Changed]** [ZLC] Implemented Single-Entrypoint Bootloader (alias aichat) ($hash)
 
