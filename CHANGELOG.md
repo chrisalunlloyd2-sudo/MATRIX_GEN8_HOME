@@ -40,6 +40,7 @@ All notable changes to this project.
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 
 ## 2026-06
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-06-30 09:52 ($hash)
@@ -54,7 +55,4 @@ All notable changes to this project.
 - **[Docs]** docs/ui: Update architecture flow diagram and fix mobile UI scaling responsiveness ($hash)
 - **[Docs]** docs: Beautify README with images/FAQ and refine CE Desktop resolution ($hash)
 - **[Added]** feat(ce): Implement Log Viewer, API Key Vault, and Diagnostics (Steps 928-930) ($hash)
-
-## 2026-05
-- **[Added]** feat(ce): Implement Git GUI Client and DB Schema Visualizer (Steps 926-927) ($hash)
 
