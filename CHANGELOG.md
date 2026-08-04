@@ -16,6 +16,7 @@ All notable changes to this project.
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 
 ## 2026-06
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-06-30 09:52 ($hash)
@@ -56,5 +57,4 @@ All notable changes to this project.
 - **[Changed]** [PHASE 11.2] Triton Kernel Hardened: Enforced genetically optimal 18KB I/O Buffer for CREATE/MODIFY performatives to prevent eMMC write-thrashing ($hash)
 - **[Changed]** [PEDAGOGY] Manifested Training Block 008: Multi-Node I/O Genetic Simulation ($hash)
 - **[Changed]** [PHASE 15] Chat-Template Pedagogy: Orchestrator autonomously maps user shorthand to zero-latency macros ($hash)
-- **[Changed]** [PEDAGOGY] Manifested Training Block 006: ZLC Macro Expansion ($hash)
 
