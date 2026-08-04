@@ -47,6 +47,7 @@ All notable changes to this project.
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 
 ## 2026-06
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-06-30 09:52 ($hash)
@@ -54,5 +55,4 @@ All notable changes to this project.
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-06-28 20:51 ($hash)
 - **[Added]** feat(MATRIX_GEN8_HOME): autonomous update ΓÇö 814 file(s) ($hash)
 - **[Added]** feat: Upgrade to Alpha v10.2 ($hash)
-- **[Changed]** ui: Implement Native Android DP Scaling Engine to mimic `toDp()` behavior ($hash)
 
