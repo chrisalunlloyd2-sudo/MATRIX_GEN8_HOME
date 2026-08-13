@@ -3,6 +3,7 @@
 All notable changes to this project.
 
 ## 2026-08
+- **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-08-12 17:43 ($hash)
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-08-12 16:38 ($hash)
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-08-12 15:47 ($hash)
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-08-12 14:37 ($hash)
@@ -12,7 +13,6 @@ All notable changes to this project.
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-08-12 10:01 ($hash)
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-08-12 06:41 ($hash)
 - **[Changed]** [Moe autonomous] MATRIX_GEN8_HOME 2026-08-12 04:23 ($hash)
-- **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
